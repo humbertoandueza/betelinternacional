@@ -1,0 +1,63 @@
+{% extends 'base_admin.html' %}
+
+{% block content %}
+
+<div class="col-md-offset-2" style="width: 70%; ">
+<nav style="float: right; height: 50px; margin-top: 10px; "><a href="{% url 'logout' %}">Logout</a></nav>
+<p style="font-size: 36px;">Bienvenido {{user.username}}</p>
+<h2>Datos Personales</h2>
+<p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus cumque aut enim explicabo aliquid voluptatibus maiores blanditiis, officia modi dolores minima non, fugit magnam, optio, quod excepturi odio nesciunt aperiam? </p>
+<h1></h1>
+<h1>{{prueba.suma}}</h1>
+{{user.username}}
+<p>La suma de las notas es:</p>
+<h1></h1>
+<table class="table table-bordered">
+	<thead>
+	<b>
+		<tr style="text-align: center">
+			<td class="col-md-offset-4 col-md-7"><b>Materia</b></td>
+			<td><b>Seccion</b></td>
+			<td> <b>1</b></td>
+			<td> <b>2</b></td>
+			<td> <b>3</b></td>
+			<td> <b>4</b></td>
+			<td> <b>5</b></td>
+			<td> <b>6</b></td>
+			<td> <b>7</b></td>
+			<td> <b>8</b></td>
+			<td> <b>9</b></td>
+			<td> <b>10</b></td>
+			<td><b>TOTAL</b></td>
+</b>
+
+
+		</tr>
+		
+	</thead>
+	<tbody>
+		
+		<tr >
+			<td>Ingles</td>
+			<strong style="text-align: center">
+			<td>331</td>
+			<td>{{prueba.nota11}}</td>
+			<td>{{prueba.nota22}}</td>
+			<td>{{prueba.nota33}}</td>
+			<td>{{prueba.nota44}}</td>
+			<td>{{prueba.nota55}}</td>
+			<td>{{prueba.nota66}}</td>
+			<td>{{prueba.nota77}}</td>
+			<td>{{prueba.nota88}}</td>
+			<td>{{prueba.nota99}}</td>
+			<td>{{prueba.nota101}}</td>
+			<td>{{ prueba.suma }}</td>
+		</tr>
+		</strong>
+	</tbody>
+	
+
+
+</table> 
+</div>	
+{% endblock%}

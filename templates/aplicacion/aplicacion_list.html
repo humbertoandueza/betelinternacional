@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<p style="font-size: 36px;">Bienvenido {{user.username}}</p>
+<p>Lista de Todos los alumnos Incritos en este nivel</p>
+<table class="table table-bordered">
+	<thead>
+		<tr>
+			<td>Cedula</td>
+			<td>Nombre</td>
+			<td>Apellido</td>
+			<td>Direccion</td>
+			<td>Acciones</td>
+		</tr>
+		
+	</thead>
+	<tbody>
+		
+		{% if object_list %}
+		<tr>
+		{% for persona in object_list %}
+			<td>{{ persona.cedula }}</td>
+			<td>{{ persona.nombre }}</td>
+			<td>{{ persona.apellido }}</td>
+			<td>{{ persona.direccion }}</td>
+			
+			<td>
+				<a class="btn btn-primary" href="{% url 'dato:listar_per' pk=persona.id %}">Ver mas</a>
+				<a class="btn btn-info" href="{% url 'dato:aplicacion_editar' pk=persona.id %}">Editar</a>
+				<a class="btn btn-danger" href="{% url 'dato:aplicacion_eliminar' pk=persona.id %}">Eliminar</a>
+
+			</td>
+		</tr>
+
+
+		{% endfor %}
+		
+		{% else %}
+		<h1>No hay registros de Estudiantes</h1>
+		{% endif %}
+		
+
+	</tbody>
+	
+
+
+</table> 
+
+{% endblock%}

@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="top-content" >
+            <div class="container">
+                <div class="row" >
+                    <div class="f11 col-sm-12 col-md-12 col-lg-12 form-box" style="padding: 0px; background-image: url('{% static 'assets/img/line.png'%}'); background-size: cover; background-repeat: no-repeat;">
+                       <div id="form" class="fixed-top" >
+                        
+                            <ul class="nav nav-tabs">
+                              <li style="float: right;">
+                                <a  href="{% url 'logout' %}">Salir</a></nav>
+                                
+                              </li>
+                            </ul>
+                        </div>
+                        <img class="imgr" src="{% static 'assets/img/gif.gif'%}" alt="Nosotros" width="300" class="img-fluid my-1 mb-2 " style="margin-top: 50px;">
+                        <center><div style="width: 700px; padding-bottom: 50px;">
+                        <div>
+                        <form role="form" name="enviar" id="form" action="" method="post" autocomplete="off" >
+                         <div>
+                            <img class="imgr" src="{% static 'assets/img/cargando.gif'%}" alt="Nosotros" width="50" class="img-fluid my-1 mb-2 " style="margin-top: 50px;">
+                            <h2 style="color: #3c3c3c;">Información Actualizada Correctamente, Se cerrará la sesión...
+                        </h2>
+                        </div>
+                            {% csrf_token %}    
+                            <fieldset>
+                            <div class="form-horizontal ">
+                                <div class="form-group hidden">
+                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Ingrese su Cedula">   
+                                        <div class="input-group">   
+                                                <span class="input-group-addon">
+                                                <i class="fa fa-address-card-o" id="icon" aria-hidden="true"></i>
+                                               
+                                            </span> 
+                                        {{form.ci}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group hidden">
+                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Ingrese su Cedula">   
+                                        <div class="input-group">   
+                                                <span class="input-group-addon">
+                                                <i class="fa fa-address-card-o" id="icon" aria-hidden="true"></i>
+                                               
+                                            </span> 
+                                            {{form.is_alumno}}
+                                            {{form.is_staff}}
+                                        <!--form.is_inscripcion}}-->
+                                        <input type="checkbox" name="is_inscripcion" id="id_is_inscripcion">
+
+                                        
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                                <br>    
+                                <div class="f1-buttons hidden">
+                                   <p class="lead"><a class="btn btn-primary btn-xl page-scroll" style="    line-height: 0px;"><button type="submit" style="padding: 0px; margin: 0px; background: none;line-height: 0px; min-width: 0px;height: 20px" class="btn">Continuar</button></a></p>
+                                </div>
+                            </fieldset>
+                        
+                        </form>
+                        </div>
+                    </div>
+                </div>
+                    
+            </div>
+        </div>
+{% endblock %}

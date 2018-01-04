@@ -1,0 +1,206 @@
+{% extends 'aplicacion/paneladminnw.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+	.table-bordered>thead>tr>td, .table-bordered>thead>tr>th {
+     border-bottom-width: 0px;
+      }
+
+    .table-bordered>tbody>tr>td, .table-bordered>tbody>tr>th, .table-bordered>tfoot>tr>td, .table-bordered>tfoot>tr>th, .table-bordered>thead>tr>td, .table-bordered>thead>tr>th {
+    border: 1px solid #333;}
+    .table-bordered {
+    border: 1px solid #333;}
+.table {
+    width: 80% !important;
+    max-width: 100%;
+    margin-bottom: 20px;}
+
+
+</style>
+<div class="top-content">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-xs-12 col-sm-12 col-md-12  col-lg-12 form- f11" style="padding: 0px;background-image: url('{% static 'assets/img/line.png'%}'); background-size: cover; color: #3c3c3c;">
+                        <div id="form" class="fixed-top"  >
+                            
+                            <ul class="nav nav-tabs">
+                              <li class="nav-item">
+                                <a class="nav-link active" href="{% url 'dato:app_inicio' %}">Inicio</a>
+                              </li>
+                                  {% if user.is_profesor %}
+
+                              <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" data-toggle="dropdown"
+                                   href="#!" role="button" aria-haspopup="true" aria-expanded="false">
+                                   Niveles</a>
+                                <div class="dropdown-menu">
+                                  {% if user.is_superuser %}
+                                  <a class="dropdown-item" href="{% url 'dato:nivel' %}"">Añadir Niveles </a>
+                                  {% endif %}
+                                  <a class="dropdown-item" href="{% url 'dato:nivel1' %}"">Nivel 1 </a>
+                                  <a class="dropdown-item" href="{% url 'dato:nivel2' %}"">Nivel 2 </a>
+                                  <a class="dropdown-item" href="{% url 'dato:nivel3' %}"">Nivel 3 </a>
+                                </div>
+                              </li>
+                                  {% endif %}
+                              {% if user.is_superuser %}
+                              <li class="nav-item">
+                                <a class="nav-link" href="{% url 'dato:reporte' %}">reportes</a>
+                              </li>
+                              <li class="nav-item">
+                                <a class="nav-link" href="{% url 'dato:profesor' %}">Añadir Profesor</a>
+                              </li>
+                              <li class="nav-item">
+                                <a class="nav-link" href="{% url 'dato:persona' %}">Añadir persona</a>
+                              </li>
+                              {% endif %}
+            
+                              {% if user.is_alumno %}
+                              <li class="nav-item">
+                                <a class="nav-link" href="{% url 'dato:ver_notas' %}">Ver Notas</a>
+                              </li>
+                              {% endif %}                                  
+                              <li style="float: right;">
+                                <a  href="{% url 'logout' %}">Salir</a></nav>
+                                
+                              </li>
+                            </ul>
+                        </div>
+{% if user.is_alumno %}                            
+<center>
+<div class="col-sm-12">                    
+<p style="font-size: 36px; padding-top: 50px; padding-bottom: 70px;">Bienvenido {{user.first_name}}</p>
+<p>Lista de Todos los alumnos Incritos en el nivel 1</p>
+<div class="col-sm-2 col-sm-offset-2">                    
+<table class="table table-bordered">
+  <tr>
+    <th style="width: 200px;">Materia</th>
+  </tr>
+</table > 
+</div>
+<div class="col-sm-6">                    
+<table class="table table-bordered">
+  <tr>
+    <th>1</th>
+    <th>2</th>
+    <th>3</th>
+    <th>4</th>
+    <th>5</th>
+    <th>6</th>
+    <th>7</th>
+    <th>8</th>
+    <th>9</th>
+    <th style="padding:4px;padding-top:8px; ">10</th>
+
+  </tr>
+</table > 
+</div>
+</div>
+
+<div class="col-sm-12">
+<div class="col-sm-2 col-sm-offset-2">                    
+<table class="table table-bordered">
+  <tr>
+    <th style="width: 200px;">Familia</th>
+  </tr>
+</table > 
+</div>
+<div class="col-sm-6">                    
+<table class="table table-bordered">
+  
+
+  <tr>
+    {% for persona in notas %}
+    {% if persona.id_materia.nombre_materia == "Familia" %}
+    <th style="float: left;padding-left: 16px;padding-right:17px; border-left:none; border-bottom:none; border-top:none; ">
+      {% if persona.nota_persona == '1' %}
+        A
+      {% endif %}
+      {% if persona.nota_persona == '0' %}
+       R
+      {% endif %} 
+    </th>
+      
+
+    {% endif %}
+    {% endfor %}
+  </tr>
+</table>
+</div>
+</div>
+
+<div class="col-sm-12">
+<div class="col-sm-2 col-sm-offset-2">                    
+<table class="table table-bordered">
+  <tr>
+    <th style="width: 200px;">Fundamento</th>
+  </tr>
+</table > 
+</div>
+<div class="col-sm-6">                    
+<table class="table table-bordered">
+  
+
+  <tr>
+    {% for persona in notas %}
+    {% if persona.id_materia.nombre_materia == "Fundamento" %}
+
+    <th style="float: left;padding-left: 16px;padding-right:17px; border-left:none; border-bottom:none; border-top:none;  ">
+      {% if persona.nota_persona == '1' %}
+        A
+      {% endif %}
+      {% if persona.nota_persona == '0' %}
+       R
+      {% endif %}
+    </th>
+
+    {% endif %}
+    {% endfor %}
+  </tr>
+</table>
+</div>
+
+</div>
+
+
+<div class="col-sm-12">
+<div class="col-sm-2 col-sm-offset-1">                    
+  <p style="padding-top: 80px; font-size: 15px; text-align: left;">Nota:
+    <br>
+    A:Aprobado,
+    R:Reprobado</p>
+</div>
+</div>
+
+
+
+
+</div>
+</div>
+</div>
+</div>
+</center>
+{% else %}
+
+
+<div class="top-content">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-sm-12 col-md-12  col-lg-12 form- f11" style="padding: 0px;background-image: url('{% static 'assets/img/line.png'%}'); background-size: cover; color: #3c3c3c;">
+                      <img class="imgr" src="{% static 'assets/img/error.gif'%}" alt="Nosotros" width="300" class="img-fluid my-1 mb-2 " style="margin-top: 50px;">
+                            <center><div style="width: 700px; padding-bottom: 50px;">
+                             <h2 style="color: #3c3c3c;">!No tiene Permisos Suficientes para
+                              acceder a esta pagina¡
+                           </h2>
+              <p class="lead"><a class="btn btn-primary btn-xl page-scroll" style="    line-height: 0px;" href="{% url 'dato:app_inicio' %}">Volver</a></p> 
+                       </div ></center>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+{% endif %}
+{% endblock%}

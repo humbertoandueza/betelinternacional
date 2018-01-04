@@ -1,0 +1,393 @@
+{% extends 'aplicacion/paneladminnw.html' %}
+{% load static %}
+
+{% block content %}
+{% if user.is_alumno %}
+<div class="top-content">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-10 col-sm-offset-1 col-md-10 col-lg-8 col-lg-offset-2 form-box">
+                       
+        
+                        <form role="form" id="form" action="" method="post" class="f1" autocomplete="off">
+                         <div>
+                            <h3 style="color:#3f9cf3;">Ingrese los datos</h3>
+                        </div>
+                            {% csrf_token %}    
+                            <div class="f1-steps">
+                                <div class="f1-progress">
+                                    <div class="f1-progress-line" data-now-value="16.66" data-number-of-steps="3" style="width: 16.66%;"></div>
+                                </div>
+                                <div class="f1-step active">
+                                    <div class="f1-step-icon"><i class="fa fa-user"></i></div>
+                                    <p>Personal</p>
+                                </div>
+                                <div class="f1-step ">
+                                    <div class="f1-step-icon"><i class="fa fa-line-chart"></i></div>
+                                    <p>Socioeconomicos</p>
+                                </div>
+                                <div class="f1-step">
+                                    <div class="f1-step-icon"><i class="fa fa-users"></i></div>
+                                    <p>Datos Eclesiasticos</p>
+                                </div>
+                            </div>
+                            
+                            <fieldset>
+                            <div class="form-horizontal">
+                                <div class="form-group">
+                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Cedula">   
+                                        <div class="input-group">   
+                                                <span class="input-group-addon">
+                                                <i class="fa fa-address-card-o" id="icon" aria-hidden="true"></i>
+                                               
+                                            </span> 
+                                        <!--{{form.cedula}}-->
+                                        <input type="number" name="cedula" value="{{request.user.username}}" readonly="readonly" class="form-control" maxlength="8" required="" autocomplete="off" placeholder="Cedula" onkeyup="this.value=this.value.toUpperCase();" id="id_cedula" oninput="maxLengthCheck(this)">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group hidden">
+                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Seleccione el nivel a inscribir">   
+                                        <div class="input-group">   
+                                                <span class="input-group-addon">
+                                                <i class="fa fa-legal" id="icon" aria-hidden="true"></i>
+                                               
+                                            </span> 
+                                         <!--{{form.user}}-->
+                                         <input type="text" name="user" value="{{request.user.ci}}" autocomplete="off" id="id_user" onkeyup="this.value=this.value.toUpperCase();" oninput="maxLengthCheck(this)" placeholder="Cedula" maxlength="8" readonly="readonly" required="" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="alert alert-danger alert-dismissible hidden " role="alert" id="cedulaale">
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Nombre">   
+                                        <div class="input-group">   
+                                                <span class="input-group-addon">
+                                                <i class="fa fa-user" id="icon" aria-hidden="true"></i>
+                                                
+                                            </span> 
+                                        <!--{{form.nombre}}-->
+                                        <input type="text" name="nombre" value="{{request.user.first_name}}" readonly="readonly" class="form-control" maxlength="60" required="" autocomplete="off" placeholder="Nombre" onkeyup="this.value=this.value.toUpperCase();" onkeypress="return text(event)" id="id_nombre">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="alert alert-danger alert-dismissible hidden" role="alert" id="nombreale">
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Apellido">   
+                                        <div class="input-group">   
+                                                <span class="input-group-addon">
+                                                <i class="fa fa-user" id="icon" aria-hidden="true"></i>
+            
+                                            </span> 
+                                        <!--{{form.apellido}}-->
+                                        <input type="text" name="apellido" value="{{request.user.last_name}}" readonly="readonly" class="form-control" maxlength="60" required="" autocomplete="off" placeholder="Apellido" onkeyup="this.value=this.value.toUpperCase();" onkeypress="return text(event)" id="id_apellido">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="alert alert-danger alert-dismissible hidden" role="alert" id="apellidoale">
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Ingrese su Fecha de nacimiento">   
+                                        <div class="input-group">   
+                                                <span class="input-group-addon">
+                                                <i class="fa fa-calendar" id="icon" aria-hidden="true"></i>
+                                            </span> 
+                                        {{form.fecha_de_nacimiento}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="alert alert-danger alert-dismissible hidden" role="alert" id="fecha_naci">
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Seleccione su Sexo">   
+                                        <div class="input-group">   
+                                                <span class="input-group-addon">
+                                                <i class="fa fa-venus-mars" id="icon" aria-hidden="true"></i>
+                                            </span> 
+                                        {{form.sexo}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="alert alert-danger alert-dismissible hidden" role="alert" id="sexo">
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Ingrese su direccion de habitacion">   
+                                        <div class="input-group">   
+                                                <span class="input-group-addon">
+                                                <i class="fa fa-compass" id="icon" aria-hidden="true"></i>
+                                            </span> 
+                                        {{form.direccion}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="alert alert-danger alert-dismissible hidden" role="alert" id="direccion">
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Ingrese su número de casa">   
+                                        <div class="input-group">   
+                                                <span class="input-group-addon">
+                                                <i class="fa fa-phone" id="icon" aria-hidden="true"></i>
+                                            </span> 
+                                        {{form.telefono_residencial}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="alert alert-danger alert-dismissible hidden" role="alert" id="residencial">
+                                </div>
+                                <div class="form-group" data-toggle="tooltip" data-placement="top" title="Ingrese su número celular">
+                                    <div class="col-sm-4" style="padding-right: 0" >   
+                                        <div class="input-group">   
+                                                <span class="input-group-addon">
+                                                <i class="fa fa-mobile" id="icon" aria-hidden="true"></i>
+                                            </span> 
+                                        {{form.celular}}
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8" style="padding-left:0" >    
+                                        {{form.celular_number}}
+                                    </div>
+                                </div>
+                                <div class="alert alert-danger alert-dismissible hidden" role="alert" id="number1">
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Ingrese su correo electronico">   
+                                        <div class="input-group">   
+                                                <span class="input-group-addon">
+                                                <i class="fa fa-envelope" id="icon" aria-hidden="true"></i>
+                                            </span> 
+                                        <!--{{form.email}}-->
+                                        <input type="email" name="email" value="{{request.user.email}}" id="id_email" readonly="readonly" class="form-control" autocomplete="off" placeholder="Email" maxlength="254" onkeyup="this.value=this.value.toUpperCase();" required="">
+                                        
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="alert alert-danger alert-dismissible hidden" role="alert" id="email1">
+                                </div>
+                            </div>
+                                
+                                <br>
+                                <div class="f1-buttons">
+                                    <button type="button" class="btn btn-next">Siguiente</button>
+                                </div>
+
+                            </fieldset>
+
+                            <fieldset>
+                            <div class="form-horizontal">
+                                <div class="form-group">
+                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Seleccione su estado civil">   
+                                        <div class="input-group">   
+                                                <span class="input-group-addon">
+                                                <i class="fa fa-legal" id="icon" aria-hidden="true"></i>
+                                               
+                                            </span> 
+                                        {{form.estado_civil}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="alert alert-danger alert-dismissible hidden " role="alert" id="civilale">
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="¿Trabaja?">   
+                                        <div class="input-group">   
+                                                <span class="input-group-addon">
+                                                <i class="fa fa-legal" id="icon" aria-hidden="true"></i>
+                                               
+                                            </span> 
+                                         {{form.trabaja}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="alert alert-danger alert-dismissible hidden " role="alert" id="trabajaale">
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Ingrese su profesion">   
+                                        <div class="input-group">   
+                                                <span class="input-group-addon">
+                                                <i class="fa fa-legal" id="icon" aria-hidden="true"></i>
+                                               
+                                            </span> 
+                                         {{form.profesion}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="alert alert-danger alert-dismissible hidden " role="alert" id="profesionale">
+                                </div>  
+                                <div class="form-group">
+                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="¿De donde Egreso?">   
+                                        <div class="input-group">   
+                                                <span class="input-group-addon">
+                                                <i class="fa fa-legal" id="icon" aria-hidden="true"></i>
+                                               
+                                            </span> 
+                                         {{form.estudio_ori}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="alert alert-danger alert-dismissible hidden " role="alert" id="estudioale">
+                                </div>   
+                                <div class="form-group">
+                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Ingrese su ingreso familiar">   
+                                        <div class="input-group">   
+                                                <span class="input-group-addon">
+                                                <i class="fa fa-legal" id="icon" aria-hidden="true"></i>
+                                               
+                                            </span> 
+                                         {{form.ing_famil}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="alert alert-danger alert-dismissible hidden " role="alert" id="ingresoale">
+                                </div>   
+                            </div>
+
+                                <br>
+                                <div class="f1-buttons">
+                                    <button type="button" class="btn btn-previous">Regresar</button>
+                                    <button type="button" class="btn btn-next">Siguiente</button>
+                                </div>
+                            </fieldset>
+
+                            <fieldset>
+                            <div class="form-horizontal">
+                                <div class="form-group">
+                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Ingrese a que iglesia asiste">   
+                                        <div class="input-group">   
+                                                <span class="input-group-addon">
+                                                <i class="fa fa-legal" id="icon" aria-hidden="true"></i>
+                                               
+                                            </span> 
+                                         {{form.iglesia}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="alert alert-danger alert-dismissible hidden " role="alert" id="iglesiaale">
+                                </div> 
+                                <div class="form-group">
+                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="¿Quien es su pastor?">   
+                                        <div class="input-group">   
+                                                <span class="input-group-addon">
+                                                <i class="fa fa-legal" id="icon" aria-hidden="true"></i>
+                                               
+                                            </span> 
+                                         {{form.pastor}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="alert alert-danger alert-dismissible hidden " role="alert" id="pastorale">
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="¿Estudio Teologia?">   
+                                        <div class="input-group">   
+                                                <span class="input-group-addon">
+                                                <i class="fa fa-legal" id="icon" aria-hidden="true"></i>
+                                               
+                                            </span> 
+                                         {{form.estudio_teo}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="alert alert-danger alert-dismissible hidden " role="alert" id="teologiaale">
+                                </div>
+                                <div class="form-group" id="hidden_div1" style="display:none;">
+                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Ingrese el intituto de donde Egreso">   
+                                        <div class="input-group">   
+                                                <span class="input-group-addon">
+                                                <i class="fa fa-legal" id="icon" aria-hidden="true"></i>
+                                               
+                                            </span> 
+                                         {{form.instituto}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="alert alert-danger alert-dismissible hidden " role="alert" id="intitutoale">
+                                </div>
+                                <div class="form-group" id="hidden_div2" style="display:none;">
+                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="¿Que titulo obtuvo?">   
+                                        <div class="input-group">   
+                                                <span class="input-group-addon">
+                                                <i class="fa fa-legal" id="icon" aria-hidden="true"></i>
+                                               
+                                            </span> 
+                                         {{form.titulo_obte}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="alert alert-danger alert-dismissible hidden " role="alert" id="tituloale">
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="¿Que actividad realiza en la iglesia?">   
+                                        <div class="input-group">   
+                                                <span class="input-group-addon">
+                                                <i class="fa fa-legal" id="icon" aria-hidden="true"></i>
+                                               
+                                            </span> 
+                                         {{form.actividad}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="alert alert-danger alert-dismissible hidden " role="alert" id="actividadale">
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Seleccion el ministerio en el cual desea participar">   
+                                        <div class="input-group">   
+                                                <span class="input-group-addon">
+                                                <i class="fa fa-legal" id="icon" aria-hidden="true"></i>
+                                               
+                                            </span> 
+                                         {{form.ministerio}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="alert alert-danger alert-dismissible hidden " role="alert" id="ministerioale">
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="¿Razon por la cual desea estudiar en la escuela?">   
+                                        <div class="input-group">   
+                                                <span class="input-group-addon">
+                                                <i class="fa fa-legal" id="icon" aria-hidden="true"></i>
+                                               
+                                            </span> 
+                                         {{form.razon}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="alert alert-danger alert-dismissible hidden " role="alert" id="razonale">
+                                </div>
+                                
+                                <div class="alert alert-danger alert-dismissible hidden " role="alert" id="nivelale">
+                                </div>
+                            </div>
+                                <br>    
+                                <div class="f1-buttons">
+                                    <button type="button" class="btn btn-previous">Regresar</button>
+                                    <button type="submit"  class="btn btn-submit">Inscribir</button>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+{% endif %}
+{% if not user.is_alumno %}
+<div class="top-content">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-sm-12 col-md-12  col-lg-12 form- f11" style="padding: 0px;background-image: url('{% static 'assets/img/line.png'%}'); background-size: cover; color: #3c3c3c;">
+                      <img class="imgr" src="{% static 'assets/img/error.gif'%}" alt="Nosotros" width="300" class="img-fluid my-1 mb-2 " style="margin-top: 50px;">
+                            <center><div style="width: 700px; padding-bottom: 50px;">
+                             <h2 style="color: #3c3c3c;">!No tiene Permisos Suficientes para
+                              acceder a esta pagina¡
+                           </h2>
+              <p class="lead"><a class="btn btn-primary btn-xl page-scroll" style="    line-height: 0px;" href="{% url 'dato:app_inicio' %}">Volver</a></p> 
+                       </div ></center>
+                    </div>
+                </div>
+            </div>
+        </div>
+{% endif %}
+{% endblock %}

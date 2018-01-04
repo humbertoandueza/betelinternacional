@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="top-content">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-sm-12 col-md-12  col-lg-12 form- f11" style="padding: 0px; background-image: url('{% static 'assets/img/line.png'%}'); background-size: cover; background-repeat: no-repeat;">
+                        <div id="form" class="fixed-top"  >
+                        
+                            <ul class="nav nav-tabs">
+                              <li style="float: right;">
+                                <a  href="{% url 'logout' %}">Salir</a></nav>
+                                
+                              </li>
+                            </ul>
+                        </div>
+                            <img class="imgr" src="{% static 'assets/img/gif.gif'%}" alt="Nosotros" width="300" class="img-fluid my-1 mb-2 " style="margin-top: 50px;">
+                            <center><div style="width: 700px; padding-bottom: 50px;">
+                            <img class="imgr" src="{% static 'assets/img/cargando.gif'%}" alt="Nosotros" width="50" class="img-fluid my-1 mb-2 " style="margin-top: 50px;">
+                            <h1 style="color: #3c3c3c;">Usuario Creado Exitosamente</h1>
+                            <h3 style="color: #3c3c3c;">Inicie Sesión con su nuevo usuario y clave...</h3>
+                            <p class="lead hidden"><a id="cargar" class="btn btn-primary btn-xl page-scroll" href="{% url 'logout' %}">¡Entrar!</a></p>
+                       </center>
+                    </div >
+                </div>
+                    
+            </div ">
+        </div >
+</div>
+</div>
+
+{% endblock %}

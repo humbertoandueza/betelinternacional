@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+  .dropdown-menu {
+    text-align: center;}
+  .dropdown-item:hover {
+    text-decoration: none;
+    background-color: #eee;}
+    .dropdown-item {
+      margin-top: 0px;
+      padding: 5px;}
+</style>
+{% block navbar %}
+{% endblock %}
+{% if user.is_superuser or user.is_alumno or user.is_profesor %} 
+<div class="top-content">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12 col-md-12  col-lg-12 form- f11" style="padding: 0px; background-image: url('{% static 'assets/img/line.png'%}'); background-size: cover; background-repeat: no-repeat;">
+                        <div id="form" class="fixed-top"  >
+                            
+                            <ul class="nav nav-tabs">
+                              <li class="nav-item">
+                                <a class="nav-link active" href="{% url 'dato:app_inicio' %}">Inicio</a>
+                              </li>
+                              {% if user.is_alumno and not user.is_inscripcion %}
+                              <li class="nav-item">
+                                <a class="nav-link" href="{% url 'dato:ver_notas' %}">Ver Notas</a>
+                              </li>
+                              {% endif %} 
+                              {% if user.is_superuser %}
+                              <li class="nav-item">
+                                <a class="nav-link" href="{% url 'dato:profesor' %}">Añadir Profesor</a>
+                              </li>
+                              <li class="nav-item">
+                                <a class="nav-link" href="{% url 'dato:reporte' %}">reportes</a>
+                              </li>
+                              {% endif %}
+                              {% if user.is_profesor %}
+                              {% for filtros in filtro%}
+                                  {% if filtros.materia.id_nivel_id == 1  %}
+                                    <li class="nav-item">
+                                      <a class="nav-link" href="{% url 'dato:nivel1' %}">Estudiantes</a>
+                                    </li>
+                                  {% endif %}
+                              {% endfor %}
+                              {% for filtros in filtro%}
+                                  {% if filtros.materia.id_nivel_id == 2  %}
+                                    <li class="nav-item">
+                                      <a class="nav-link" href="{% url 'dato:nivel2' %}">Estudiantes</a>
+                                    </li>
+                                  {% endif %}
+                              {% endfor %}
+                              {% for filtros in filtro%}
+                                  {% if filtros.materia.id_nivel_id == 3  %}
+                                    <li class="nav-item">
+                                      <a class="nav-link" href="{% url 'dato:nivel3' %}">Estudiantes</a>
+                                    </li>
+                                  {% endif %}
+                              {% endfor %}    
+                              
+                              <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" data-toggle="dropdown"
+                                   href="#!" role="button" aria-haspopup="true" aria-expanded="false">
+                                   Niveles</a>
+                                <div class="dropdown-menu">
+                                   
+                                  <a class="dropdown-item" href="{% url 'dato:nivel2' %}"">Nivel 2 </a>
+                                  <a class="dropdown-item" href="{% url 'dato:nivel3' %}"">Nivel 3 </a>
+                                </div>
+                              </li>
+                                   
+                              
+                                
+                              
+                                  {% endif %}
+                              {% if user.is_profesor and not user.is_superuser %}               
+                              {% endif %}
+            
+                                                               
+                              <li style="float: right;">
+                                <a  href="{% url 'logout' %}">Salir</a></nav>
+                                
+                              </li>
+                            </ul>
+                        </div>
+                        
+                         {% if user.is_superuser or  user.is_profesor or user.is_alumno and not user.is_inscripcion %}
+                            <img class="imgr" src="{% static 'assets/img/gif.gif'%}" alt="Nosotros" width="300" class="img-fluid my-1 mb-2 " style="margin-top: 50px;">
+                            <center><div style="width: 700px; padding-bottom: 50px;">
+                             <h2 style="color: #3c3c3c;">Bienvenido/a {% if user.is_superuser%} admin {% endif %}<strong>{{user.first_name}}</strong>
+                            al panel del admin de la escuela de <strong>formación</strong> y discipulado
+                           </h2></div ></center>
+                            {% endif %}
+                        
+                        {% if user.is_inscripcion %}
+                            <img class="imgr" src="{% static 'assets/img/gif.gif'%}" alt="Nosotros" width="300" class="img-fluid my-1 mb-2 " style="margin-top: 50px;">
+                            <center><div style="width: 700px; padding-bottom: 50px;">
+                             <h2 style="color: #3c3c3c;">Bienvenido <strong>{{user.first_name}}</strong>
+                            Por favor actualice sus datos  <strong>Personales</strong>
+                           </h2></div >
+                            <p class="lead"><a class="btn btn-primary btn-xl page-scroll" href="{% url 'dato:aplicacion_crear' %}">¡Actualizar Datos!</a></p>
+                       </center>
+
+                        {% endif %}
+
+                    </div >
+                </div>
+                    
+            </div ">
+        </div >
+
+{% endif %}
+
+{% if user.is_inscripcion and user.username == '123456789' %}
+
+<div class="top-content">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-sm-12 col-md-12  col-lg-12 form- f11" style="padding: 0px; background-image: url('{% static 'assets/img/line.png'%}'); background-size: cover; background-repeat: no-repeat;">
+                        <div id="form" class="fixed-top"  >
+                        
+                            <ul class="nav nav-tabs">
+                              <li style="float: right;">
+                                <a  href="{% url 'logout' %}">Salir</a></nav>
+                                
+                              </li>
+                            </ul>
+                        </div>
+                            <img class="imgr" src="{% static 'assets/img/gif.gif'%}" alt="Nosotros" width="300" class="img-fluid my-1 mb-2 " style="margin-top: 50px;">
+                            <center><div style="width: 700px; padding-bottom: 50px;">
+                             <h1 style="color: #3c3c3c;">Para inscribirse En la Escuela de <strong>Formación</strong> y Discipulado presione el siguiente botón</h1>
+                            <p class="lead"><a class="btn btn-primary btn-xl page-scroll" href="{% url 'accounts:crear_usuario_alumno' %}">¡Inscribirse!</a></p>
+                       </center>
+                    </div >
+                </div>
+                    
+            </div ">
+        </div >
+</div>
+</div>
+{% endif %}
+{% endblock %}

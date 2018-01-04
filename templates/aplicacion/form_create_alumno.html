@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="top-content">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-10 col-sm-offset-1 col-md-10 col-lg-8 col-lg-offset-2 form-box" >
+                       
+        
+                        <form role="form" id="form" action="" method="post" class="f1" autocomplete="off">
+                         <div>
+                                                    <div id="form" class="fixed-top"  >
+                        
+                            <ul class="nav nav-tabs">
+                              <li style="float: right;">
+                                <a  href="{% url 'logout' %}">Salir</a></nav>
+                                
+                              </li>
+                            </ul>
+                        </div>
+                            <h3 style="color:#3f9cf3; padding: 20px">Crear Usuario</h3>
+                        </div>
+                            {% csrf_token %}    
+                            <fieldset>
+                            <div class="form-horizontal">
+                                <div class="form-group">
+                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Ingrese su Cedula">   
+                                        <div class="input-group">   
+                                                <span class="input-group-addon">
+                                                <i class="fa fa-address-card-o" id="icon" aria-hidden="true"></i>
+                                               
+                                            </span> 
+                                        {{form.ci}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group hidden">
+                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Ingrese su Cedula">   
+                                        <div class="input-group">   
+                                                <span class="input-group-addon">
+                                                <i class="fa fa-address-card-o" id="icon" aria-hidden="true"></i>
+                                               
+                                            </span> 
+                                        {{form.is_staff}}
+                                        {{form.is_inscripcion}}
+                                        {{form.is_alumno}}
+                                        {{form.is_superuser}}
+
+
+                                        
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Ingrese su Cedula">   
+                                        <div class="input-group">   
+                                                <span class="input-group-addon">
+                                                <i class="fa fa-address-card-o" id="icon" aria-hidden="true"></i>
+                                               
+                                            </span> 
+                                        {{form.first_name}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Ingrese su Cedula">   
+                                        <div class="input-group">   
+                                                <span class="input-group-addon">
+                                                <i class="fa fa-address-card-o" id="icon" aria-hidden="true"></i>
+                                               
+                                            </span> 
+                                        {{form.last_name}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Ingrese su Cedula">   
+                                        <div class="input-group">   
+                                                <span class="input-group-addon">
+                                                <i class="fa fa-address-card-o" id="icon" aria-hidden="true"></i>
+                                               
+                                            </span> 
+                                        {{form.email}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Ingrese su Cedula">   
+                                        <div class="input-group">   
+                                                <span class="input-group-addon">
+                                                <i class="fa fa-address-card-o" id="icon" aria-hidden="true"></i>
+                                               
+                                            </span> 
+                                        {{form.password1}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Ingrese su Cedula">   
+                                        <div class="input-group">   
+                                                <span class="input-group-addon">
+                                                <i class="fa fa-address-card-o" id="icon" aria-hidden="true"></i>
+                                               
+                                            </span> 
+                                        {{form.password2}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group hidden">
+                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Ingrese su Cedula">   
+                                        <div class="input-group">   
+                                                <span class="input-group-addon">
+                                                <i class="fa fa-address-card-o" id="icon" aria-hidden="true"></i>
+                                               
+                                            </span> 
+                                        {{form.username}}
+                                        {{form.id_usuario}}
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                                <br>    
+                                <div class="f1-buttons">
+                                    <button type="submit"  class="btn btn-submit">Crear</button>
+                                </div>
+                            </fieldset>
+                        
+                        </form>
+                    </div>
+                </div>
+                    
+            </div>
+        </div>
+{% endblock %}

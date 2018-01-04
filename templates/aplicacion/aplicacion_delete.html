@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+{% if user.is_superuser %}
+<div class="top-content">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-sm-12 col-md-12  col-lg-12 form- f11" style="padding: 0px; background-image: url('{% static 'assets/img/line.png'%}'); background-size: cover; background-repeat: no-repeat;">
+                        <div id="form" class="fixed-top"  >
+                        
+                            <ul class="nav nav-tabs">
+                              <li style="float: right;">
+                                <a  href="{% url 'logout' %}">Salir</a></nav>
+                                
+                              </li>
+                            </ul>
+                        </div>
+                            <img class="imgr" src="{% static 'assets/img/gif.gif'%}" alt="Nosotros" width="300" class="img-fluid my-1 mb-2 " style="margin-top: 50px;">
+                            <center><div style="width: 700px; padding-bottom: 50px;">
+                            <form method="post" >
+                                {% csrf_token %}
+                                <strong>
+                                <p style="font-size: 25px; color: #3c3c3c;">¿Desea eliminar al estudiante?</p>   </strong>
+
+								<p class="lead"><a class="btn btn-danger btn-xl" style="    line-height: 0px;"><button type="submit" style="padding: 0px; margin: 0px; background: none;line-height: 0px; min-width: 0px;height: 20px" class="btn">Continuar</button></a></p>
+
+                                <!--<p class="lead"><a class= "btn btn-primary btn-xl" style="color: #fff;" href="{% url 'dato:app_inicio' %}">Cancelar</a></p>-->
+								
+								<p class="lead"><a href="{% url 'dato:app_inicio' %}" class="btn btn-primary btn-xl" style="    line-height: 0px;"><button type="submit" style="padding: 0px; margin: 0px; background: none;line-height: 0px; min-width: 0px;height: 20px" class="btn">Cancelar</button></a></p>
+
+                            </form>
+                       </center>
+                    </div >
+                </div>
+                    
+            </div ">
+        </div >
+</div>
+</div>
+{% endif %}
+{% if not user.is_superuser %}
+<div class="top-content">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-sm-12 col-md-12  col-lg-12 form- f11" style="padding: 0px;background-image: url('{% static 'assets/img/line.png'%}'); background-size: cover; color: #3c3c3c;">
+                      <img class="imgr" src="{% static 'assets/img/error.gif'%}" alt="Nosotros" width="300" class="img-fluid my-1 mb-2 " style="margin-top: 50px;">
+                            <center><div style="width: 700px; padding-bottom: 50px;">
+                             <h2 style="color: #3c3c3c;">!No tiene Permisos Suficientes para
+                              acceder a esta pagina¡
+                           </h2>
+              <p class="lead"><a class="btn btn-primary btn-xl page-scroll" style="    line-height: 0px;" href="{% url 'dato:app_inicio' %}">Volver</a></p> 
+                       </div ></center>
+                    </div>
+                </div>
+            </div>
+        </div>
+{% endif %}
+{% endblock %}

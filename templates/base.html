@@ -1,0 +1,124 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+
+        <meta charset="utf-8">
+        {% block extrastatic %}
+        {% endblock %}
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <title>Bet-el</title>
+
+        <!-- CSS -->
+        <link rel="stylesheet" href="{% static 'assets/bootstrap/css/bootstrap.min.css'%}">
+        <link rel="stylesheet" href="{% static 'assets/font-awesome/css/font-awesome.min.css'%}">
+		<link rel="stylesheet" href="{% static 'assets/css/form-elements.css'%}">
+        <link rel="stylesheet" href="{% static 'assets/css/style.css'%}">
+    <link rel="icon" 
+      type="image/png" 
+      href="{% static 'assets/ico/favicon.png'%}">
+    </head>
+
+    <body onload="myfuntions()">
+    {% block navbar %}
+		<!-- Top menu -->
+		<nav id="menu" class="navbar navbar-inverse navbar-no-bg navbar-fixed-top" role="navigation">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#top-navbar-1">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+
+
+					</button>
+					<a class="navbar-brand" href="{% url 'dato:inicio' %}">Betel </a>
+				</div>
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse navbar-collapse" id="top-navbar-1">
+					<ul class="nav navbar-nav navbar-right">
+						<li> 
+							<span class="menu">
+								<a class="active" href="{% url 'dato:inicio' %}">Inicio /</a>
+                                <a class="active" href="{% url 'login' %}">Entrar /</a> 
+                                <a href="#" class="active" data-toggle="modal" data-target="#modal">Acerca de</a>
+							</span>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+		</nav>
+
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" ">
+  <div class="modal-dialog" role="document");>
+    <div class="modal-content" style="background: rgba(31, 119, 208, 0.6); margin-top: 80px;">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">Quienes somos</h4>
+      </div>
+      <div class="modal-body" style="color: #fff;">
+<img class="imgr" src="{% static 'assets/img/nosotros.svg'%}" alt="Nosotros" width="200" class="img-fluid my-1 mb-2 " >
+            
+        <p>
+          Somos una Iglesia Apostolica con la vision de ganar a Guanare, Portuguesa y Venezuela para Cristo por medio de las redes celulares, nuestro objetivo es siempre Agradar a Dios y servirle siendo nuestro principal ejemplo Jesús.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-info-lg" style="color:#000" data-dismiss="modal">Cerrar</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+        {% endblock %}
+        {% block content %}
+        {% endblock %}
+        {% block footer %}
+    
+        {% endblock%}
+
+        <!-- Javascript -->
+        <script src="{% static 'assets/js/jquery-1.11.1.min.js'%}"></script>
+
+
+        <script src="{% static 'assets/bootstrap/js/bootstrap.min.js'%}"></script>
+        <script src="{% static 'assets/js/jquery.backstretch.min.js'%}"></script>
+        <script src="{% static 'assets/js/scripts.js'%}"></script>
+        <script src="{% static 'assets/js/bootstrap-formhelpers-phone.js'%}"></script>
+        <script>
+          function myfuntions() {
+            setTimeout('document.enviar.submit();',8000);
+          }
+        </script>
+        <script>
+          function FormSubmit(){
+            var submitBtn = document.getElementById('cargar');
+              if(submitBtn){
+                submitBtn.click();
+              }
+          }
+          function FormSubmit1(){
+            var submitBtn = document.getElementById('cargar1');
+              if(submitBtn){
+                submitBtn.click();
+              }
+          }
+          function time(){
+            setTimeout('FormSubmit();',6000);
+          }
+          function time1(){
+            setTimeout('FormSubmit1();',4000);
+          }
+          time();
+          time1();
+        </script>
+
+    </body>
+
+</html>
