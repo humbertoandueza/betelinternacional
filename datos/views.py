@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.shortcuts import render,get_object_or_404
 from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse_lazy
@@ -13,7 +14,7 @@ from django.db.models import Count
 from django.template import RequestContext
 from django.shortcuts import render_to_response
 from itertools import chain
-import json 
+import json
 from io import BytesIO
 from django.db.models import Sum
 from reportlab.pdfgen import canvas
@@ -27,7 +28,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import permission_required
 """
 
-from aplicacion.utils import render_to_pdf 
+from aplicacion.utils import render_to_pdf
 """
 
 def home(request,pk): # Por favor pon nombres descriptivos
@@ -91,11 +92,11 @@ class nivel1(ListView):
 	paginate_by= 2
 
 """
-def notas(request):	
+def notas(request):
 	buscador = request.GET
 	notas = Notas.objects.all()
 
-	if "q65323ndmbshdsdsytd4347" in buscador: 
+	if "q65323ndmbshdsdsytd4347" in buscador:
 		query = request.GET["q65323ndmbshdsdsytd43473"]
 		if query == "" or query == " ":
 			mensaje = "Ingrese cédula, nombre o apellido para q."
@@ -169,7 +170,7 @@ class NotaCreate(CreateView):
 		print (var)
 
 		context= super(NotaCreate, self).dispatch(*args, **kwargs)
-		print (context) 
+		print (context)
 		return context
 
 def post_new(request,*args, **kwargs):
@@ -198,7 +199,7 @@ class SolicitudCreate(CreateView):
 	template_name = 'aplicacion/aplicacion_form1.html'
 	form_class = PersonaForm
 	success_url = reverse_lazy('dato:inscripcion')
-	
+
 
 	def get_context_data(self, **kwargs):
 		context = super(SolicitudCreate, self).get_context_data(**kwargs)
@@ -236,12 +237,12 @@ class ReportePersonasPDF(View):
 
 	def cabecera(self,pdf):
 	        #Utilizamos el archivo logo_django.png que está guardado en la carpeta media/imagenes
-	        archivo_imagen = 'static/assets/ico/logo.png'
+	        archivo_imagen = '/home/humberto/betelinternacional/static/assets/ico/logo.png'
 	       	pdf.drawImage(archivo_imagen, 60, 750, width=80,height=80,preserveAspectRatio=True)
 	       	pdf.setFont("Helvetica", 16)
 	       	pdf.drawString(210, 790, u"Iglesia Bet-el Internacional")
 	       	pdf.setFont("Helvetica", 14)
-	       	pdf.drawString(160, 770, u"Reportes de personas Inscritas en la escuela de ") 
+	       	pdf.drawString(160, 770, u"Reportes de personas Inscritas en la escuela de ")
 	       	pdf.drawString(230, 750, u"Formacion y Discipulado")
 	       	pdf.drawString(250, 720, u"1er Nivel")
 
@@ -281,6 +282,7 @@ class ReportePersonasPDF(View):
 	        buffer.close()
 	        response.write(pdf)
 	        return response
+
 """
 def GeneratePdf(self,*args, **kwargs):
 	pdf = Persona

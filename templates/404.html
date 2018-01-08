@@ -1,0 +1,22 @@
+{% extends 'aplicacion/paneladminnw.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="top-content">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-sm-12 col-md-12  col-lg-12 form- f11" style="padding: 0px;background-image: url('{% static 'assets/img/line.png'%}'); background-size: cover; color: #3c3c3c;">
+                    	<img class="imgr" src="{% static 'assets/img/error.gif'%}" alt="Nosotros" width="300" class="img-fluid my-1 mb-2 " style="margin-top: 50px;">
+                            <center><div style="width: 700px; padding-bottom: 50px;">
+                             <h2 style="color: #3c3c3c;">!Error 404¡ <br> Pagina No encontrada
+                           </h2>
+							<p class="lead"><a class="btn btn-primary btn-xl page-scroll" style="    line-height: 0px;" href="{% url 'dato:inicio' %}">Volver</a></p>
+                       </div ></center>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+{% endblock %}
