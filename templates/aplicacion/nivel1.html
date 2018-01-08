@@ -12,9 +12,11 @@
     .table-bordered {
     border: 1px solid #333;}
 .table {
-    width: 80% !important;
+    width: 90% !important;
     max-width: 100%;
-    margin-bottom: 20px;}
+    margin-bottom: 20px;
+     
+  }
 
 
 </style>
@@ -73,9 +75,15 @@
                             </ul>
                         </div>
                             
-{% if filtro.materia.id_nivel_id == 1  %}
+{% if filtro.materia.id_nivel_id == 1  %} 
 <br>
-  <div class="col-sm-3 col-sm-offset-9 col-md-3 col-md-offset-9 col-xs-offset-9">   
+{% if nivel %}
+<div class="row">
+<div class="col-sm-4">
+<p>Cantidad de Alumnos Inscritos: {{nivel1}}</p>
+</div>   
+
+  <div class="col-sm-3 col-sm-offset-4 col-md-3 col-md-offset-4 col-xs-offset-5">
       <div class="input-group">
          <span class="input-group-addon">
           <i class="fa fa-user" id="icon" aria-hidden="true"></i>
@@ -85,19 +93,22 @@
         </form> 
       </div>
   </div>
-
-     {% if nivel %}
-<div class="col-md-offset-2 col-sm-offset-2" style="width: 100%; margin-left: auto; padding: 15px; padding-top: 20px;">
+</div>
+     
+<div class="col-md-offset-2 col-sm-offset-2" style="width: 100%; margin-left: auto; padding: 15px !important; padding-top: 20px;">
+  <div class="col-md-6 col-md-offset-3">
 <p style="font-size: 36px;">Bienvenido {{user.first_name}}</p>
 <p>Lista de Todos los alumnos Incritos en el nivel 1</p>
+  </div>
 <center>
-<table class="table table-bordered">
+  <div class="ba col-md-10 col-md-offset-1" style="background: #fff; padding-top:50px;  margin-bottom: 50px; box-shadow: 0px 0px 6px 1px;">
+<table class="table table-bordered" >
 	<thead>
 		<tr>
 			<td><center> Cedula</center></td>
 			<td><center> Nombre</center></td>
 			<td><center> Apellido</center></td>
-			<td><center> Direccion</center></td>
+			<td><center> Correo</center></td>
 			<td><center> Acciones</center></td>
 		</tr>
 		
@@ -112,10 +123,12 @@
 				<td>{{ persona.cedula.cedula }}</td>
 				<td>{{ persona.cedula.nombre }}</td>
 				<td>{{ persona.cedula.apellido }}</td>
-				<td>{{ persona.cedula.direccion }}</td>
+				<td>{{ persona.cedula.email }}</td>
+        <td>{{persona.id_nivel}}</td>
 			<td>
 				<center>
           <a class="btn btn-primary" href="{% url 'dato:nota' pk=persona.cedula %}" >Cargar Nota</a>
+          <a class="btn btn-warning" href="#" >Ver Notas</a>
           {% if user.is_superuser %}
 					<a class="btn btn-primary" href="{% url 'dato:listar_per' pk=persona.cedula %}" >Ver mas</a>
 					<a class="btn btn-info" href="{% url 'dato:aplicacion_editar' pk=persona.cedula %}">Editar</a>
@@ -129,7 +142,7 @@
 
 
 		{% endfor %}
-
+</div>
 		{% else %}
     <img class="imgr" src="{% static 'assets/img/error.gif'%}" alt="Nosotros" width="300" class="img-fluid my-1 mb-2 " style="margin-top: 50px;">
 		<h1 style="color:#010101;">No se encuentran estudiantes</h1>
@@ -137,34 +150,12 @@
     <br>
     <br>
 		{% endif %}
-
-</div>
-{% else %}
-<div class="top-content">
-            <div class="container">
-                <div class="row">
-
-                    <div class="col-sm-12 col-md-12  col-lg-12 form- f11" style="padding: 0px;background-image: url('{% static 'assets/img/line.png'%}'); background-size: cover; color: #3c3c3c;">
-                      <img class="imgr" src="{% static 'assets/img/error.gif'%}" alt="Nosotros" width="300" class="img-fluid my-1 mb-2 " style="margin-top: 50px;">
-                            <center><div style="width: 700px; padding-bottom: 50px;">
-                             <h2 style="color: #3c3c3c;">!No tiene Permisos Suficientes para
-                              acceder a esta pagina¡
-                           </h2>
-              <p class="lead"><a class="btn btn-primary btn-xl page-scroll" style="    line-height: 0px;" href="{% url 'dato:app_inicio' %}">Volver</a></p> 
-                       </div ></center>
-                    </div>
-                </div>
-            </div>
-        </div>
-{% endif %}
-	</tbody>
-	
+  </tbody>
+  
 
 
-</table > 
-</center>
-</div >
-<div class="pagination">
+</table >
+<div class="pagination" style="margin:0px; ">
     {% if nivel.has_other_pages %}
             <ul class="pagination">
               {% if nivel.has_previous %}
@@ -186,7 +177,31 @@
               {% endif %}
             </ul>
             {% endif %}
-    </div>
+    </div> 
+</div>
+
+{% else %}
+<div class="top-content">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-sm-12 col-md-12  col-lg-12 form- f11" style="padding: 0px;background-image: url('{% static 'assets/img/line.png'%}'); background-size: cover; color: #3c3c3c;">
+                      <img class="imgr" src="{% static 'assets/img/error.gif'%}" alt="Nosotros" width="300" class="img-fluid my-1 mb-2 " style="margin-top: 50px;">
+                            <center><div style="width: 700px; padding-bottom: 50px;">
+                             <h2 style="color: #3c3c3c;">!No tiene Permisos Suficientes para
+                              acceder a esta pagina¡
+                           </h2>
+              <p class="lead"><a class="btn btn-primary btn-xl page-scroll" style="    line-height: 0px;" href="{% url 'dato:app_inicio' %}">Volver</a></p> 
+                       </div ></center>
+                    </div>
+                </div>
+            </div>
+        </div>
+{% endif %}
+
+</center>
+</div >
+
 </div>
 </div>
 </div>

@@ -58,10 +58,12 @@ def notas_filter(request):
 	return render(request, "aplicacion/notas_list.html", {"notas":nota,"total":var})
 
 def nivel1_new(request):
-	nivel = Inscripcion.objects.all()
+	nivel = Inscripcion.objects.filter(id_nivel_id=1)
+	nivel1 = len(Inscripcion.objects.filter(id_nivel_id=1))
+	print (nivel1)
 	filtro = Asigna_Materia.objects.get(profesor_id=request.user.ci)
-	#print (filtro)
-	paginator = Paginator(nivel, 3)
+	print ('njksndkjs',filtro)
+	paginator = Paginator(nivel, 5)
 	page = request.GET.get("page", 1)
 	try:
 		nivel = paginator.page(page)
@@ -70,7 +72,7 @@ def nivel1_new(request):
 	except EmptyPage:
 		nivel = paginator.page(paginator.num_pages)
 	buscador = request.GET
-	print (buscador)
+	#print (buscador)
 	if "q" in buscador:
 		query = request.GET["q"]
 		if query == "":
@@ -82,8 +84,38 @@ def nivel1_new(request):
 		if len(nivel) == 0:
 			nivel = Inscripcion.objects.filter(cedula_id=query)
 		else:
-			return render(request,'aplicacion/nivel1.html', {"filtro":filtro,"nivel":nivel})
-	return render(request,'aplicacion/nivel1.html', {"filtro":filtro,"nivel":nivel})
+			return render(request,'aplicacion/nivel1.html', {'nivel1':nivel1,"filtro":filtro,"nivel":nivel})
+	return render(request,'aplicacion/nivel1.html', {'nivel1':nivel1,"filtro":filtro,"nivel":nivel})
+
+def nivel2_new(request):
+	nivel = Inscripcion.objects.filter(id_nivel_id=2)
+	nivel1 = len(Inscripcion.objects.filter(id_nivel_id=2))
+	print (nivel1)
+	filtro = Asigna_Materia.objects.get(profesor_id=request.user.ci)
+	print ('njksndkjs',filtro)
+	paginator = Paginator(nivel, 6)
+	page = request.GET.get("page", 1)
+	try:
+		nivel = paginator.page(page)
+	except PageNotAnInteger:
+		nivel = paginator.page(1)
+	except EmptyPage:
+		nivel = paginator.page(paginator.num_pages)
+	buscador = request.GET
+	#print (buscador)
+	if "q" in buscador:
+		query = request.GET["q"]
+		if query == "":
+			return redirect ('dato:nivel2')
+		#querys = (Q(cedula__icontains=query))
+		nivel = Inscripcion.objects.filter(cedula_id=query)
+		#print (nivel)
+
+		if len(nivel) == 0:
+			nivel = Inscripcion.objects.filter(cedula_id=query)
+		else:
+			return render(request,'aplicacion/nivel2.html', {'nivel1':nivel1,"filtro":filtro,"nivel":nivel})
+	return render(request,'aplicacion/nivel2.html', {'nivel1':nivel1,"filtro":filtro,"nivel":nivel})
 
 class nivel1(ListView):
 	model = Inscripcion
@@ -174,14 +206,29 @@ class NotaCreate(CreateView):
 
 def post_new(request,*args, **kwargs):
 	cedula = kwargs['pk']
-	#print (cedula)
-	filtro = Asigna_Materia.objects.get(profesor_id=request.user.ci)
+	#print (cedula1)
+	if request.user.is_profesor:
+		filtro = Asigna_Materia.objects.get(profesor_id=request.user.ci)
+		var = filtro.materia_id
+	filtro2 = Materia.objects.get(id_materia=var)
+	var2= filtro2.id_nivel_id
+	#print (var2)
+	#print (var)
+	nivel = Inscripcion.objects.filter(id_nivel_id=var2,cedula_id=cedula)
+	if nivel:
+		print ('djksdns')
+	else:
+		print ('error')
+
+
+	#print(nivel)
 	filtro1  = Persona.objects.filter(cedula=cedula)
 	#print (filtro1)
 	nota = Notas.objects.filter(id_materia_id=filtro.id,cedula_id=cedula)
+	#print (nota)
 	nota3 = len(nota)
 	nota4 = nota3 + 1
-	print (nota)
+	#print (nota3)
 	#print (nota)
 	#print (filtro1)
 	if request.method == 'POST':
@@ -191,7 +238,7 @@ def post_new(request,*args, **kwargs):
 			return redirect('dato:nivel1')
 	else:
 		form = NotasForm()
-	return render(request, 'aplicacion/nota_form.html', {'nota4':nota4,'filtro1':filtro1,'nota3':nota3,'form':form,'cedula':cedula,'filtro':filtro})
+	return render(request, 'aplicacion/nota_form.html', {'nivel':nivel, 'nota4':nota4,'filtro1':filtro1,'nota3':nota3,'form':form,'cedula':cedula,'filtro':filtro})
 
 class SolicitudCreate(CreateView):
 	model = Persona

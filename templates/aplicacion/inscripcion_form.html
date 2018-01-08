@@ -29,7 +29,7 @@
                                     <h1 style="color: #3c3c3c;">"I"</h1>
                               <h3  style="color:#3c3c3c; text-align: left;">Las Materias que cursará en este nivel son:<br>- Fundamento<br>- Familia <br><br><br></h3>
                               </div>
-                                <div class="form-group">
+                                <div class="form-group hidden">
                                     <div  data-toggle="tooltip" data-placement="top" title="Cedula">   
                                         <div class="input-group">   
                                                 <span class="input-group-addon">
@@ -39,7 +39,6 @@
                                         <input type="number" name="cedula1" oninput="maxLengthCheck(this)" onkeyup="this.value=this.value.toUpperCase();" class="form-control" placeholder="Cedula" autocomplete="off" required="" id="id_cedula1" maxlength="8" value="{{request.user.ci}}">
 
                                         <input type="number" name="cedula" oninput="maxLengthCheck(this)" onkeyup="this.value=this.value.toUpperCase();" class="form-control" placeholder="Cedula" autocomplete="off" required="" id="id_cedula" maxlength="8" value="{{request.user.ci}}">
-                                        {{form.id_nivel}}
 
                                         </div>
                                     </div>
@@ -47,7 +46,7 @@
                                 
                                 <div class="alert alert-danger alert-dismissible hidden " role="alert" id="cedulaale">
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group hidden">
                                     <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Seleccione el nivel a inscribir">   
                                         <div class="input-group">   
                                                 <span class="input-group-addon">
@@ -55,8 +54,8 @@
                                                
                                             </span> 
                                          <!--{{form.id_nivel}}-->
-                                         <!--<input type="text" name="id_nivel" required="" onkeyup="this.value=this.value.toUpperCase();" autocomplete="off" class="form-control" id="id_id_nivel" value="I" readonly="readonly">
-                                          -->
+                                         <input type="text" name="id_nivel" required="" onkeyup="this.value=this.value.toUpperCase();" autocomplete="off" class="form-control" id="id_id_nivel" value="1" readonly="readonly">
+                                        
                                         </div>
                                     </div>
                                 </div>
