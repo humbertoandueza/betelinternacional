@@ -7,19 +7,19 @@
             <div class="container">
                 <div class="">
                     <div class="col-sm-12 col-md-12 col-lg-12form-box">
-                       
-        
+
+
                       <form role="form" action="" name="enviar" method="post" class="f1" autocomplete="off" style="padding: 0px; background-image: url('{% static 'assets/img/line.png'%}'); background-size: cover; background-repeat: no-repeat;">
                                                 <div id="form" class="fixed-top"  >
-                        
+
                             <ul class="nav nav-tabs">
                               <li style="float: right;">
                                 <a  href="{% url 'logout' %}">Salir</a></nav>
-                                
+
                               </li>
                             </ul>
                         </div>
-                        {% csrf_token %}  
+                        {% csrf_token %}
                         <fieldset>
                             <div class="form-horizontal">
                               <img class="imgr" src="{% static 'assets/img/gif.gif'%}" alt="Nosotros" width="300" class="img-fluid my-1 mb-2 " style="margin-top: 20px;">
@@ -30,48 +30,67 @@
                               <h3  style="color:#3c3c3c; text-align: left;">Las Materias que cursará en este nivel son:<br>- Fundamento<br>- Familia <br><br><br></h3>
                               </div>
                                 <div class="form-group hidden">
+<<<<<<< HEAD
                                     <div  data-toggle="tooltip" data-placement="top" title="Cedula">   
                                         <div class="input-group">   
+=======
+                                    <div  data-toggle="tooltip" data-placement="top" title="Cedula">
+                                        <div class="input-group">
+>>>>>>> d9c1d0b5d486a68905c8dfe590338b2f2372e74d
                                                 <span class="input-group-addon">
                                                 <i class="fa fa-address-card-o" id="icon" aria-hidden="true"></i>
-                                               
-                                            </span> 
+
+                                            </span>
                                         <input type="number" name="cedula1" oninput="maxLengthCheck(this)" onkeyup="this.value=this.value.toUpperCase();" class="form-control" placeholder="Cedula" autocomplete="off" required="" id="id_cedula1" maxlength="8" value="{{request.user.ci}}">
 
                                         <input type="number" name="cedula" oninput="maxLengthCheck(this)" onkeyup="this.value=this.value.toUpperCase();" class="form-control" placeholder="Cedula" autocomplete="off" required="" id="id_cedula" maxlength="8" value="{{request.user.ci}}">
+<<<<<<< HEAD
+=======
+
+>>>>>>> d9c1d0b5d486a68905c8dfe590338b2f2372e74d
 
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div class="alert alert-danger alert-dismissible hidden " role="alert" id="cedulaale">
                                 </div>
                                 <div class="form-group hidden">
+<<<<<<< HEAD
                                     <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Seleccione el nivel a inscribir">   
                                         <div class="input-group">   
                                                 <span class="input-group-addon">
+=======
+                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Seleccione el nivel a inscribir">
+                                        <div class="input-group">
+                                                <span class="input-group-addon hiden">
+>>>>>>> d9c1d0b5d486a68905c8dfe590338b2f2372e74d
                                                 <i class="fa fa-legal" id="icon" aria-hidden="true"></i>
-                                               
-                                            </span> 
+
+                                            </span>
                                          <!--{{form.id_nivel}}-->
                                          <input type="text" name="id_nivel" required="" onkeyup="this.value=this.value.toUpperCase();" autocomplete="off" class="form-control" id="id_id_nivel" value="1" readonly="readonly">
+<<<<<<< HEAD
                                         
+=======
+
+>>>>>>> d9c1d0b5d486a68905c8dfe590338b2f2372e74d
                                         </div>
                                     </div>
                                 </div>
-                                
+
 
                             </div>
-                <br>  
+                <br>
                                 <div class="f1-buttons hidden" style="padding: 25px;">
                                     <p class="lead"><a class="btn btn-primary btn-xl page-scroll" style="    line-height: 0px;"><button type="submit" style="padding: 0px; margin: 0px; background: none;line-height: 0px; min-width: 0px;height: 20px" class="btn">Continuar</button></a></p>
                                 </div>
                             </fieldset>
-                      
+
                       </form>
                     </div>
                 </div>
-                    
+
             </div>
         </div>
 {% endif %}
@@ -86,7 +105,7 @@
                              <h2 style="color: #3c3c3c;">!No tiene Permisos Suficientes para
                               acceder a esta pagina¡
                            </h2>
-              <p class="lead"><a class="btn btn-primary btn-xl page-scroll" style="    line-height: 0px;" href="{% url 'dato:app_inicio' %}">Volver</a></p> 
+              <p class="lead"><a class="btn btn-primary btn-xl page-scroll" style="    line-height: 0px;" href="{% url 'dato:app_inicio' %}">Volver</a></p>
                        </div ></center>
                     </div>
                 </div>

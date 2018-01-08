@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Django settings for aplicacion project.
 
@@ -23,9 +24,15 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '+s!7-bs!e#l)gwm#2ckpbq=(%4v%4qx=am-*q+1km3hjbs8nad'
 
 # SECURITY WARNING: don't run with debug turned on in production!
+<<<<<<< HEAD
 DEBUG = True
 
 ALLOWED_HOSTS = []
+=======
+DEBUG = False
+TEMPLATE_DEBUG = DEBUG
+ALLOWED_HOSTS = ['humberto.pythonanywhere.com']
+>>>>>>> d9c1d0b5d486a68905c8dfe590338b2f2372e74d
 
 AUTH_USER_MODEL = 'accounts.Users'
 
@@ -56,7 +63,7 @@ ROOT_URLCONF = 'aplicacion.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR), 'templates'],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -78,11 +85,11 @@ WSGI_APPLICATION = 'aplicacion.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'db_school',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': 'localhost',
-        'PORT': 3306,
+        'NAME': 'humberto$bd_school',
+        'USER': 'humberto',
+        'PASSWORD': '01051998a.',
+        'HOST': 'humberto.mysql.pythonanywhere-services.com',
+        'PORT': '3306',
     }
 }
 """
@@ -155,4 +162,7 @@ EMAIL_HOST_USER = 'humbertoanduezaa@gmail.com'
 EMAIL_HOST_PASSWORD = '01051998a'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
-
+#SESSION EXPIRED
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_COOKIE_AGE = 120 # set just 10 seconds to test
+SESSION_SAVE_EVERY_REQUEST = True
