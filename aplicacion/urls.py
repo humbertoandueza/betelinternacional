@@ -16,11 +16,12 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from django.contrib.auth.views import login, logout_then_login, password_reset, password_reset_done, password_reset_confirm, password_reset_complete
-
+import notifications.urls
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^', include('accounts.urls', namespace="accounts")),
     url(r'^',include('datos.urls', namespace="dato")),
+    url('^inbox/notifications/', include(notifications.urls, namespace='notifications')),
     url(r'^accounts/login/',login,{'template_name':'aplicacion/aplicacion_login.html','redirect_authenticated_user': True}, name="login",),
     url(r'^logout/',logout_then_login, name="logout"),
     url(r'^password/reset',password_reset,{'template_name':'registration/password_reset_form1.html','email_template_name':'registration/password_reset_email.html'}, name="password_reset"),

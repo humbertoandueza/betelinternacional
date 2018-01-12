@@ -24,31 +24,31 @@ jQuery(document).ready(function() {
         Fullscreen background
     */
     $.backstretch("../../../static/assets/img/backgrounds/3.jpg");
-    
+
     $('#top-navbar-1').on('shown.bs.collapse', function(){
-    	$.backstretch("resize");
+    	$.backstretch("cover");
     });
     $('#top-navbar-1').on('hidden.bs.collapse', function(){
-    	$.backstretch("resize");
+    	$.backstretch("cover");
     });
-    
+
     /*
         Form
     */
     $('.f1 fieldset:first').fadeIn('slow');
-    
+
     $('.f1 input[type="text"],.f1 input[type="number"], .f1 input[type="email"],select,.f1 input[type="password"], .f1 textarea').on('focus', function() {
     	$(this).removeClass('input-error');
-        
+
 
     });
-    
+
     // next step
     $('.f1 .btn-next').on('click', function() {
     	var parent_fieldset = $(this).parents('fieldset');
     	var next_step = true;
 
-        // validate edad alumno a inscribir 
+        // validate edad alumno a inscribir
 
         var fecha=document.getElementById("id_fecha_de_nacimiento").value;
         // Si la fecha es correcta, calculamos la edad
@@ -56,13 +56,13 @@ jQuery(document).ready(function() {
         var dia = values[2];
         var mes = values[1];
         var ano = values[0];
- 
+
         // cogemos los valores actuales
         var fecha_hoy = new Date();
         var ahora_ano = fecha_hoy.getYear();
         var ahora_mes = fecha_hoy.getMonth()+1;
         var ahora_dia = fecha_hoy.getDate();
- 
+
         // realizamos el calculo
         var edad = (ahora_ano + 1900) - ano;
         if ( ahora_mes < mes )
@@ -77,7 +77,7 @@ jQuery(document).ready(function() {
         {
             edad -= 1900;
         }
-        
+
 
     	// navigation steps / progress steps
     	var current_active_step = $(this).parents('.f1').find('.f1-step.active');
@@ -123,7 +123,7 @@ jQuery(document).ready(function() {
             if(form.telefono_residencial.value.length==13){
                 $(residencial).addClass('hidden');
                 $(form.telefono_residencial).removeClass('input-error');
-                
+
             }
             if(form.celular_number.value.length==8 ){
                 $(number1).addClass('hidden');
@@ -169,7 +169,7 @@ jQuery(document).ready(function() {
                 $(form.sexo).addClass('input-error');
                 document.getElementById('sexo').innerHTML="INTRODUZCA UN VALOR VALIDO";
                 next_step = false;
-            } 
+            }
 
             if(form.sexo.value != 0 ){
                 $(sexo).addClass('hidden');
@@ -204,7 +204,7 @@ jQuery(document).ready(function() {
             //validacion con msj de correo electronico
             object=document.getElementById("id_email");
             valueForm=object.value;
-         
+
             // Patron para el correo
             var patron=/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/;
             if(valueForm.search(patron)==0)
@@ -219,10 +219,10 @@ jQuery(document).ready(function() {
             $(form.email).addClass('input-error');
             document.getElementById('email1').innerHTML="CORREO ELECTRONICO INVALIDO";
             next_step = false;
-            
+
     	});
     	// fields validation
-    	
+
     	if( next_step ) {
     		parent_fieldset.fadeOut(400, function() {
     			// change icons
@@ -235,15 +235,15 @@ jQuery(document).ready(function() {
     			scroll_to_class( $('.f1'), 20 );
 	    	});
     	}
-    	
+
     });
-    
+
     // previous step
     $('.f1 .btn-previous').on('click', function() {
     	// navigation steps / progress steps
     	var current_active_step = $(this).parents('.f1').find('.f1-step.active');
     	var progress_line = $(this).parents('.f1').find('.f1-progress-line');
-    	
+
     	$(this).parents('fieldset').fadeOut(400, function() {
     		// change icons
     		current_active_step.removeClass('active').prev().removeClass('activated').addClass('active');
@@ -255,7 +255,7 @@ jQuery(document).ready(function() {
 			scroll_to_class( $('.f1'), 20 );
     	});
     });
-    
+
     // submit
     $('.f1 .btn-submit').on('submit',function(e) {
     	$(this).find('input[type="text"], input[type="password"],input[type="number"],input[type="email"],select, textarea').each(function() {
@@ -325,7 +325,7 @@ function showDiv(select){
     document.getElementById('hidden_div').style.display = "none";
 
    }
-} 
+}
 function submitform(){
     buscar.submit();
 }
