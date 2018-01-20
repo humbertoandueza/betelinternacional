@@ -86,6 +86,7 @@ class Inscripcion(models.Model):
 	cedula = models.ForeignKey(Persona)
 	id_nivel = models.ForeignKey(Nivel)
 	lapso_ano = models.DateField(auto_now_add=True)
+	estatus = models.NullBooleanField()
 
 	def save(self, *args, **kwargs):
 		if self.cedula1:

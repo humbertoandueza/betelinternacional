@@ -73,7 +73,7 @@
 <div class="col-sm-12">                    
 <p style="font-size: 36px; padding-top: 50px; padding-bottom: 70px;">Bienvenido {{user.first_name}}</p>
 <p>Lista de Todos los alumnos Incritos en el nivel 1</p>
-<div class="col-sm-2 col-sm-offset-2">                    
+<div class="col-sm-2 col-sm-offset-1">                    
 <table class="table table-bordered">
   <tr>
     <th style="width: 200px;">Materia</th>
@@ -97,10 +97,17 @@
   </tr>
 </table > 
 </div>
+<div class="col-sm-2">
+  <table class="table table-bordered">
+    <tr>
+      <th>Estatus</th>
+    </tr>
+  </table>
+</div>
 </div>
 
 <div class="col-sm-12">
-<div class="col-sm-2 col-sm-offset-2">                    
+<div class="col-sm-2 col-sm-offset-1">                    
 <table class="table table-bordered">
   <tr>
     <th style="width: 200px;">Familia</th>
@@ -132,7 +139,7 @@
 </div>
 
 <div class="col-sm-12">
-<div class="col-sm-2 col-sm-offset-2">                    
+<div class="col-sm-2 col-sm-offset-1">                    
 <table class="table table-bordered">
   <tr>
     <th style="width: 200px;">Fundamento</th>
@@ -161,7 +168,15 @@
   </tr>
 </table>
 </div>
-
+<div class="col-sm-2">
+  <table class="table table-bordered">
+    <tr>
+      {% for estatus in inscripcion %}
+      <th>{{ estatus.estatus }}</th>
+      {% endfor %}
+    </tr>
+  </table>
+</div>
 </div>
 
 

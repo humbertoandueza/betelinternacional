@@ -124,18 +124,10 @@
 				<td>{{ persona.cedula.nombre }}</td>
 				<td>{{ persona.cedula.apellido }}</td>
 				<td>{{ persona.cedula.email }}</td>
-        <td>{{persona.id_nivel}}</td>
 			<td>
 				<center>
           <a class="btn btn-primary" href="{% url 'dato:nota' pk=persona.cedula %}" >Cargar Nota</a>
           <a class="btn btn-warning" href="#" >Ver Notas</a>
-          {% if user.is_superuser %}
-					<a class="btn btn-primary" href="{% url 'dato:listar_per' pk=persona.cedula %}" >Ver mas</a>
-					<a class="btn btn-info" href="{% url 'dato:aplicacion_editar' pk=persona.cedula %}">Editar</a>
-					<a class="btn btn-danger" href="{% url 'dato:aplicacion_eliminar' pk=persona.cedula %}">Eliminar</a>
-				</center>
-        {% endif %}
-
 			</td>
 		{% endif %}
 		</tr>

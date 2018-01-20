@@ -53,10 +53,12 @@ class notas(ListView):
 
 
 def notas_filter(request):
+	inscripcion = Inscripcion.objects.filter(cedula_id=request.user.ci)
+	print (inscripcion)
+	calculo = Notas.objects.filter(cedula_id=request.user.ci).aggregate(total=Sum('nota_persona'))
 	nota = Notas.objects.filter(cedula_id=request.user.ci)
-	var = nota.aggregate(total=Sum('nota_persona'))
-	print (var)
-	return render(request, "aplicacion/notas_list.html", {"notas":nota,"total":var})
+
+	return render(request, "aplicacion/notas_list.html", {'inscripcion':inscripcion,"notas":nota,})
 
 def nivel1_new(request):
 	nivel = Inscripcion.objects.filter(id_nivel_id=1)
@@ -226,10 +228,21 @@ def post_new(request,*args, **kwargs):
 	filtro1  = Persona.objects.filter(cedula=cedula)
 	#print (filtro1)
 	nota = Notas.objects.filter(id_materia_id=filtro.id,cedula_id=cedula)
+	calculo = Notas.objects.filter(cedula_id=cedula).aggregate(total=Sum('nota_persona'))
 	#print (nota)
+	nota_total = Notas.objects.filter(cedula_id=cedula)
+	carga_total = len(nota_total)
 	nota3 = len(nota)
 	nota4 = nota3 + 1
-	#print (nota3)
+	if nota3 != 0:
+		for p in calculo.items():
+			cantidad = (int(p[1]))
+		print ('Nota total', cantidad)
+		if cantidad >= 14 and carga_total >= 18 :
+			Inscripcion.objects.filter(pk=cedula).update(estatus=True)
+		elif cantidad <14 and carga_total > 17 :
+			Inscripcion.objects.filter(pk=cedula).update(estatus=False)
+	print (' cantidad de notas cargadas, ',carga_total)
 	#print (nota)
 	#print (filtro1)
 	if request.method == 'POST':
