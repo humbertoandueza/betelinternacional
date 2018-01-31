@@ -17,6 +17,8 @@ class UsersModelForm(UserCreationForm):
 
         widgets = {
             'ci': forms.NumberInput(attrs={'placeholder': 'Cedula', 'class':'form-control', 'autocomplete':'off','oninput':'maxLengthCheck(this)','maxlength':'8','onKeyUp':'this.value=this.value.toUpperCase();'}),
+
+            #'ci': forms.TextInput(attrs={'placeholder': 'Cedula', 'class':'form-control', 'autocomplete':'off','oninput':'maxLengthCheck(this)','maxlength':8,'onKeyUp':'this.value=this.value.toUpperCase();'}),
             'first_name': forms.TextInput(attrs={'placeholder': 'Nombre', 'class':'form-control', 'autocomplete':'off','onkeypress':'return text(event)','onKeyUp':'this.value=this.value.toUpperCase();'}),
             'last_name': forms.TextInput(attrs={'placeholder': 'Apellido', 'class':'form-control', 'autocomplete':'off','onkeypress':'return text(event)','onKeyUp':'this.value=this.value.toUpperCase();'}),
             'password1': forms.PasswordInput(attrs={'placeholder': 'Contraseña', 'class':'form-control', 'autocomplete':'off','type':'password'}),    

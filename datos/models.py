@@ -136,6 +136,13 @@ class Notas(models.Model):
 	def __str__(self):
 		return self.nota_persona
 
+class Notificacion(models.Model):
+	titulo = models.CharField(max_length=20)
+	descripcion = models.CharField(max_length=80)
+	hora = models.DateTimeField(auto_now=True)
+	user = models.ForeignKey(Persona)
+	estatus = models.NullBooleanField()
 
-
+	def __str__(self):
+		return self.titulo
 

@@ -144,3 +144,14 @@ class NotasForm(forms.ModelForm):
 			'id_materia': forms.Select(attrs={'class':'form-control', 'autocomplete':'off','onKeyUp':'this.value=this.value.toUpperCase();'}),
 			'nota_persona': forms.Select(attrs={'class':'form-control', 'autocomplete':'off','onKeyUp':'this.value=this.value.toUpperCase();'}),            
 		}
+
+class NotificacionesForm(forms.ModelForm):
+
+	class Meta:
+		model = Notificacion
+		fields= [
+			'titulo',
+			'descripcion',
+			'estatus',
+			'user'
+		]

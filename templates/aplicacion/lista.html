@@ -59,11 +59,6 @@
                                 <a class="nav-link" href="{% url 'dato:materia' %}">Añadir Materia</a>
                               </li>
                               {% endif %}
-                              {% if user.is_profesor %}
-                              <li class="nav-item">
-                                <a class="nav-link" href="{% url 'dato:nota' %}">Cargar Nota</a>
-                              </li>                 
-                              {% endif %}
             
                               {% if user.is_alumno %}
                               <li class="nav-item">
