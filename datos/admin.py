@@ -9,6 +9,8 @@ admin.site.register(Profesor)
 admin.site.register(Materia)
 admin.site.register(Notas)
 admin.site.register(Asigna_Materia)
+admin.site.register(Notificacion)
+
 
 
 

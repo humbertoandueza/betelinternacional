@@ -19,10 +19,18 @@ urlpatterns=[
     url(r'^aplicacion/editar/(?P<pk>\d+)/$', login_required(SolicitudUpdate.as_view()), name='aplicacion_editar'),
     url(r'^aplicacion/eliminar/(?P<pk>\d+)/$', login_required(SolicitudDelete.as_view()), name='aplicacion_eliminar'),
     url(r'^aplicacion/listarpro/$',login_required(SolicitudListPro.as_view()), name='aplicacion_listarPro'),
-    url(r'^aplicacion/listar_per/asdfv3sdd(?P<pk>[0-9]+)868asdfv31Ds7s213/$',login_required(buscar), name='listar_per'),
+    url(r'^aplicacion/listar_per/(?P<pk>[0-9]+)/$',login_required(buscar), name='listar_per'),
 
     url(r'^aplicacion/nueva/$',login_required(SolicitudCreate.as_view()), name='aplicacion_crear'),
-	url(r'^aplicacion/pdf/$',login_required(ReportePersonasPDF.as_view()), name="reporte"),
+	url(r'^aplicacion/pdf/$',login_required(generar_pdf.as_view()), name="reporte"),
+    url(r'^aplicacion/pdf_personal/(?P<pk>\d+)/$',login_required(generar_pdf_personal.as_view()), name="reporte_personal"),
+
     url(r'^aplicacion/ver_notas/$',login_required(notas_filter), name="ver_notas"),
+    url(r'^notificaciones/(?P<pk>\d+)/$',login_required(notificacion), name="notificacion"),
+    url(r'^notificacion/$',login_required(notificaciones), name="notificaciones"),
+    url(r'^push_notificacion/$',login_required(push_notificaciones), name="push_notificaciones"),
+
+
+
 
 ]

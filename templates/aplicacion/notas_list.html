@@ -169,13 +169,13 @@
 </table>
 </div>
 <div class="col-sm-2">
+  {% if not estatus == '' %}
   <table class="table table-bordered">
     <tr>
-      {% for estatus in inscripcion %}
-      <th>{{ estatus.estatus }}</th>
-      {% endfor %}
+      <th>{{ estatus }}</th>
     </tr>
   </table>
+  {% endif %}
 </div>
 </div>
 

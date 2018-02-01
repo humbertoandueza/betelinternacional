@@ -1,0 +1,32 @@
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'assets/font-awesome/css/font-awesome.min.css'%}">
+{% if notificacion %}
+	{% for noti in notificacion %}
+	<div class="boxNotification">
+	{% if noti.estatus == True %}
+		<a href="#" class="dropdown-item">
+		{{ noti.titulo }}<br> <br>
+		<p style="float: left; text-align: left; font-size: 14px;">{{ noti.descripcion }}</p> <br><br>
+		<p style="float: left; text-align: left; font-size: 10px;">{{ noti.hora }}</p>
+		<i class="fa fa-check-circle-o" aria-hidden="true"></i>
+		</a>
+	{% endif %}
+	{% if noti.estatus == False %}
+		<a onclick="$.ajax({url: '../../notificaciones/{{noti.id}}'});" class="dropdown-item">
+		{{ noti.titulo }}<br> <br>
+		<p style="float: left; text-align: left; font-size: 14px;">{{ noti.descripcion }}</p> <br><br>
+		<p style="float: left; text-align: left; font-size: 10px;">{{ noti.hora }}</p>
+		</a>
+	{% endif %}
+	</div>
+	{% endfor %}
+	{% else %}
+		<div class="boxNotification">
+			<p style="color: #00b0f0;">No posee notificaciones</p>
+		</div>
+{% endif %}
+<script src="{% static 'assets/js/jquery-1.11.1.min.js'%}"></script>
+
+<script type="text/javascript">
+</script>

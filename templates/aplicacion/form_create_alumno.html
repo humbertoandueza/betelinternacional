@@ -9,7 +9,7 @@
                     <div class="col-sm-10 col-sm-offset-1 col-md-10 col-lg-8 col-lg-offset-2 form-box" >
 
 
-                        <form role="form" id="form" action="" method="post" class="f1" autocomplete="off">
+                        <form role="form" id="form" action="" method="post" class="f1" autocomplete="off" novalidate="novalidate">
                          <div>
                                                     <div id="form" class="fixed-top"  >
 
@@ -32,9 +32,11 @@
                                                 <i class="fa fa-address-card-o" id="icon" aria-hidden="true"></i>
 
                                             </span>
-                                        {{form.ci}}
+                                        <input type="number" name="ci" required="" oninput="maxLengthCheck(this)" id="id_ci" autocomplete="off" placeholder="Cedula" onkeyup="this.value=this.value.toUpperCase();" class="form-control" maxlength="8">
                                         </div>
                                     </div>
+                                </div>
+                                <div class="alert alert-danger alert-dismissible hidden " role="alert" id="cedulaale">
                                 </div>
                                 <div class="form-group hidden">
                                     <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Ingrese su Cedula">
@@ -52,6 +54,7 @@
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="form-group">
                                     <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Ingrese su Cedula">
                                         <div class="input-group">
@@ -62,6 +65,8 @@
                                         {{form.first_name}}
                                         </div>
                                     </div>
+                                </div>
+                                <div class="alert alert-danger alert-dismissible hidden " role="alert" id="nombreale">
                                 </div>
                                 <div class="form-group">
                                     <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Ingrese su Cedula">
@@ -74,6 +79,8 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="alert alert-danger alert-dismissible hidden " role="alert" id="apellidoale">
+                                </div>
                                 <div class="form-group">
                                     <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Ingrese su Cedula">
                                         <div class="input-group">
@@ -84,6 +91,8 @@
                                         {{form.email}}
                                         </div>
                                     </div>
+                                </div>
+                                <div class="alert alert-danger alert-dismissible hidden " role="alert" id="emailale">
                                 </div>
                                 <div class="form-group">
                                     <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Ingrese su Cedula">
@@ -106,6 +115,8 @@
                                         {{form.password2}}
                                         </div>
                                     </div>
+                                </div>
+                                <div class="alert alert-danger alert-dismissible hidden " role="alert" id="contraseñaale">
                                 </div>
                                 <div class="form-group hidden">
                                     <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Ingrese su Cedula">

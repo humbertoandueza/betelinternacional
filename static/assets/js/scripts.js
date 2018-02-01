@@ -84,13 +84,23 @@ jQuery(document).ready(function() {
     	var progress_line = $(this).parents('.f1').find('.f1-progress-line');
     	// fields validation
     	parent_fieldset.find('input[type="text"], input[type="password"],input[type="number"],input[type="email"],select, textarea').each(function() {
-            if(form.cedula.value < 999999){
+            //var estado_civil = document.getElementById('id_estado_civil')
+            if($(this).value == ''){
+                $(this).addClass('input-error');
+                next_step = false;
+
+            }
+            if (form.cedula.value <99999){
                 $(cedulaale).removeClass('hidden');
                 $(form.cedula).addClass('input-error');
                 document.getElementById('cedulaale').innerHTML="CEDULA INVALIDA, INTRODUZCA UN MINIMO DE 7 CARACTERES";
                 next_step = false;
-
+                
             }
+            
+
+            
+            
             if(form.nombre.value.length<3){
                 $(nombreale).removeClass('hidden');
                 $(form.nombre).addClass('input-error');
@@ -212,17 +222,21 @@ jQuery(document).ready(function() {
                 //Mail correcto
                 $(email1).addClass('hidden');
                 $(form.email).removeClass('input-error');
-                return;
             }
+            else {
+                $(email1).removeClass('hidden');
+                $(form.email).addClass('input-error');
+                document.getElementById('email1').innerHTML="CORREO ELECTRONICO INVALIDO";
+                next_step = false;
+                
+            }
+
+            
             //Mail incorrecto
-            $(email1).removeClass('hidden');
-            $(form.email).addClass('input-error');
-            document.getElementById('email1').innerHTML="CORREO ELECTRONICO INVALIDO";
-            next_step = false;
 
-    	});
+    	}
+        );
     	// fields validation
-
     	if( next_step ) {
     		parent_fieldset.fadeOut(400, function() {
     			// change icons
@@ -257,23 +271,9 @@ jQuery(document).ready(function() {
     });
 
     // submit
-    $('.f1 .btn-submit').on('submit',function(e) {
-    	$(this).find('input[type="text"], input[type="password"],input[type="number"],input[type="email"],select, textarea').each(function() {
-    		if( $(this).val() == "" ) {
-    			e.preventDefault();
-    			$(this).addClass('input-error');
-    		}
-    		else {
-    			$(this).removeClass('input-error');
+        // fields validation
 
-
-    		}
-
-
-    	});
-    	// fields validation
-
-    });
+   
 
 });
 
@@ -330,3 +330,79 @@ function submitform(){
     buscar.submit();
 }
 
+$('#form').submit(function(e){
+    var next_step1 = true;
+    var nombre = document.getElementById('id_first_name')
+    var cedula = document.getElementById('id_ci')
+    var apellido = document.getElementById('id_last_name')
+
+    $('.f1').find('input[type="text"], input[type="password"],input[type="number"],input[type="email"],select, textarea').each(function() {
+       if ( $(this).val() == '') {
+            e.preventDefault()
+            $(this).addClass('input-error')
+       }
+
+       if (cedula.value <99999){
+            $(cedulaale).removeClass('hidden');
+            $(cedula).addClass('input-error');
+            document.getElementById('cedulaale').innerHTML="CEDULA INVALIDA, INTRODUZCA UN MINIMO DE 7 CARACTERES";
+            next_step = false;
+                
+            }
+        if(cedula.value > 999999 ){
+            $(cedulaale).addClass('hidden');
+            $(cedula).removeClass('input-error');
+
+            }
+        if (nombre.value.length <3){
+            $(nombreale).removeClass('hidden');
+            $(nombre).addClass('input-error');
+            document.getElementById('nombreale').innerHTML="NOMBRE INVALIDO, INTRODUZCA UN MINIMO DE 3 CARACTERES";
+            next_step = false;
+        }
+        if(nombre.value.length >3){
+            $(nombreale).addClass('hidden');
+            $(nombre).removeClass('input-error');
+        }
+        if (apellido.value.length <3){
+            $(apellidoale).removeClass('hidden');
+            $(nombre).addClass('input-error');
+            document.getElementById('apellidoale').innerHTML="APELLIDO INVALIDO, INTRODUZCA UN MINIMO DE 3 CARACTERES";
+            next_step = false;
+        }
+        if(apellido.value.length >3){
+            $(apellidoale).addClass('hidden');
+            $(apellido).removeClass('input-error');
+        }
+
+        else {
+            $(this).removeClass('input-error');
+        }
+        if (nombre.value.length < 3){
+            $(this).addClass('input-error')
+            console.log('funciona')
+        }
+        object=document.getElementById("id_email");
+            valueForm=object.value;
+
+            var patron=/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/;
+            if(valueForm.search(patron)==0)
+            {
+                //Mail correcto
+                $(emailale).addClass('hidden');
+                $(object).removeClass('input-error');
+            }
+            else {
+                $(emailale).removeClass('hidden');
+                $(object).addClass('input-error');
+                document.getElementById('emailale').innerHTML="CORREO ELECTRONICO INVALIDO";
+                next_step = false;
+                
+            }
+            //Mail incorrecto
+            //$(email1).removeClass('hidden');
+           //document.getElementById('email1').innerHTML="CORREO ELECTRONICO INVALIDO";
+        
+    });
+    
+});

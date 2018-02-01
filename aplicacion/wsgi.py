@@ -2,12 +2,12 @@
 #Para usar tu propia aplicación Django usa un código como este:
 import  os
 import  sys
-
+"""
 # asumiendo que el archivo de configuración de Django está en '/home/myusername/mysite/mysite/settings.py'
 path  =  '/ home / humberto / betelinternacional / aplicacion'
 #si la  ruta  no está  en el  sistema . camino :
 #    sys . trayectoria . Añadir ( ruta )
-
+"""
 os . environ [ 'DJANGO_SETTINGS_MODULE' ]  =  'aplicacion.settings'
 
 ## Descomente las líneas a continuación dependiendo de su versión de Django
