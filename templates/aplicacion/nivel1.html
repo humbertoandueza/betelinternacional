@@ -105,11 +105,13 @@
 <table class="table table-bordered" >
 	<thead>
 		<tr>
+      <td><center> N°</center></td>
 			<td><center> Cedula</center></td>
 			<td><center> Nombre</center></td>
 			<td><center> Apellido</center></td>
 			<td><center> Correo</center></td>
 			<td><center> Acciones</center></td>
+
 		</tr>
 		
 	</thead>
@@ -119,7 +121,8 @@
 		
 		<tr>
 		{% for persona in nivel %}
-			{% if persona.id_nivel.nivel == 'I' %}
+      {% if persona.id_nivel.nivel == 'I' %}
+    <td>  {{ forloop.counter }}</td>
 				<td>{{ persona.cedula.cedula }}</td>
 				<td>{{ persona.cedula.nombre }}</td>
 				<td>{{ persona.cedula.apellido }}</td>

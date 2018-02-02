@@ -116,7 +116,7 @@ def nivel1_new(request):
 	print (nivel1)
 	filtro = Asigna_Materia.objects.get(profesor_id=request.user.ci)
 	print ('njksndkjs',filtro)
-	paginator = Paginator(nivel, 5)
+	paginator = Paginator(nivel, 7)
 	page = request.GET.get("page", 1)
 	try:
 		nivel = paginator.page(page)
@@ -433,6 +433,7 @@ def GeneratePdf(self,*args, **kwargs):
 class generar_pdf(View):
 	def _header_footer(self,canvas,doc):
 		canvas.saveState()
+		canvas.setTitle("PDF")
 		styles = getSampleStyleSheet()
 		archivo_imagen = 'C:/Users/equi/betelinternacional/static/assets/img/gif.gif'
 		canvas.drawImage(archivo_imagen, 60, 700, width=75,height=75,preserveAspectRatio=True)
@@ -480,7 +481,7 @@ class generar_pdf(View):
 		    allclientes = [(p.ci,p.first_name, p.last_name, p.email) for p in Users.objects.all()]
 		    t = Table([headings] + allclientes)
 		    t.setStyle(TableStyle(
-		    	[	('GRID', (0, 0), (3, -1), 1, colors.black),
+		    	[	('GRID', (0, 0), (7, -1), 1, colors.black),
 		    	('LINEBELOW', (0, 0), (-1, 0), 2, colors.black),
 		    	('BACKGROUND', (0, 0), (-1, 0), colors.dodgerblue)
 		    	]
