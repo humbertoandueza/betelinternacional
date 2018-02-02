@@ -25,7 +25,7 @@ SECRET_KEY = '+s!7-bs!e#l)gwm#2ckpbq=(%4v%4qx=am-*q+1km3hjbs8nad'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 #<<<<<<< HEAD
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 ALLOWED_HOSTS = ['humberto.pythonanywhere.com']
 #>>>>>>> d9c1d0b5d486a68905c8dfe590338b2f2372e74d
@@ -74,10 +74,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'aplicacion.wsgi.application'
 
-"""
+
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
-
+"""
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
