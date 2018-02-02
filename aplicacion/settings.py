@@ -27,8 +27,8 @@ SECRET_KEY = '+s!7-bs!e#l)gwm#2ckpbq=(%4v%4qx=am-*q+1km3hjbs8nad'
 #<<<<<<< HEAD
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
-ALLOWED_HOSTS = ['humberto.pythonanywhere.com']
-#ALLOWED_HOSTS = ['127.0.0.1']
+#ALLOWED_HOSTS = ['humberto.pythonanywhere.com']
+ALLOWED_HOSTS = []
 
 #>>>>>>> d9c1d0b5d486a68905c8dfe590338b2f2372e74d
 
@@ -79,7 +79,7 @@ WSGI_APPLICATION = 'aplicacion.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
-"""
+
 
 DATABASES = {
     'default': {
@@ -100,6 +100,7 @@ DATABASES = {
         'HOST':'humberto.mysql.pythonanywhere-services.com',
     }
 }
+"""
 """
 DATABASES = {
     'default': {

@@ -292,7 +292,7 @@ def post_new(request,*args, **kwargs):
 		var = filtro.materia_id
 	filtro2 = Materia.objects.get(id_materia=var)
 	var2= filtro2.id_nivel_id
-	#print (var2)
+	print (var2)
 	#print (var)
 	nivel = Inscripcion.objects.filter(id_nivel_id=var2,cedula_id=cedula)
 	if nivel:
@@ -340,7 +340,7 @@ def post_new(request,*args, **kwargs):
 			return redirect('dato:nivel1')
 	else:
 		form = NotasForm()
-	return render(request, 'aplicacion/nota_form.html', {'nivel':nivel, 'nota4':nota4,'filtro1':filtro1,'nota3':nota3,'form':form,'cedula':cedula,'filtro':filtro})
+	return render(request, 'aplicacion/nota_form.html', {'var2':var2,'nivel':nivel, 'nota4':nota4,'filtro1':filtro1,'nota3':nota3,'form':form,'cedula':cedula,'filtro':filtro})
 
 class SolicitudCreate(CreateView):
 	model = Persona
