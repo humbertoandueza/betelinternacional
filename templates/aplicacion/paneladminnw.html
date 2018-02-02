@@ -87,7 +87,7 @@
 
                               <li class="nav-item dropdown" style="float: right;">
                                 <a class="nav-link dropdown-toggle"  data-toggle="dropdown"
-                                   href="#!" role="button" aria-haspopup="true" aria-expanded="false">Notificaciones <span class="badge badge-danger" id="notificacion"></span>
+                                   href="#!" role="button" aria-haspopup="true" aria-expanded="false">Notificaciones <span class="badge badge-danger" >{{var}}</span>
                                  </a>
                                 <style type="text/css">
                                   .boxNotification {
@@ -109,12 +109,37 @@
                                     overflow-y: scroll;
                                   }
                                 </style>
-                                  <div class="dropdown-menu" id="style-2">
-                                    
+                                <div class="dropdown-menu" id="style-2"> 
+                                    {% if notificacion %}
+                                  {% for noti in notificacion %}
+                                  <div class="boxNotification" id="style-2">
+                                  {% if noti.estatus == True %}
+                                    <a href="#" class="dropdown-item">
+                                    {{ noti.titulo }}<br> <br>
+                                    <p style="float: left; text-align: left; font-size: 14px;">{{ noti.descripcion }}</p> <br><br>
+                                    <p style="float: left; text-align: left; font-size: 10px;">{{ noti.hora }}</p>
+                                    <i class="fa fa-check-circle-o" aria-hidden="true"></i>
+                                    </a>
+                                  {% endif %}
+                                  {% if noti.estatus == False %}
+                                    <a href="{% url 'dato:notificacion' pk=noti.id %}" class="dropdown-item" id="style-2">
+                                    {{ noti.titulo }}<br> <br>
+                                    <p style="float: left; text-align: left; font-size: 14px;">{{ noti.descripcion }}</p> <br><br>
+                                    <p style="float: left; text-align: left; font-size: 10px;">{{ noti.hora }}</p>
+                                    </a>
+                                  {% endif %}
                                   </div>
-                              </li>
+                                  {% endfor %}
+                                  {% else %}
+                                    <div class="boxNotification">
+                                      <p style="color: #00b0f0;">No posee notificaciones</p>
+                                    </div>
+                                {% endif %}
+                                  </div>
                               {% endif %}
+                              </li>
                             </ul>
+
                         </div>
                         
                          {% if user.is_superuser or  user.is_profesor or user.is_alumno and not user.is_inscripcion %}
@@ -176,27 +201,5 @@
 <script src="{% static 'assets/js/jquery-1.11.1.min.js'%}"></script>
 
 <script type="text/javascript">
-  jQuery(document).ready(function() {
-    (function worker() {
-      $.ajax({    url: '{% url 'dato:notificaciones' %}',
-        success: function(data) {
-          $('#style-2').html(data);
-          console.log(data);
-        },    complete: function() {
-       // Schedule the next request when the current one's complete       
-       setTimeout(worker, 10000);
-      }
-      });
-      $.ajax({    url: '{% url 'dato:push_notificaciones' %}',
-        success: function(data) {
-          $('#notificacion').html(data);
-          console.log(data);
-        },    complete: function() {
-       // Schedule the next request when the current one's complete       
-       setTimeout(worker, 10000);
-      }
-      });
-    })()
-  });
 </script>
 {% endblock %}
