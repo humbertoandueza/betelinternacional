@@ -25,9 +25,12 @@ urlpatterns=[
 	url(r'^aplicacion/pdf/$',login_required(generar_pdf.as_view()), name="reporte"),
     url(r'^aplicacion/pdf_personal/(?P<pk>\d+)/$',login_required(generar_pdf_personal.as_view()), name="reporte_personal"),
     url(r'^aplicacion/crear_usuario_profesor/$',login_required(UsersCreateView_profesor), name="crear_usuario_profesor"),
+    url(r'^aplicacion/asignar_materias/$',login_required(AsignarMateria), name="asigna"),
 
     url(r'^aplicacion/ver_notas/$',login_required(notas_filter), name="ver_notas"),
     url(r'^notificaciones/(?P<pk>\d+)/$',login_required(notificacion), name="notificacion"),
+    url(r'^aplicacion/ver_profesores/$',login_required(ListProfesor.as_view()), name="ver_profesores"),
+    url(r'^aplicacion/ver_asignaciones/$',login_required(ListAsignarMateria.as_view()), name="ver_asignaciones"),
 
 
 

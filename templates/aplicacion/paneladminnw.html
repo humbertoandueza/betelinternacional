@@ -32,8 +32,27 @@
 
                               {% endif %} 
                               {% if user.is_superuser %}
-                              <li class="nav-item">
+                              <li role="presentation" class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                  Profesores<span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
                                 <a class="nav-link" href="{% url 'dato:crear_usuario_profesor' %}">Añadir Profesor</a>
+                                <br>
+                                <a class="nav-link" href="{% url 'dato:ver_profesores' %}">Ver Profesores</a>
+                                  
+                                </ul>
+                              </li>
+                              <li role="presentation" class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                  Materias<span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                <a class="nav-link" href="{% url 'dato:asigna' %}">Asignar Profesor</a>
+                                <br>
+                                <a class="nav-link" href="{% url 'dato:ver_asignaciones' %}">Ver Materias</a>
+                                   
+                                </ul>
                               </li>
                               <li class="nav-item">
                                 <a class="nav-link" href="{% url 'dato:reporte' %}">reportes</a>

@@ -103,6 +103,7 @@ class Profesor(models.Model):
 	apellido_profesor = models.CharField(max_length=20)
 	telefono_profesor = models.CharField(max_length=11)
 	email_profesor = models.EmailField()
+	estatus = models.NullBooleanField()
 	user = models.ForeignKey(Users)
 
 	def __str__(self): #si es python 2.7 es def __unicode__(self):

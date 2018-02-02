@@ -107,6 +107,7 @@ class ProfesorForm(forms.ModelForm):
 			'telefono_profesor',
 			'email_profesor',
 			'user',
+			'estatus',
 		]
 		widgets = {
             'cedula_profesor': forms.NumberInput(attrs={'placeholder': 'Cedula', 'class':'form-control', 'autocomplete':'off','oninput':'maxLengthCheck(this)','maxlength':'8','onKeyUp':'this.value=this.value.toUpperCase();'}),
@@ -115,6 +116,7 @@ class ProfesorForm(forms.ModelForm):
             'telefono_profesor': forms.TextInput(attrs={'placeholder': 'Numero Celular', 'class':'form-control', 'autocomplete':'off','oninput':'maxLengthCheck(this)','min':'1','max':'9999999999','maxlength':'11'}),
             'email_profesor': forms.EmailInput(attrs={'placeholder': 'Email', 'class':'form-control', 'autocomplete':'off','onKeyUp':'this.value=this.value.toUpperCase();'}),
             'user': forms.NumberInput(attrs={'placeholder': 'Cedula', 'class':'form-control', 'autocomplete':'off','oninput':'maxLengthCheck(this)','maxlength':'8','onKeyUp':'this.value=this.value.toUpperCase();'}),
+            'estatus': forms.CheckboxInput(attrs={'checked':'checked'}),
 			
 		}
 
@@ -131,6 +133,22 @@ class MateriaForm(forms.ModelForm):
 			'id_nivel': forms.Select(attrs={'class':'form-control', 'autocomplete':'off','onKeyUp':'this.value=this.value.toUpperCase();'}),
             
 		}
+
+
+class AsignaMateriaForm(forms.ModelForm):
+
+	class Meta:
+		model = Asigna_Materia
+		fields= [
+			'materia',
+			'profesor',
+		]
+		widgets = {
+			'profesor': forms.Select(attrs={'class':'form-control', 'autocomplete':'off','onKeyUp':'this.value=this.value.toUpperCase();'}),
+			'materia': forms.Select(attrs={'class':'form-control', 'autocomplete':'off','onKeyUp':'this.value=this.value.toUpperCase();'}),
+            
+		}
+
 
 class NotasForm(forms.ModelForm):
 

@@ -243,6 +243,22 @@ def ProfesorCreate(request):
 		form = ProfesorForm()
 	return render(request,'aplicacion/form_crear_profesor.html',{'form':form})
 
+def AsignarMateria(request,*args,**kwargs):
+	if request.method == 'POST':
+		form = AsignaMateriaForm(request.POST)
+		cedula = (request.POST['profesor'])
+		if form.is_valid():
+			Profesor.objects.filter(cedula_profesor=cedula).update(estatus=True)
+			form.save()
+			return redirect('dato:app_inicio')
+	else:
+		form = AsignaMateriaForm()
+	return render(request,'aplicacion/form_asigna_materia.html',{'form':form})
+
+class ListAsignarMateria(ListView):
+	model = Asigna_Materia
+	template_name = 'aplicacion/list_asigna_materia.html'
+
 class MateriaCreate(CreateView):
 	model = Materia
 	template_name = 'aplicacion/materia_form.html'
@@ -374,6 +390,10 @@ def UsersCreateView_profesor(request,*args, **kwargs):
 	else:
 		form = UsersModelForm()
 	return render(request, 'aplicacion/form_create_profesor.html', {'form':form})
+
+class ListProfesor(ListView):
+	model = Profesor
+	template_name = 'aplicacion/listprofesor.html'
 
 class generar_pdf(View):
 	def _header_footer(self,canvas,doc):
