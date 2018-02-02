@@ -363,7 +363,7 @@ class ReportePersonasPDF(View):
 
 	def cabecera(self,pdf):
 	        #Utilizamos el archivo logo_django.png que está guardado en la carpeta media/imagenes
-	        archivo_imagen = 'C:/Users/equi/betelinternacional/static/assets/img/logo1.png'
+	        archivo_imagen = '/home/humberto/betelinternacional/static/assets/img/logo1.png'
 	       	pdf.drawImage(archivo_imagen, 60, 750, width=80,height=80,preserveAspectRatio=True)
 	       	pdf.setFont("Helvetica", 16)
 	       	pdf.drawString(210, 790, u"Iglesia Bet-el Internacional")
@@ -387,7 +387,7 @@ class ReportePersonasPDF(View):
 
 	        	pdf.showPage()
 	        	pdf.write()
-	        	
+
 	        	buffer.close()
 
 	        #Establecemos el tamaño de cada una de las columnas de la tabla
@@ -413,7 +413,7 @@ class ReportePersonasPDF(View):
 	        y = 300
 	        self.tabla(pdf, y)
 	        #Con show page hacemos un corte de página para pasar a la siguiente
-	        print (self.tabla)	
+	        print (self.tabla)
 	        pdf.showPage()
 	        pdf.showPage()
 
@@ -435,7 +435,7 @@ class generar_pdf(View):
 		canvas.saveState()
 		canvas.setTitle("PDF")
 		styles = getSampleStyleSheet()
-		archivo_imagen = 'C:/Users/equi/betelinternacional/static/assets/img/gif.gif'
+		archivo_imagen = '/home/humberto/betelinternacional/static/assets/img/gif.gif'
 		canvas.drawImage(archivo_imagen, 60, 700, width=75,height=75,preserveAspectRatio=True)
 		#iglesia
 		header1 = Paragraph('Iglesia Cristiana Bet-el Internacional', styles['Heading4'])
@@ -503,7 +503,7 @@ class generar_pdf_personal(View):
 	def _header_footer(self,canvas,doc):
 		canvas.saveState()
 		styles = getSampleStyleSheet()
-		archivo_imagen = 'C:/Users/equi/betelinternacional/static/assets/img/gif.gif'
+		archivo_imagen = '/home/humberto/betelinternacional/static/assets/img/gif.gif'
 		canvas.drawImage(archivo_imagen, 60, 700, width=75,height=75,preserveAspectRatio=True)
 		#iglesia
 		header1 = Paragraph('Iglesia Cristiana Bet-el Internacional', styles['Heading4'])
@@ -627,12 +627,12 @@ class NumberedCanvas(canvas.Canvas):
     def __init__(self, *args, **kwargs):
         canvas.Canvas.__init__(self, *args, **kwargs)
         self._saved_page_states = []
- 
+
 
     def showPage(self):
         self._saved_page_states.append(dict(self.__dict__))
         self._startPage()
- 
+
 
     def save(self):
         """add page info to each page (page x of y)"""
@@ -642,8 +642,8 @@ class NumberedCanvas(canvas.Canvas):
             self.draw_page_number(num_pages)
             canvas.Canvas.showPage(self)
         canvas.Canvas.save(self)
- 
- 
+
+
     def draw_page_number(self, page_count):
     	self.setFont("Helvetica", 9)
     	self.drawRightString(211 * mm, 4 * mm + (0.1 * inch),"Pagina %d de %d" % (self._pageNumber, page_count))
