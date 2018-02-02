@@ -120,7 +120,8 @@
 
   <tr>
     {% for persona in notas %}
-    {% if persona.id_materia.nombre_materia == "Familia" %}
+    <th>persona.id_materia.nombre_materia</th>
+    
     <th style="float: left;padding-left: 16px;padding-right:17px; border-left:none; border-bottom:none; border-top:none; ">
       {% if persona.nota_persona == '1' %}
         A
@@ -152,7 +153,7 @@
 
   <tr>
     {% for persona in notas %}
-    {% if persona.id_materia.nombre_materia == "Fundamento" %}
+    <th>persona.id_materia.nombre_materia</th>
 
     <th style="float: left;padding-left: 16px;padding-right:17px; border-left:none; border-bottom:none; border-top:none;  ">
       {% if persona.nota_persona == '1' %}
