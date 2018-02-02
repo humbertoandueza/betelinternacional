@@ -62,22 +62,6 @@ def app_index(request):
 
 	return render(request,'aplicacion/paneladminnw.html', {"filtro":filtro})
 #@permission_required('auth.add_user', login_url='accounts/login/')
-def notificaciones(request):
-	if request.user.is_alumno and not request.user.is_inscripcion:
-		notificacion = Notificacion.objects.filter(user_id=request.user.ci).order_by('-hora','-id')
-
-		notificaciones = Notificacion.objects.filter(user_id=request.user.ci,estatus=False)
-		var = len(notificaciones)
-	return render(request,'aplicacion/notificacion.html', {'var':var,'notificacion':notificacion})
-
-def push_notificaciones(request):
-	if request.user.is_alumno and not request.user.is_inscripcion:
-		notificacion = Notificacion.objects.filter(user_id=request.user.ci).order_by('-hora','-id')
-
-		notificaciones = Notificacion.objects.filter(user_id=request.user.ci,estatus=False)
-		var = len(notificaciones)
-	return render(request,'aplicacion/notificaciones.html', {'var':var,'notificacion':notificacion})
-
 def notificacion(request,pk):
 	notificaciones = Notificacion.objects.filter(pk=pk).update(estatus=True)
 	return redirect('dato:app_inicio')

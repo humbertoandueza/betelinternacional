@@ -49,7 +49,7 @@ a, a:hover, a:focus {
 	background-color: #00b0f0;
 }
 .badge-danger {
-	background-color: red;
+	background-color: red !important;
 }
 #style-2::-webkit-scrollbar
 {

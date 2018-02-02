@@ -27,8 +27,6 @@ urlpatterns=[
 
     url(r'^aplicacion/ver_notas/$',login_required(notas_filter), name="ver_notas"),
     url(r'^notificaciones/(?P<pk>\d+)/$',login_required(notificacion), name="notificacion"),
-    url(r'^notificacion/$',login_required(notificaciones), name="notificaciones"),
-    url(r'^push_notificacion/$',login_required(push_notificaciones), name="push_notificaciones"),
 
 
 
