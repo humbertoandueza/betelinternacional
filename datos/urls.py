@@ -9,7 +9,7 @@ urlpatterns=[
     url(r'^aplicacion/materia/$',login_required(MateriaCreate.as_view()), name='materia'),
     url(r'^aplicacion/nota/(?P<pk>[0-9]+)/$',login_required(post_new), name='nota'),
     url(r'^aplicacion/inscripciones/$',login_required(InscripcionCreate.as_view()), name='inscripcion'),
-    url(r'^aplicacion/profesor/$',login_required(ProfesorCreate.as_view()), name='profesor'),
+    url(r'^aplicacion/profesor/$',login_required(ProfesorCreate), name='profesor'),
     url(r'^aplicacion/nivel/$',login_required(NivelCreate.as_view()), name='nivel'),
     url(r'^aplicacion/nivel1/$',login_required(nivel1_new), name='nivel1'),
     url(r'^aplicacion/nivel2/$',login_required(nivel2_new), name='nivel2'),
@@ -24,6 +24,7 @@ urlpatterns=[
     url(r'^aplicacion/nueva/$',login_required(SolicitudCreate.as_view()), name='aplicacion_crear'),
 	url(r'^aplicacion/pdf/$',login_required(generar_pdf.as_view()), name="reporte"),
     url(r'^aplicacion/pdf_personal/(?P<pk>\d+)/$',login_required(generar_pdf_personal.as_view()), name="reporte_personal"),
+    url(r'^aplicacion/crear_usuario_profesor/$',login_required(UsersCreateView_profesor), name="crear_usuario_profesor"),
 
     url(r'^aplicacion/ver_notas/$',login_required(notas_filter), name="ver_notas"),
     url(r'^notificaciones/(?P<pk>\d+)/$',login_required(notificacion), name="notificacion"),

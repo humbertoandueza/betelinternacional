@@ -33,7 +33,7 @@
                               {% endif %} 
                               {% if user.is_superuser %}
                               <li class="nav-item">
-                                <a class="nav-link" href="{% url 'dato:profesor' %}">Añadir Profesor</a>
+                                <a class="nav-link" href="{% url 'dato:crear_usuario_profesor' %}">Añadir Profesor</a>
                               </li>
                               <li class="nav-item">
                                 <a class="nav-link" href="{% url 'dato:reporte' %}">reportes</a>
@@ -142,7 +142,7 @@
 
                         </div>
                         
-                         {% if user.is_superuser or  user.is_profesor or user.is_alumno and not user.is_inscripcion %}
+                         {% if user.is_superuser or  user.is_profesor and not user.is_inscripcion or user.is_alumno and not user.is_inscripcion %}
                             <img class="imgr" src="{% static 'assets/img/gif.gif'%}" alt="Nosotros" width="300" class="img-fluid my-1 mb-2 " style="margin-top: 50px;">
                             <center><div style="width: 700px; padding-bottom: 50px;">
                              <h2 style="color: #3c3c3c;">Bienvenido/a {% if user.is_superuser%} admin {% endif %}<strong>{{user.first_name}}</strong>
@@ -150,13 +150,24 @@
                            </h2></div ></center>
                             {% endif %}
                         
-                        {% if user.is_inscripcion %}
+                        {% if user.is_alumno and user.is_inscripcion %}
                             <img class="imgr" src="{% static 'assets/img/gif.gif'%}" alt="Nosotros" width="300" class="img-fluid my-1 mb-2 " style="margin-top: 50px;">
                             <center><div style="width: 700px; padding-bottom: 50px;">
                              <h2 style="color: #3c3c3c;">Bienvenido <strong>{{user.first_name}}</strong>
                             Por favor actualice sus datos  <strong>Personales</strong>
                            </h2></div >
                             <p class="lead"><a class="btn btn-primary btn-xl page-scroll" href="{% url 'dato:aplicacion_crear' %}">¡Actualizar Datos!</a></p>
+                       </center>
+
+                        {% endif %}
+
+                        {% if user.is_inscripcion and user.is_profesor %}
+                            <img class="imgr" src="{% static 'assets/img/gif.gif'%}" alt="Nosotros" width="300" class="img-fluid my-1 mb-2 " style="margin-top: 50px;">
+                            <center><div style="width: 700px; padding-bottom: 50px;">
+                             <h2 style="color: #3c3c3c;">Bienvenido profesor <strong>{{user.first_name}}</strong>
+                            Por favor actualice sus datos  <strong>Personales</strong>
+                           </h2></div >
+                            <p class="lead"><a class="btn btn-primary btn-xl page-scroll" href="{% url 'dato:profesor' %}">¡Actualizar Datos!</a></p>
                        </center>
 
                         {% endif %}

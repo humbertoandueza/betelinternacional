@@ -54,7 +54,7 @@ class Users(AbstractBaseUser, PermissionsMixin):
 
 	objects = UserManager()
 
-	USERNAME_FIELD = 'username'
+	USERNAME_FIELD = 'ci'
 	REQUIRED_FIELD = ['email']
 
 	def __str__(self): #si es python 2.7 es def __unicode__(self):

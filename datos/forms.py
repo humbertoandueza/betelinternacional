@@ -106,6 +106,7 @@ class ProfesorForm(forms.ModelForm):
 			'apellido_profesor',
 			'telefono_profesor',
 			'email_profesor',
+			'user',
 		]
 		widgets = {
             'cedula_profesor': forms.NumberInput(attrs={'placeholder': 'Cedula', 'class':'form-control', 'autocomplete':'off','oninput':'maxLengthCheck(this)','maxlength':'8','onKeyUp':'this.value=this.value.toUpperCase();'}),
@@ -113,6 +114,7 @@ class ProfesorForm(forms.ModelForm):
             'apellido_profesor': forms.TextInput(attrs={'placeholder': 'Apellido', 'class':'form-control', 'autocomplete':'off','onkeypress':'return text(event)','onKeyUp':'this.value=this.value.toUpperCase();'}),
             'telefono_profesor': forms.TextInput(attrs={'placeholder': 'Numero Celular', 'class':'form-control', 'autocomplete':'off','oninput':'maxLengthCheck(this)','min':'1','max':'9999999999','maxlength':'11'}),
             'email_profesor': forms.EmailInput(attrs={'placeholder': 'Email', 'class':'form-control', 'autocomplete':'off','onKeyUp':'this.value=this.value.toUpperCase();'}),
+            'user': forms.NumberInput(attrs={'placeholder': 'Cedula', 'class':'form-control', 'autocomplete':'off','oninput':'maxLengthCheck(this)','maxlength':'8','onKeyUp':'this.value=this.value.toUpperCase();'}),
 			
 		}
 

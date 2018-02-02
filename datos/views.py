@@ -9,6 +9,7 @@ from .forms import *
 from .models import *
 from django.contrib.auth.models import User
 from accounts.models import Users
+from accounts.forms import *
 from django.conf import settings
 from django.db.models import Count
 from django.template import RequestContext
@@ -231,11 +232,16 @@ class InscripcionCreate(CreateView):
 	form_class = InscripcionForm
 	success_url = reverse_lazy('dato:confirmar1')
 
-class ProfesorCreate(CreateView):
-	model = Profesor
-	template_name = 'aplicacion/profesor_form.html'
-	form_class = ProfesorForm
-	success_url = reverse_lazy('dato:app_inicio')
+def ProfesorCreate(request):
+	if request.method == 'POST':
+		form = ProfesorForm(request.POST)
+		if form.is_valid():
+			Users.objects.filter(ci=request.user.ci).update(is_inscripcion=False)
+			form.save()
+			return redirect('logout')
+	else:
+		form = ProfesorForm()
+	return render(request,'aplicacion/form_crear_profesor.html',{'form':form})
 
 class MateriaCreate(CreateView):
 	model = Materia
@@ -359,76 +365,15 @@ class SolicitudDelete(DeleteView):
 	success_url = reverse_lazy('dato:app_inicio')
 
 
-class ReportePersonasPDF(View):
-
-	def cabecera(self,pdf):
-	        #Utilizamos el archivo logo_django.png que está guardado en la carpeta media/imagenes
-	        archivo_imagen = '/home/humberto/betelinternacional/static/assets/img/logo1.png'
-	       	pdf.drawImage(archivo_imagen, 60, 750, width=80,height=80,preserveAspectRatio=True)
-	       	pdf.setFont("Helvetica", 16)
-	       	pdf.drawString(210, 790, u"Iglesia Bet-el Internacional")
-	       	pdf.setFont("Helvetica", 14)
-	       	pdf.drawString(160, 770, u"Reportes de personas Inscritas en la escuela de ")
-	       	pdf.drawString(230, 750, u"Formacion y Discipulado")
-	       	pdf.drawString(250, 720, u"1er Nivel")
-
-
-
-	def tabla(self,pdf,y):
-	        #Creamos una tupla de encabezados para neustra tabla
-	        encabezados = ('Cedula', 'Nombre', 'Apellido', 'Sexo')
-	        #Creamos una lista de tuplas que van a contener a las personas
-	        detalles = [(Persona.cedula, Persona.nombre, Persona.apellido, Persona.sexo) for Persona in Persona.objects.all()]
-	        if len(detalles) > 10:
-	        	buffer = BytesIO()
-	        	self.cabecera(pdf)
-
-	       		pdf = canvas.Canvas(buffer)
-
-	        	pdf.showPage()
-	        	pdf.write()
-
-	        	buffer.close()
-
-	        #Establecemos el tamaño de cada una de las columnas de la tabla
-	        detalle_orden = Table([encabezados] + detalles, colWidths=[2 * cm, 3 * cm, 3 * cm, 4 * cm])
-	        #Aplicamos estilos a las celdas de la tabla
-	        detalle_orden.setStyle(TableStyle([('ALIGN',(1,1),(1,1),'CENTER'),
-	     			('INNERGRID', (0,0), (-1,-1), 0.25, colors.black),
-                    ('BOX', (0,0), (-1,-1), 0.25, colors.black),]))
-	        #Establecemos el tamaño de la hoja que ocupará la tabla
-	        detalle_orden.wrapOn(pdf, 380, 580)
-	        #Definimos la coordenada donde se dibujará la tabla
-	        detalle_orden.drawOn(pdf, 70,y)
-
-	def get(self, request,*args, **kwargs):
-	        #Indicamos el tipo de contenido a devolver, en este caso un pdf
-	        response = HttpResponse(content_type='application/pdf')
-	        #La clase io.BytesIO permite tratar un array de bytes como un fichero binario, se utiliza como almacenamiento temporal
-	        buffer = BytesIO()
-	        #Canvas nos permite hacer el reporte con coordenadas X y Y
-	        pdf = canvas.Canvas(buffer)
-	        #Llamo al método cabecera donde están definidos los Persona que aparecen en la cabecera del reporte.
-	        self.cabecera(pdf)
-	        y = 300
-	        self.tabla(pdf, y)
-	        #Con show page hacemos un corte de página para pasar a la siguiente
-	        print (self.tabla)
-	        pdf.showPage()
-	        pdf.showPage()
-
-	        pdf.save()
-	        pdf = buffer.getvalue()
-	        buffer.close()
-	        response.write(pdf)
-	        return response
-
-"""
-def GeneratePdf(self,*args, **kwargs):
-	pdf = Persona
-    dato = {'pdf': pdf }
-    pdf2 = render_to_pdf('pdf/invoce.html',dato)
-    return HttpResponse(pdf2, content_type='application/pdf')"""
+def UsersCreateView_profesor(request,*args, **kwargs):
+	if request.method == 'POST':
+		form = UsersModelForm(request.POST)
+		if form.is_valid():
+			form.save()
+			return redirect('dato:app_inicio')
+	else:
+		form = UsersModelForm()
+	return render(request, 'aplicacion/form_create_profesor.html', {'form':form})
 
 class generar_pdf(View):
 	def _header_footer(self,canvas,doc):

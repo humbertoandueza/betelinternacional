@@ -31,13 +31,8 @@ urlpatterns = [
             name='Success_user_alumno'
     ),
 
-    # CREAR USUARIOS PROFESOR
     url(
-        r'^crear_usuario_profesor/$',
-        login_required(UsersCreateView_profesor.as_view()),
-        name='crear_usuario_profesor'
-    ), url(
-            r'^usuario_creado_profesor/$',
+        r'^usuario_creado_profesor/$',
             login_required(Success_user_profesor),
             name='Success_user_profesor'
     ),

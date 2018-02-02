@@ -77,7 +77,17 @@ WSGI_APPLICATION = 'aplicacion.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
+"""
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'db_school',
+        'USER': 'root',
+        'PASSWORD': '',
+    }
+}
 
+"""
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -87,6 +97,7 @@ DATABASES = {
         'HOST':'humberto.mysql.pythonanywhere-services.com',
     }
 }
+
 """
 DATABASES = {
     'default': {
@@ -158,10 +169,9 @@ EMAIL_HOST_USER = 'humbertoanduezaa@gmail.com'
 EMAIL_HOST_PASSWORD = '01051998a'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 #SESSION EXPIRED
-
+"""
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_COOKIE_AGE = 120 # set just 10 seconds to test
 SESSION_SAVE_EVERY_REQUEST = True
-
+"""
 #HTTPS
-SECURE_SSL_REDIRECT = True
