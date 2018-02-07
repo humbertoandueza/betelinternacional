@@ -76,47 +76,67 @@ def notas_filter(request):
 	inscripcion1 = get_object_or_404(Inscripcion,cedula_id=request.user.ci)
 	filtro = inscripcion1.id_nivel_id
 	materias = Materia.objects.filter(id_nivel_id=filtro)
-	print (materias)
-	if filtro == 1:
+	if len(materias) < 2:
+		print ("error")
+	else:
+		id_materia1 = materias[0]
+		id_materia2 = materias[1]
+		obtener_id1 = id_materia1.id_materia
+		obtener_id2 = id_materia2.id_materia
+
+		print ('id de la materia: ',id_materia1 ,'es : ',obtener_id1)
+		print ('id de la materia: ',id_materia2 ,'es : ',obtener_id2)
+	if filtro :
 		#calculo de notas y saber cuantas notas van cargadas en familia
-		notas = Notas.objects.filter(cedula_id=request.user.ci,id_materia_id=1)
+		notas = Notas.objects.filter(cedula_id=inscripcion1.id,id_materia_id=obtener_id1)
 		cantidad12 = len(notas)
+		print ('notas',cantidad12)
 		if cantidad12 != 0:
 
-			calculo = Notas.objects.filter(cedula_id=request.user.ci,id_materia_id=1).aggregate(total=Sum('nota_persona'))
+			calculo = Notas.objects.filter(cedula_id=inscripcion1.id,id_materia_id=obtener_id1).aggregate(total=Sum('nota_persona'))
 			print ('la cantidad de las notas cargadas en familia son ',cantidad12)
 			for p in calculo.items():
 				cantidad = (int(p[1]))
 			print ('la nota de familia es', cantidad)
-			if cantidad12 >= 9 and cantidad >= 7:
-				print ('aprobado')
+			
 		#calculo de notas y saber cuantas notas van cargadas en fundamento
-		notas1 = Notas.objects.filter(cedula_id=request.user.ci,id_materia_id=2)
+		notas1 = Notas.objects.filter(cedula_id=inscripcion1.id,id_materia_id=obtener_id2)
+		print ('notas23232', notas1)
 		cantidad13 = len(notas1)
 		if cantidad13:
-			calculo1 = Notas.objects.filter(cedula_id=request.user.ci,id_materia_id=2).aggregate(total=Sum('nota_persona'))
+			calculo1 = Notas.objects.filter(cedula_id=inscripcion1.id,id_materia_id=obtener_id2).aggregate(total=Sum('nota_persona'))
 			print ('la cantidad de las notas cargadas en fundameno son ',cantidad13)
 			for p in calculo1.items():
 				cantidad1 = (int(p[1]))
 			print ('la nota de fundamento es', cantidad1)
-			estatus = ''
-			if cantidad13 >= 9 and cantidad1 >= 7:
-				estatus = 'Aprobado'
-			elif cantidad13 >=9 and cantidad1 < 7:
-				estatus = 'Reprobado'
-			nota = Notas.objects.filter(cedula_id=request.user.ci)
-			return render(request, "aplicacion/notas_list.html", {'estatus':estatus,'inscripcion1':inscripcion1,"notas":nota,})
+		materia1 = id_materia1.nombre_materia
+		materia2 = id_materia2.nombre_materia
+		estatus1 = 'Indefinido'
+		if cantidad12 >= 9 and cantidad > 7:
+			estatus1 = 'Aprobado'
+		elif cantidad12 >=9 and cantidad <= 7:
+			estatus1 = 'Reprobado'
+		estatus = 'Indefinido'
+		if cantidad13 >= 9 and cantidad1 >7:
+			estatus = 'Aprobado'
+		elif cantidad13 >=9 and cantidad1 <= 6:
+			estatus = 'Reprobado'
+		nota = Notas.objects.filter(cedula_id=request.user.ci)
+		return render(request, "aplicacion/notas_list.html", {'cantidad12':cantidad12,'cantidad13':cantidad13, 'materia1':materia1,'materia2':materia2, 'estatus':estatus,'estat':estatus1,'inscripcion1':inscripcion1,"notas":notas,"notas1":notas1,})
 
-	nota = Notas.objects.filter(cedula_id=request.user.ci)
-
+	estatus = 'no defined'
 	return render(request, "aplicacion/notas_list.html", {'inscripcion1':inscripcion1,"notas":nota,})
 
 def nivel1_new(request):
-	nivel = Inscripcion.objects.filter(id_nivel_id=1)
-	nivel1 = len(Inscripcion.objects.filter(id_nivel_id=1))
-	print (nivel1)
 	filtro = Asigna_Materia.objects.get(profesor_id=request.user.ci)
-	print ('njksndkjs',filtro)
+	filtro1 = filtro.materia_id
+	materia = Materia.objects.get(id_materia=filtro1)
+	filtro2 = materia.id_nivel_id
+	print ('el nivel que esta dando clase es:  ',filtro2)
+
+	nivel = Inscripcion.objects.filter(id_nivel_id=filtro2)
+	nivel1 = len(Inscripcion.objects.filter(id_nivel_id=filtro2))
+	print (nivel1)
 	paginator = Paginator(nivel, 7)
 	page = request.GET.get("page", 1)
 	try:
@@ -138,74 +158,8 @@ def nivel1_new(request):
 		if len(nivel) == 0:
 			nivel = Inscripcion.objects.filter(cedula_id=query)
 		else:
-			return render(request,'aplicacion/nivel1.html', {'nivel1':nivel1,"filtro":filtro,"nivel":nivel})
-	return render(request,'aplicacion/nivel1.html', {'nivel1':nivel1,"filtro":filtro,"nivel":nivel})
-
-def nivel2_new(request):
-	nivel = Inscripcion.objects.filter(id_nivel_id=2)
-	nivel1 = len(Inscripcion.objects.filter(id_nivel_id=2))
-	print (nivel1)
-	filtro = Asigna_Materia.objects.get(profesor_id=request.user.ci)
-	print ('njksndkjs',filtro)
-	paginator = Paginator(nivel, 6)
-	page = request.GET.get("page", 1)
-	try:
-		nivel = paginator.page(page)
-	except PageNotAnInteger:
-		nivel = paginator.page(1)
-	except EmptyPage:
-		nivel = paginator.page(paginator.num_pages)
-	buscador = request.GET
-	#print (buscador)
-	if "q" in buscador:
-		query = request.GET["q"]
-		if query == "":
-			return redirect ('dato:nivel2')
-		#querys = (Q(cedula__icontains=query))
-		nivel = Inscripcion.objects.filter(cedula_id=query)
-		#print (nivel)
-
-		if len(nivel) == 0:
-			nivel = Inscripcion.objects.filter(cedula_id=query)
-		else:
-			return render(request,'aplicacion/nivel2.html', {'nivel1':nivel1,"filtro":filtro,"nivel":nivel})
-	return render(request,'aplicacion/nivel2.html', {'nivel1':nivel1,"filtro":filtro,"nivel":nivel})
-
-class nivel1(ListView):
-	model = Inscripcion
-	template_name = 'aplicacion/nivel1.html'
-	paginate_by= 2
-
-"""
-def notas(request):
-	buscador = request.GET
-	notas = Notas.objects.all()
-
-	if "q65323ndmbshdsdsytd4347" in buscador:
-		query = request.GET["q65323ndmbshdsdsytd43473"]
-		if query == "" or query == " ":
-			mensaje = "Ingrese cédula, nombre o apellido para q."
-		else:
-			if len(query) < 0:
-				mensaje= "Dato invalido."
-			else:
-				querys = (Q(cedula__cedula__icontains=query))
-				nota = Notas.objects.filter(querys)
-				if len(notas) == 0:
-					mensaje= "No hay resultados para la busqueda."
-					nota = Notas.objects.all()
-				else:
-					return render(request, "aplicacion/notas_list.html", {"notas":nota})
-
-	return render(request, "aplicacion/notas_list.html", {"notas":notas})
-"""
-class nivel2(ListView):
-	model = Inscripcion
-	template_name = 'aplicacion/nivel2.html'
-
-class nivel3(ListView):
-	model = Inscripcion
-	template_name = 'aplicacion/nivel3.html'
+			return render(request,'aplicacion/nivel1.html', {'filtro2':filtro2,'nivel1':nivel1,"filtro":filtro,"nivel":nivel})
+	return render(request,'aplicacion/nivel1.html', {'filtro2':filtro2,'nivel1':nivel1,"filtro":filtro,"nivel":nivel})
 
 class SolicitudListPro(ListView):
 	model = Persona
@@ -286,67 +240,68 @@ class NotaCreate(CreateView):
 
 def post_new(request,*args, **kwargs):
 	cedula = kwargs['pk']
-	#print (cedula1)
+	print (cedula)
 	if request.user.is_profesor:
 		filtro = Asigna_Materia.objects.get(profesor_id=request.user.ci)
 		var = filtro.materia_id
-	filtro2 = Materia.objects.get(id_materia=var)
-	var2= filtro2.id_nivel_id
-	print (var2)
-	#print (var)
-	nivel = Inscripcion.objects.filter(id_nivel_id=var2,cedula_id=cedula)
-	if nivel:
-		print ('djksdns')
+		filtro2 = Materia.objects.get(id_materia=var)
+		var2= filtro2.id_nivel_id
+		print (var2)
+		#print (var)
+		nivel = Inscripcion.objects.get(id_nivel_id=var2,cedula_id=cedula)
+		if nivel:
+			print ('djksdns')
+		else:
+			print ('error')
+
+
+		#print(nivel)
+		filtro1  = Persona.objects.filter(cedula=cedula)
+		#print (filtro1)
+		nota = Notas.objects.filter(id_materia_id=var,cedula_id=cedula)
+		calculo = Notas.objects.filter(cedula_id=cedula).aggregate(total=Sum('nota_persona'))
+		#print (nota)
+		nota_total = Notas.objects.filter(cedula_id=cedula)
+		carga_total = len(nota_total)
+		nota3 = len(nota)
+		nota4 = nota3 + 1
+		if nota3 != 0:
+			for p in calculo.items():
+				cantidad = (int(p[1]))
+			print ('Nota total', cantidad)
+			if cantidad >= 14 and carga_total >= 18 :
+				Inscripcion.objects.filter(pk=cedula).update(estatus=True)
+			elif cantidad <14 and carga_total > 17 :
+				Inscripcion.objects.filter(pk=cedula).update(estatus=False)
+		print (' cantidad de notas cargadas, ',carga_total)
+		#print (nota)
+		#print (filtro1)
+		if request.method == 'POST':
+			print ('LOS VALORES RECIBIDOS', request.POST)
+			form = NotasForm(request.POST)
+			if form.is_valid():
+				form.save()
+				noto = {
+					'titulo': 'Carga de nota',
+					'descripcion': 'Se le ha cargado una nueva nota',
+					'estatus': False,
+					'user': cedula,
+				}
+				notificaciones =NotificacionesForm(noto)
+				print (noto)
+				notificaciones.save()
+				#print (notificaciones)
+				return redirect('dato:nivel1')
+		else:
+			form = NotasForm()
+		return render(request, 'aplicacion/nota_form.html', {'var2':var2,'nivel':nivel, 'nota4':nota4,'filtro1':filtro1,'nota3':nota3,'form':form,'cedula':cedula,'filtro':filtro})
 	else:
-		print ('error')
-
-
-	#print(nivel)
-	filtro1  = Persona.objects.filter(cedula=cedula)
-	#print (filtro1)
-	nota = Notas.objects.filter(id_materia_id=filtro.id,cedula_id=cedula)
-	calculo = Notas.objects.filter(cedula_id=cedula).aggregate(total=Sum('nota_persona'))
-	#print (nota)
-	nota_total = Notas.objects.filter(cedula_id=cedula)
-	carga_total = len(nota_total)
-	nota3 = len(nota)
-	nota4 = nota3 + 1
-	if nota3 != 0:
-		for p in calculo.items():
-			cantidad = (int(p[1]))
-		print ('Nota total', cantidad)
-		if cantidad >= 14 and carga_total >= 18 :
-			Inscripcion.objects.filter(pk=cedula).update(estatus=True)
-		elif cantidad <14 and carga_total > 17 :
-			Inscripcion.objects.filter(pk=cedula).update(estatus=False)
-	print (' cantidad de notas cargadas, ',carga_total)
-	#print (nota)
-	#print (filtro1)
-	if request.method == 'POST':
-		print ('LOS VALORES RECIBIDOS', request.POST)
-		form = NotasForm(request.POST)
-		if form.is_valid():
-			form.save()
-			noto = {
-				'titulo': 'Carga de nota',
-				'descripcion': 'Se le ha cargado una nueva nota',
-				'estatus': False,
-				'user': cedula,
-			}
-			notificaciones =NotificacionesForm(noto)
-			print (noto)
-			notificaciones.save()
-			#print (notificaciones)
-			return redirect('dato:nivel1')
-	else:
-		form = NotasForm()
-	return render(request, 'aplicacion/nota_form.html', {'var2':var2,'nivel':nivel, 'nota4':nota4,'filtro1':filtro1,'nota3':nota3,'form':form,'cedula':cedula,'filtro':filtro})
-
+		return redirect('dato:app_inicio')
 class SolicitudCreate(CreateView):
 	model = Persona
 	template_name = 'aplicacion/aplicacion_form1.html'
 	form_class = PersonaForm
-	success_url = reverse_lazy('dato:inscripcion')
+	success_url = reverse_lazy('accounts:succesfull')
 
 
 	def get_context_data(self, **kwargs):
@@ -357,10 +312,18 @@ class SolicitudCreate(CreateView):
 
 	def post(self, request, *args, **kwargs):
 		self.object = self.get_object
+		cedula = (request.POST['cedula'])
+		print (cedula)
 		form = self.form_class(request.POST)
 		if form.is_valid():
-			solicitud = form.save()
-			solicitud.save()
+			Users.objects.filter(ci=cedula).update(is_inscripcion=False)
+			form.save()
+			inscripcion = {
+					'cedula': cedula,
+					'id_nivel': 1,
+				}
+			inscripciones =InscripcionForm(inscripcion)
+			inscripciones.save()
 
 			return HttpResponseRedirect(self.get_success_url())
 		else:

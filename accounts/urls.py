@@ -21,7 +21,7 @@ urlpatterns = [
         name='crear_usuario_alumno'
     ), 
     url(
-        r'^succesfull/(?P<pk>[0-9]+)/$',
+        r'^succesfull/$',
         login_required(Estatus.as_view()),
         name='succesfull'
     ),

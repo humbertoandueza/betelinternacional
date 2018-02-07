@@ -110,22 +110,7 @@
                               <li class="nav-item">
                                 <a class="nav-link active" href="{% url 'dato:app_inicio' %}">Inicio</a>
                               </li>
-                                  {% if user.is_profesor %}
-
-                              <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" data-toggle="dropdown"
-                                   href="#!" role="button" aria-haspopup="true" aria-expanded="false">
-                                   Niveles</a>
-                                <div class="dropdown-menu">
-                                  {% if user.is_superuser %}
-                                  <a class="dropdown-item" href="{% url 'dato:nivel' %}"">Añadir Niveles </a>
-                                  {% endif %}
-                                  <a class="dropdown-item" href="{% url 'dato:nivel1' %}"">Nivel 1 </a>
-                                  <a class="dropdown-item" href="{% url 'dato:nivel2' %}"">Nivel 2 </a>
-                                  <a class="dropdown-item" href="{% url 'dato:nivel3' %}"">Nivel 3 </a>
-                                </div>
-                              </li>
-                                  {% endif %}
+                                
                               {% if user.is_superuser %}
                               <li class="nav-item">
                                 <a class="nav-link" href="{% url 'dato:reporte' %}">reportes</a>
@@ -160,7 +145,7 @@
                               <br>
                               <br>
 
-                            <div class="datos col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3" style="color:#010101; background: #fff; box-shadow: 0px 0px 6px 1px;">
+                            <div class="datos col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 hidden" style="color:#010101; background: #fff; box-shadow: 0px 0px 6px 1px;">
                               {% for datos in filtro1 %}
                                 <div class="row">
                                   <div class="col-md-6">
@@ -197,11 +182,11 @@
                                                
                                             </span> 
                                             <!--{{form.cedula}}-->
-                                            <input type="number" value="{{cedula}}" name="cedula" class="form-control" autocomplete="off" onkeyup="this.value=this.value.toUpperCase();" oninput="maxLengthCheck(this)" required="" maxlength="8" id="id_cedula" placeholder="Cedula" readonly="readonly">
+                                            <input type="number" value="{{nivel.id}}" name="cedula" class="form-control" autocomplete="off" onkeyup="this.value=this.value.toUpperCase();" oninput="maxLengthCheck(this)" required="" maxlength="8" id="id_cedula" placeholder="Cedula" readonly="readonly">
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group hidden">
+                                <div class="form-group hidden ">
                                     <div class="col-sm-6 col-sm-offset-3" data-toggle="tooltip" data-placement="top" title="Seleccione la materia">   
                                         <div class="input-group">   
                                                 <span class="input-group-addon">
@@ -225,7 +210,21 @@
                                         </div>
                                     </div>
                                 </div>
-                                    <button class="btn btn-danger"><a style="color:#fff;" href="javascript:window.history.back();">Cancelar</a></button>
+                                {% if form.errors %}
+                                    {% for field in form %}
+                                        {% for error in field.errors %}
+                                            <div class="alert alert-danger">
+                                                <strong>{{ error }}</strong>
+                                            </div>
+                                        {% endfor %}
+                                    {% endfor %}
+                                    {% for error in form.non_field_errors %}
+                                        <div class="alert alert-danger">
+                                            <strong>{{ error }}</strong>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                                    <button class="btn btn-danger"><a style="color:#fff;" href="{% url 'dato:nivel1' %}">Cancelar</a></button>
                                     
                                     <button type="submit"  class="btn btn-submit">Cargar</button>
 
@@ -247,7 +246,7 @@
                             {% endfor %}
                               
                             </div>
-                            <button class="btn btn-danger"><a style="color:#fff;" href="javascript:window.history.back();">&laquo; Volver Atrás</a></button>
+                            <button class="btn btn-danger"><a style="color:#fff;" href="{% url 'dato:nivel1' %}">&laquo; Volver Atrás</a></button>
                             <br>
                             <br>
 

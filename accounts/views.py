@@ -88,11 +88,9 @@ class UsersCreateView_alumno(CreateView):
     template_name = 'aplicacion/form_create_alumno.html'
     success_url = reverse_lazy('accounts:Success_user_alumno')
 
-class Estatus(UpdateView):
+class Estatus(ListView):
     model = Users
-    form_class = UsersUpdateModelForm
     template_name = 'aplicacion/estatuschange.html'
-    success_url = reverse_lazy('logout')
 
 def Success_user_alumno(request):
     return render(request, 'aplicacion/succes_alumno.html')

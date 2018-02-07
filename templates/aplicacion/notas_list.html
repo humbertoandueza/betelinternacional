@@ -28,24 +28,7 @@
                             <ul class="nav nav-tabs">
                               <li class="nav-item">
                                 <a class="nav-link active" href="{% url 'dato:app_inicio' %}">Inicio</a>
-                              </li>
-                                  {% if user.is_profesor %}
-
-                              <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" data-toggle="dropdown"
-                                   href="#!" role="button" aria-haspopup="true" aria-expanded="false">
-                                   Niveles</a>
-                                <div class="dropdown-menu">
-                                  {% if user.is_superuser %}
-                                  <a class="dropdown-item" href="{% url 'dato:nivel' %}"">Añadir Niveles </a>
-                                  {% endif %}
-                                  <a class="dropdown-item" href="{% url 'dato:nivel1' %}"">Nivel 1 </a>
-                                  <a class="dropdown-item" href="{% url 'dato:nivel2' %}"">Nivel 2 </a>
-                                  <a class="dropdown-item" href="{% url 'dato:nivel3' %}"">Nivel 3 </a>
-                                </div>
-                              </li>
-                                  {% endif %}
-                              {% if user.is_superuser %}
+                              </li>                              {% if user.is_superuser %}
                               <li class="nav-item">
                                 <a class="nav-link" href="{% url 'dato:reporte' %}">reportes</a>
                               </li>
@@ -70,29 +53,30 @@
                         </div>
 {% if user.is_alumno %}                            
 <center>
-<div class="col-sm-12">                    
-<p style="font-size: 36px; padding-top: 50px; padding-bottom: 70px;">Bienvenido {{user.first_name}}</p>
-<p>Lista de Todos los alumnos Incritos en el nivel 1</p>
+<div class="col-sm-12">
+<div style="color:#3c3c3c !important; margin-bottom: 120px;">                  
+<h2 style="color:#3c3c3c !important;">Mis notas</h2>
+</div>
 <div class="col-sm-2 col-sm-offset-1">                    
 <table class="table table-bordered">
   <tr>
-    <th style="width: 200px;">Materia</th>
+    <th style="width: 200px; background-color: #7b7b7b36;">Materia</th>
   </tr>
 </table > 
 </div>
 <div class="col-sm-6">                    
 <table class="table table-bordered">
   <tr>
-    <th>1</th>
-    <th>2</th>
-    <th>3</th>
-    <th>4</th>
-    <th>5</th>
-    <th>6</th>
-    <th>7</th>
-    <th>8</th>
-    <th>9</th>
-    <th style="padding:4px;padding-top:8px; ">10</th>
+    <th style="background-color: #7b7b7b36;">1</th>
+    <th style="background-color: #7b7b7b36;">2</th>
+    <th style="background-color: #7b7b7b36;">3</th>
+    <th style="background-color: #7b7b7b36;">4</th>
+    <th style="background-color: #7b7b7b36;">5</th>
+    <th style="background-color: #7b7b7b36;">6</th>
+    <th style="background-color: #7b7b7b36;">7</th>
+    <th style="background-color: #7b7b7b36;">8</th>
+    <th style="background-color: #7b7b7b36;">9</th>
+    <th style="padding:4px;padding-top:8px; background-color: #7b7b7b36;">10</th>
 
   </tr>
 </table > 
@@ -100,7 +84,7 @@
 <div class="col-sm-2">
   <table class="table table-bordered">
     <tr>
-      <th>Estatus</th>
+      <th style="background-color: #7b7b7b36;">Estatus</th>
     </tr>
   </table>
 </div>
@@ -110,18 +94,22 @@
 <div class="col-sm-2 col-sm-offset-1">                    
 <table class="table table-bordered">
   <tr>
-    <th style="width: 200px;">Familia</th>
+    <th style="width: 200px;">{{materia1}}</th>
   </tr>
 </table > 
 </div>
 <div class="col-sm-6">                    
 <table class="table table-bordered">
   
-
+  {% if cantidad12 == 0 %}
+  <tr>
+    <th>No hay notas cargadas</th>
+  {% else %}
+  </tr>
   <tr>
     {% for persona in notas %}
-    {% if persona.id_materia.nombre_materia == "Familia" %}
-    <th style="float: left;padding-left: 16px;padding-right:17px; border-left:none; border-bottom:none; border-top:none; ">
+    {% if persona.id_materia.nombre_materia == materia1 %}
+    <th style="float: left;padding-left: 16px;padding-right:16.7px; border-left:none; border-bottom:none; border-top:none; ">
       {% if persona.nota_persona == '1' %}
         A
       {% endif %}
@@ -134,7 +122,19 @@
     {% endif %}
     {% endfor %}
   </tr>
+  {% endif %}
 </table>
+</div>
+<div class="col-sm-2">
+  <table class="table table-bordered">
+    <tr>
+      {% if estat == 'Aprobado' %}
+        <th style="background-color: lime;">{{ estat }}</th>
+      {% else%}
+        <th style="background-color: red; color: #fff;">{{ estat }}</th>
+      {% endif %}
+    </tr>
+  </table>
 </div>
 </div>
 
@@ -142,19 +142,22 @@
 <div class="col-sm-2 col-sm-offset-1">                    
 <table class="table table-bordered">
   <tr>
-    <th style="width: 200px;">Fundamento</th>
+    <th style="width: 200px;">{{materia2}}</th>
   </tr>
 </table > 
 </div>
 <div class="col-sm-6">                    
 <table class="table table-bordered">
   
-
+  {% if cantidad13 == 0 %}
   <tr>
-    {% for persona in notas %}
-    {% if persona.id_materia.nombre_materia == "Fundamento" %}
+    <th>No hay notas cargadas</th>
+  {% else %}
+  <tr>
+    {% for persona in notas1 %}
+    {% if persona.id_materia.nombre_materia == materia2 %}
 
-    <th style="float: left;padding-left: 16px;padding-right:17px; border-left:none; border-bottom:none; border-top:none;  ">
+    <th style="float: left;padding-left: 16px;padding-right:16.8px; border-left:none; border-bottom:none; border-top:none;  ">
       {% if persona.nota_persona == '1' %}
         A
       {% endif %}
@@ -166,16 +169,19 @@
     {% endif %}
     {% endfor %}
   </tr>
+  {% endif %}
 </table>
 </div>
 <div class="col-sm-2">
-  {% if not estatus == '' %}
   <table class="table table-bordered">
     <tr>
-      <th>{{ estatus }}</th>
+      {% if estatus == 'Aprobado' %}
+        <th style="background-color: lime;">{{ estatus }}</th>
+      {% else%}
+        <th style="background-color: red; color: #fff;">{{ estatus }}</th>
+      {% endif %}
     </tr>
   </table>
-  {% endif %}
 </div>
 </div>
 

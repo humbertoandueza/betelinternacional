@@ -86,13 +86,10 @@ class InscripcionForm(forms.ModelForm):
 		model = Inscripcion
 		fields= [
 			'cedula',
-			'cedula1',
 			'id_nivel',
 		]
 		widgets = {
-            'cedula1': forms.NumberInput(attrs={'placeholder': 'Cedula', 'class':'form-control', 'autocomplete':'off','oninput':'maxLengthCheck(this)','maxlength':'8','onKeyUp':'this.value=this.value.toUpperCase();'}),
             'cedula': forms.NumberInput(attrs={'placeholder': 'Cedula', 'class':'form-control', 'autocomplete':'off','oninput':'maxLengthCheck(this)','maxlength':'8','onKeyUp':'this.value=this.value.toUpperCase();'}),
-			'id_nivel': forms.Select(attrs={'class':'form-control', 'autocomplete':'off','onKeyUp':'this.value=this.value.toUpperCase();'}),
 			#'id_nivel': forms.TextInput(attrs={'value':'1','class':'form-control','readonly':'readonly'}),
 		}
 
