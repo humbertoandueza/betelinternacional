@@ -82,19 +82,13 @@ class Nivel(models.Model):
 		return str(self.nivel)
 
 class Inscripcion(models.Model):
-	cedula1 = models.IntegerField(primary_key=True)
 	cedula = models.ForeignKey(Persona)
 	id_nivel = models.ForeignKey(Nivel)
 	lapso_ano = models.DateField(auto_now_add=True)
 	estatus = models.NullBooleanField()
 
-	def save(self, *args, **kwargs):
-		if self.cedula1:
-			self.cedula1 = str(self.cedula)
-			super(Inscripcion, self).save(*args, **kwargs)
-
 	def __str__(self):
-		return str(self.cedula1)
+		return str(self.id)
 
 
 class Profesor(models.Model):

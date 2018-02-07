@@ -84,26 +84,27 @@ def notas_filter(request):
 		obtener_id1 = id_materia1.id_materia
 		obtener_id2 = id_materia2.id_materia
 
-		print ('id de la materia: ',id_materia1 ,obtener_id1)
-		print ('id de la materia: ',id_materia2 ,obtener_id2)
+		print ('id de la materia: ',id_materia1 ,'es : ',obtener_id1)
+		print ('id de la materia: ',id_materia2 ,'es : ',obtener_id2)
 	if filtro :
 		#calculo de notas y saber cuantas notas van cargadas en familia
-		notas = Notas.objects.filter(cedula_id=request.user.ci,id_materia_id=obtener_id1)
+		notas = Notas.objects.filter(cedula_id=inscripcion1.id,id_materia_id=obtener_id1)
 		cantidad12 = len(notas)
 		print ('notas',cantidad12)
 		if cantidad12 != 0:
 
-			calculo = Notas.objects.filter(cedula_id=request.user.ci,id_materia_id=obtener_id1).aggregate(total=Sum('nota_persona'))
+			calculo = Notas.objects.filter(cedula_id=inscripcion1.id,id_materia_id=obtener_id1).aggregate(total=Sum('nota_persona'))
 			print ('la cantidad de las notas cargadas en familia son ',cantidad12)
 			for p in calculo.items():
 				cantidad = (int(p[1]))
 			print ('la nota de familia es', cantidad)
 			
 		#calculo de notas y saber cuantas notas van cargadas en fundamento
-		notas1 = Notas.objects.filter(cedula_id=request.user.ci,id_materia_id=obtener_id2)
+		notas1 = Notas.objects.filter(cedula_id=inscripcion1.id,id_materia_id=obtener_id2)
+		print ('notas23232', notas1)
 		cantidad13 = len(notas1)
 		if cantidad13:
-			calculo1 = Notas.objects.filter(cedula_id=request.user.ci,id_materia_id=obtener_id2).aggregate(total=Sum('nota_persona'))
+			calculo1 = Notas.objects.filter(cedula_id=inscripcion1.id,id_materia_id=obtener_id2).aggregate(total=Sum('nota_persona'))
 			print ('la cantidad de las notas cargadas en fundameno son ',cantidad13)
 			for p in calculo1.items():
 				cantidad1 = (int(p[1]))
@@ -121,7 +122,7 @@ def notas_filter(request):
 		elif cantidad13 >=9 and cantidad1 <= 6:
 			estatus = 'Reprobado'
 		nota = Notas.objects.filter(cedula_id=request.user.ci)
-		return render(request, "aplicacion/notas_list.html", {'cantidad12':cantidad12,'cantidad13':cantidad13, 'materia1':materia1,'materia2':materia2, 'estatus':estatus,'estat':estatus1,'inscripcion1':inscripcion1,"notas":nota,})
+		return render(request, "aplicacion/notas_list.html", {'cantidad12':cantidad12,'cantidad13':cantidad13, 'materia1':materia1,'materia2':materia2, 'estatus':estatus,'estat':estatus1,'inscripcion1':inscripcion1,"notas":notas,"notas1":notas1,})
 
 	estatus = 'no defined'
 	return render(request, "aplicacion/notas_list.html", {'inscripcion1':inscripcion1,"notas":nota,})
@@ -239,7 +240,7 @@ class NotaCreate(CreateView):
 
 def post_new(request,*args, **kwargs):
 	cedula = kwargs['pk']
-	#print (cedula1)
+	print (cedula)
 	if request.user.is_profesor:
 		filtro = Asigna_Materia.objects.get(profesor_id=request.user.ci)
 		var = filtro.materia_id
@@ -247,7 +248,7 @@ def post_new(request,*args, **kwargs):
 		var2= filtro2.id_nivel_id
 		print (var2)
 		#print (var)
-		nivel = Inscripcion.objects.filter(id_nivel_id=var2,cedula_id=cedula)
+		nivel = Inscripcion.objects.get(id_nivel_id=var2,cedula_id=cedula)
 		if nivel:
 			print ('djksdns')
 		else:
@@ -300,7 +301,7 @@ class SolicitudCreate(CreateView):
 	model = Persona
 	template_name = 'aplicacion/aplicacion_form1.html'
 	form_class = PersonaForm
-	success_url = reverse_lazy('dato:inscripcion')
+	success_url = reverse_lazy('accounts:succesfull')
 
 
 	def get_context_data(self, **kwargs):
@@ -311,10 +312,18 @@ class SolicitudCreate(CreateView):
 
 	def post(self, request, *args, **kwargs):
 		self.object = self.get_object
+		cedula = (request.POST['cedula'])
+		print (cedula)
 		form = self.form_class(request.POST)
 		if form.is_valid():
-			solicitud = form.save()
-			solicitud.save()
+			Users.objects.filter(ci=cedula).update(is_inscripcion=False)
+			form.save()
+			inscripcion = {
+					'cedula': cedula,
+					'id_nivel': 1,
+				}
+			inscripciones =InscripcionForm(inscripcion)
+			inscripciones.save()
 
 			return HttpResponseRedirect(self.get_success_url())
 		else:
