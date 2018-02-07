@@ -7,96 +7,93 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm-10 col-sm-offset-1 col-md-10 col-lg-8 col-lg-offset-2 form-box" >
-                       
-        
+
+
                         <form role="form" id="form" action="" method="post" class="f1" autocomplete="off">
                          <div>
                                                     <div id="form" class="fixed-top"  >
-                        
+
                             <ul class="nav nav-tabs">
                               <li style="float: right;">
                                 <a  href="{% url 'logout' %}">Salir</a></nav>
-                                
+
                               </li>
                             </ul>
                         </div>
                             <h3 style="color:#3f9cf3; padding: 20px">Crear Usuario Profesor</h3>
                         </div>
-                            {% csrf_token %}    
+                            {% csrf_token %}
                             <fieldset>
                             <div class="form-horizontal">
                                 <div class="form-group">
-                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Ingrese su Cedula">   
-                                        <div class="input-group">   
+                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Ingrese su Cedula">
+                                        <div class="input-group">
                                                 <span class="input-group-addon">
                                                 <i class="fa fa-address-card-o" id="icon" aria-hidden="true"></i>
-                                               
-                                            </span> 
+
+                                            </span>
                                             <input type="number" name="cedula_profesor" class="form-control" autocomplete="off" required="" value="{{request.user.ci}}" oninput="maxLengthCheck(this)" onkeyup="this.value=this.value.toUpperCase();" id="id_cedula_profesor" placeholder="Cedula" maxlength="8" readonly="readonly">
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div class="form-group">
-                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Ingrese su Nombre">   
-                                        <div class="input-group">   
+                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Ingrese su Nombre">
+                                        <div class="input-group">
                                                 <span class="input-group-addon">
                                                 <i class="fa fa-address-card-o" id="icon" aria-hidden="true"></i>
-                                               
-                                            </span> 
+
+                                            </span>
                                             <input type="text" name="nombre_profesor" class="form-control" autocomplete="off" required="" value="{{request.user.first_name}}" onkeypress="return text(event)" onkeyup="this.value=this.value.toUpperCase();" id="id_nombre_profesor" placeholder="Nombre" maxlength="20">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Ingrese su Apellido">   
-                                        <div class="input-group">   
+                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Ingrese su Apellido">
+                                        <div class="input-group">
                                                 <span class="input-group-addon">
                                                 <i class="fa fa-address-card-o" id="icon" aria-hidden="true"></i>
-                                               
-                                            </span> 
+
+                                            </span>
                                             <input type="text" value="{{request.user.last_name}}" name="apellido_profesor" class="form-control" autocomplete="off" required="" onkeypress="return text(event)" onkeyup="this.value=this.value.toUpperCase();" id="id_apellido_profesor" placeholder="Apellido" maxlength="20">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Ingrese su Numero de celular">   
-                                        <div class="input-group">   
+                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Ingrese su Numero de celular">
+                                        <div class="input-group">
                                                 <span class="input-group-addon">
                                                 <i class="fa fa-address-card-o" id="icon" aria-hidden="true"></i>
-                                               
-                                            </span> 
+
+                                            </span>
                                         <input type="text" name="telefono_profesor" class="form-control" autocomplete="off" oninput="maxLengthCheck(this)" min="1" required="" id="id_telefono_profesor" placeholder="Numero Celular" maxlength="11" max="9999999999">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Ingrese su Correo">   
-                                        <div class="input-group">   
+                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Ingrese su Correo">
+                                        <div class="input-group">
                                                 <span class="input-group-addon">
                                                 <i class="fa fa-address-card-o" id="icon" aria-hidden="true"></i>
-                                               
-                                            </span> 
+
+                                            </span>
                                             <input type="number" name="user" onkeyup="this.value=this.value.toUpperCase();" oninput="maxLengthCheck(this)" id="id_user" required="" value="{{request.user.ci}}" autocomplete="off" maxlength="8" placeholder="Cedula" class="hidden form-control">
                                             <input type="email" name="email_profesor" class="form-control" value="{{request.user.email}}" readonly="readonly" autocomplete="off" required="" onkeyup="this.value=this.value.toUpperCase();" id="id_email_profesor" placeholder="Email" maxlength="254">
-                                            <div class="hidden">
-                                            {{form.estatus}}
-                                            </div>
                                         </div>
 
                                     </div>
                                 </div>
                             </div>
-                                <br>    
+                                <br>
                                 <div class="f1-buttons">
                                     <button type="submit"  class="btn btn-submit">Actualizar</button>
                                 </div>
                             </fieldset>
-                        
+
                         </form>
                     </div>
                 </div>
-                    
+
             </div>
         </div>
 {% endblock %}
