@@ -11,9 +11,7 @@ urlpatterns=[
     url(r'^aplicacion/inscripciones/$',login_required(InscripcionCreate.as_view()), name='inscripcion'),
     url(r'^aplicacion/profesor/$',login_required(ProfesorCreate), name='profesor'),
     url(r'^aplicacion/nivel/$',login_required(NivelCreate.as_view()), name='nivel'),
-    url(r'^aplicacion/nivel1/$',login_required(nivel1_new), name='nivel1'),
-    url(r'^aplicacion/nivel2/$',login_required(nivel2_new), name='nivel2'),
-    url(r'^aplicacion/nivel3/$',login_required(nivel3.as_view()), name='nivel3'),
+    url(r'^aplicacion/nivel_ver/$',login_required(nivel1_new), name='nivel1'),
     url(r'^aplicacion/confirmar/$',login_required(ConfirmarInscripcion), name='confirmar1'),
 
     url(r'^aplicacion/editar/(?P<pk>\d+)/$', login_required(SolicitudUpdate.as_view()), name='aplicacion_editar'),

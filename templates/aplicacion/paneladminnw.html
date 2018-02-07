@@ -60,42 +60,11 @@
                               {% endif %}
                               {% if user.is_profesor %}
                               {% for filtros in filtro%}
-                                  {% if filtros.materia.id_nivel_id == 1  %}
                                     <li class="nav-item">
                                       <a class="nav-link" href="{% url 'dato:nivel1' %}">Estudiantes</a>
                                     </li>
-                                  {% endif %}
                               {% endfor %}
-                              {% for filtros in filtro%}
-                                  {% if filtros.materia.id_nivel_id == 2  %}
-                                    <li class="nav-item">
-                                      <a class="nav-link" href="{% url 'dato:nivel2' %}">Estudiantes</a>
-                                    </li>
-                                  {% endif %}
-                              {% endfor %}
-                              {% for filtros in filtro%}
-                                  {% if filtros.materia.id_nivel_id == 3  %}
-                                    <li class="nav-item">
-                                      <a class="nav-link" href="{% url 'dato:nivel3' %}">Estudiantes</a>
-                                    </li>
-                                  {% endif %}
-                              {% endfor %}    
-                              
-                              <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" data-toggle="dropdown"
-                                   href="#!" role="button" aria-haspopup="true" aria-expanded="false">
-                                   Niveles</a>
-                                <div class="dropdown-menu">
-                                   
-                                  <a class="dropdown-item" href="{% url 'dato:nivel2' %}"">Nivel 2 </a>
-                                  <a class="dropdown-item" href="{% url 'dato:nivel3' %}"">Nivel 3 </a>
-                                </div>
-                              </li>
-                                   
-                              
-                                
-                              
-                                  {% endif %}
+                              {% endif %}
                               {% if user.is_profesor and not user.is_superuser %}               
                               {% endif %}
                               <li style="float: right;">
@@ -164,7 +133,7 @@
                          {% if user.is_superuser or  user.is_profesor and not user.is_inscripcion or user.is_alumno and not user.is_inscripcion %}
                             <img class="imgr" src="{% static 'assets/img/gif.gif'%}" alt="Nosotros" width="300" class="img-fluid my-1 mb-2 " style="margin-top: 50px;">
                             <center><div style="width: 700px; padding-bottom: 50px;">
-                             <h2 style="color: #3c3c3c;">Bienvenido/a {% if user.is_superuser%} admin {% endif %}<strong>{{user.first_name}}</strong>
+                             <h2 style="color: #3c3c3c;">Bienvenido/a {% if user.is_superuser%} admin {% endif %} {% if user.is_profesor and not user.is_superuser %} profesor {% endif %}<strong>{{user.first_name}}</strong>
                             al panel del admin de la escuela de <strong>formación</strong> y discipulado
                            </h2></div ></center>
                             {% endif %}

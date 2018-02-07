@@ -32,22 +32,7 @@
                               <li class="nav-item">
                                 <a class="nav-link active" href="{% url 'dato:app_inicio' %}">Inicio</a>
                               </li>
-                                  {% if user.is_profesor %}
-
-                              <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" data-toggle="dropdown"
-                                   href="#!" role="button" aria-haspopup="true" aria-expanded="false">
-                                   Niveles</a>
-                                <div class="dropdown-menu">
-                                  {% if user.is_superuser %}
-                                  <a class="dropdown-item" href="{% url 'dato:nivel' %}"">Añadir Niveles </a>
-                                  {% endif %}
-                                  <a class="dropdown-item" href="{% url 'dato:nivel1' %}"">Nivel 1 </a>
-                                  <a class="dropdown-item" href="{% url 'dato:nivel2' %}"">Nivel 2 </a>
-                                  <a class="dropdown-item" href="{% url 'dato:nivel3' %}"">Nivel 3 </a>
-                                </div>
-                              </li>
-                                  {% endif %}
+                                
                               {% if user.is_superuser %}
                               <li class="nav-item">
                                 <a class="nav-link" href="{% url 'dato:reporte' %}">reportes</a>
@@ -75,9 +60,7 @@
                             </ul>
                         </div>
                             
-{% if filtro.materia.id_nivel_id == 1  %} 
 <br>
-{% if nivel %}
 <div class="row">
 <div class="col-sm-4">
 <p>Cantidad de Alumnos Inscritos: {{nivel1}}</p>
@@ -98,7 +81,7 @@
 <div class="col-md-offset-2 col-sm-offset-2" style="width: 100%; margin-left: auto; padding: 15px !important; padding-top: 20px;">
   <div class="col-md-6 col-md-offset-3">
 <p style="font-size: 36px;">Bienvenido {{user.first_name}}</p>
-<p>Lista de Todos los alumnos Incritos en el nivel 1</p>
+<p>Lista de Todos los alumnos Incritos en el nivel {{filtro2}}</p>
   </div>
 <center>
   <div class="ba col-md-10 col-md-offset-1" style="background: #fff; padding-top:50px;  margin-bottom: 50px; box-shadow: 0px 0px 6px 1px;">
@@ -121,7 +104,6 @@
 		
 		<tr>
 		{% for persona in nivel %}
-      {% if persona.id_nivel.nivel == 'I' %}
     <td>  {{ forloop.counter }}</td>
 				<td>{{ persona.cedula.cedula }}</td>
 				<td>{{ persona.cedula.nombre }}</td>
@@ -132,7 +114,6 @@
           <a class="btn btn-primary" href="{% url 'dato:nota' pk=persona.cedula %}" >Cargar Nota</a>
           <a class="btn btn-warning" href="#" >Ver Notas</a>
 			</td>
-		{% endif %}
 		</tr>
 
 
@@ -175,25 +156,6 @@
     </div> 
 </div>
 
-{% else %}
-<div class="top-content">
-            <div class="container">
-                <div class="row">
-
-                    <div class="col-sm-12 col-md-12  col-lg-12 form- f11" style="padding: 0px;background-image: url('{% static 'assets/img/line.png'%}'); background-size: cover; color: #3c3c3c;">
-                      <img class="imgr" src="{% static 'assets/img/error.gif'%}" alt="Nosotros" width="300" class="img-fluid my-1 mb-2 " style="margin-top: 50px;">
-                            <center><div style="width: 700px; padding-bottom: 50px;">
-                             <h2 style="color: #3c3c3c;">!No tiene Permisos Suficientes para
-                              acceder a esta pagina¡
-                           </h2>
-              <p class="lead"><a class="btn btn-primary btn-xl page-scroll" style="    line-height: 0px;" href="{% url 'dato:app_inicio' %}">Volver</a></p> 
-                       </div ></center>
-                    </div>
-                </div>
-            </div>
-        </div>
-{% endif %}
-
 </center>
 </div >
 
@@ -202,7 +164,6 @@
 </div>
 
 </div>
-{% endif %}
 {% if not user.is_profesor  %}
 <div class="top-content">
             <div class="container">

@@ -110,22 +110,7 @@
                               <li class="nav-item">
                                 <a class="nav-link active" href="{% url 'dato:app_inicio' %}">Inicio</a>
                               </li>
-                                  {% if user.is_profesor %}
-
-                              <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" data-toggle="dropdown"
-                                   href="#!" role="button" aria-haspopup="true" aria-expanded="false">
-                                   Niveles</a>
-                                <div class="dropdown-menu">
-                                  {% if user.is_superuser %}
-                                  <a class="dropdown-item" href="{% url 'dato:nivel' %}"">Añadir Niveles </a>
-                                  {% endif %}
-                                  <a class="dropdown-item" href="{% url 'dato:nivel1' %}"">Nivel 1 </a>
-                                  <a class="dropdown-item" href="{% url 'dato:nivel2' %}"">Nivel 2 </a>
-                                  <a class="dropdown-item" href="{% url 'dato:nivel3' %}"">Nivel 3 </a>
-                                </div>
-                              </li>
-                                  {% endif %}
+                                
                               {% if user.is_superuser %}
                               <li class="nav-item">
                                 <a class="nav-link" href="{% url 'dato:reporte' %}">reportes</a>
@@ -225,7 +210,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                    <button class="btn btn-danger"><a style="color:#fff;" href="javascript:window.history.back();">Cancelar</a></button>
+                                    <button class="btn btn-danger"><a style="color:#fff;" href="{% url 'dato:nivel1' %}">Cancelar</a></button>
                                     
                                     <button type="submit"  class="btn btn-submit">Cargar</button>
 
@@ -247,7 +232,7 @@
                             {% endfor %}
                               
                             </div>
-                            <button class="btn btn-danger"><a style="color:#fff;" href="javascript:window.history.back();">&laquo; Volver Atrás</a></button>
+                            <button class="btn btn-danger"><a style="color:#fff;" href="{% url 'dato:nivel1' %}">&laquo; Volver Atrás</a></button>
                             <br>
                             <br>
 

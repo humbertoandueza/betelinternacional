@@ -79,9 +79,6 @@
                                             </span> 
                                             <input type="number" name="user" onkeyup="this.value=this.value.toUpperCase();" oninput="maxLengthCheck(this)" id="id_user" required="" value="{{request.user.ci}}" autocomplete="off" maxlength="8" placeholder="Cedula" class="hidden form-control">
                                             <input type="email" name="email_profesor" class="form-control" value="{{request.user.email}}" readonly="readonly" autocomplete="off" required="" onkeyup="this.value=this.value.toUpperCase();" id="id_email_profesor" placeholder="Email" maxlength="254">
-                                            <div class="hidden">
-                                            {{form.estatus}}
-                                            </div>
                                         </div>
 
                                     </div>
