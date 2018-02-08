@@ -37,13 +37,13 @@ class UsersModelForm(UserCreationForm):
 
 
 class UsersUpdateModelForm(UserChangeForm):
-
+    password1 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Contraseña', 'class':'form-control', 'autocomplete':'off'}))
+    password2 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Confirme Contraseña', 'class':'form-control', 'autocomplete':'off'}))
     class Meta:
         model = Users
         exclude = ('created_at', 'updated_at', 'user_permissions',
             'last_login', 'is_active', 'date_joined','is_alumno'
             ,'is_profesor','username','id_usuario','email',
-            'last_name','first_name','ci','password1','birthday','is_staff')
+            'last_name','first_name','ci','birthday','is_staff')
         widgets = {
-            'is_inscripcion': forms.CheckboxInput(),
         }

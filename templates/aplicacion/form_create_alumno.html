@@ -29,10 +29,10 @@
                                     <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Ingrese su Cedula">
                                         <div class="input-group">
                                                 <span class="input-group-addon">
-                                                <i class="fa fa-address-card-o" id="icon" aria-hidden="true"></i>
+                                                <i class="fa fa-user" id="icon" aria-hidden="true"></i>
 
                                             </span>
-                                        <input type="number" name="ci" required="" oninput="maxLengthCheck(this)" id="id_ci" autocomplete="off" placeholder="Cedula" onkeyup="this.value=this.value.toUpperCase();" class="form-control" maxlength="8">
+                                        <input type="number" name="ci" required=""oninput="maxLengthCheck(this)" id="id_ci" autocomplete="off" placeholder="Cedula"  class="form-control" maxlength="8" onkeyup="this.value=this.value.toUpperCase();" oninput="maxLengthCheck(this)">
                                         </div>
                                     </div>
                                 </div>
@@ -57,10 +57,10 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Ingrese su Cedula">
+                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Ingrese su Nombre">
                                         <div class="input-group">
                                                 <span class="input-group-addon">
-                                                <i class="fa fa-address-card-o" id="icon" aria-hidden="true"></i>
+                                                <i class="fa fa-user" id="icon" aria-hidden="true"></i>
 
                                             </span>
                                         {{form.first_name}}
@@ -70,10 +70,10 @@
                                 <div class="alert alert-danger alert-dismissible hidden " role="alert" id="nombreale">
                                 </div>
                                 <div class="form-group">
-                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Ingrese su Cedula">
+                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Ingrese su Apellido">
                                         <div class="input-group">
                                                 <span class="input-group-addon">
-                                                <i class="fa fa-address-card-o" id="icon" aria-hidden="true"></i>
+                                                <i class="fa fa-user" id="icon" aria-hidden="true"></i>
 
                                             </span>
                                         {{form.last_name}}
@@ -83,10 +83,10 @@
                                 <div class="alert alert-danger alert-dismissible hidden " role="alert" id="apellidoale">
                                 </div>
                                 <div class="form-group">
-                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Ingrese su Cedula">
+                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Ingrese su Correo">
                                         <div class="input-group">
                                                 <span class="input-group-addon">
-                                                <i class="fa fa-address-card-o" id="icon" aria-hidden="true"></i>
+                                                <i class="fa fa-envelope" id="icon" aria-hidden="true"></i>
 
                                             </span>
                                         {{form.email}}
@@ -96,10 +96,10 @@
                                 <div class="alert alert-danger alert-dismissible hidden " role="alert" id="emailale">
                                 </div>
                                 <div class="form-group">
-                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Ingrese su Cedula">
+                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Ingrese su Contraseña">
                                         <div class="input-group">
                                                 <span class="input-group-addon">
-                                                <i class="fa fa-address-card-o" id="icon" aria-hidden="true"></i>
+                                                <i class="fa fa-unlock-alt" id="icon" aria-hidden="true"></i>
 
                                             </span>
                                         {{form.password1}}
@@ -107,16 +107,30 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Ingrese su Cedula">
+                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Repita su Contraseña">
                                         <div class="input-group">
                                                 <span class="input-group-addon">
-                                                <i class="fa fa-address-card-o" id="icon" aria-hidden="true"></i>
+                                                <i class="fa fa-unlock-alt" id="icon" aria-hidden="true"></i>
 
                                             </span>
                                         {{form.password2}}
                                         </div>
                                     </div>
                                 </div>
+                                {% if form.errors %}
+                                    {% for field in form %}
+                                        {% for error in field.errors %}
+                                            <div class="alert alert-danger">
+                                                <strong>{{ error }}</strong>
+                                            </div>
+                                        {% endfor %}
+                                    {% endfor %}
+                                    {% for error in form.non_field_errors %}
+                                        <div class="alert alert-danger">
+                                            <strong>{{ error }}</strong>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
                                 <div class="alert alert-danger alert-dismissible hidden " role="alert" id="contraseñaale">
                                 </div>
                                 <div class="form-group hidden">

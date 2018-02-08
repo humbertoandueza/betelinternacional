@@ -32,31 +32,105 @@
                               <li class="nav-item">
                                 <a class="nav-link active" href="{% url 'dato:app_inicio' %}">Inicio</a>
                               </li>
-                                 
-                              {% if user.is_superuser %}
-                              <li class="nav-item">
-                                <a class="nav-link" href="{% url 'dato:reporte' %}">reportes</a>
-                              </li>
-                              <li class="nav-item">
-                                <a class="nav-link" href="{% url 'dato:profesor' %}">Añadir Profesor</a>
-                              </li>
-                              <li class="nav-item">
-                                <a class="nav-link" href="{% url 'dato:materia' %}">Añadir Materia</a>
-                              </li>
-                              {% endif %}
-                              {% if user.is_profesor %}
-               
-                              {% endif %}
-            
-                              {% if user.is_alumno %}
+                              {% if user.is_alumno and not user.is_inscripcion and not user.is_superuser %}
                               <li class="nav-item">
                                 <a class="nav-link" href="{% url 'dato:ver_notas' %}">Ver Notas</a>
                               </li>
-                              {% endif %}                                  
-                              <li style="float: right;">
-                                <a  href="{% url 'logout' %}">Salir</a></nav>
-                                
+                              {% endif %} 
+                              {% if user.is_superuser %}
+                              <li role="presentation" class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                  Profesores<span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                <a class="nav-link" href="{% url 'dato:crear_usuario_profesor' %}">Añadir Profesor</a>
+                                <br>
+                                <a class="nav-link" href="{% url 'dato:ver_profesores' %}">Ver Profesores</a>
+                                  
+                                </ul>
                               </li>
+                              <li role="presentation" class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                  Materias<span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                <a class="nav-link" href="{% url 'dato:asigna' %}">Asignar Profesor</a>
+                                <br>
+                                <a class="nav-link" href="{% url 'dato:ver_asignaciones' %}">Ver Materias</a>
+                                   
+                                </ul>
+                              </li>
+                              <li role="presentation" class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                  Niveles<span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                <a class="nav-link" href="{% url 'dato:nivel_1' %}">Nivel 1</a>
+                                <br>
+                                <a class="nav-link" href="{% url 'dato:nivel_2' %}">Nivel 2</a>
+                                <br>
+                                <a class="nav-link" href="{% url 'dato:nivel_3' %}">Nivel 3</a>
+                                   
+                                </ul>
+                              </li>
+                              <li role="presentation" class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                  Reportes<span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                  <p style="color:#00b0f0;">Generales</p>
+                                <a class="nav-link" href="{% url 'dato:reporte_nivel1' %}">Nivel 1</a>
+                                <br>
+                                <a class="nav-link" href="{% url 'dato:reporte_nivel2' %}">Nivel 2</a>
+                                <br>
+                                <a class="nav-link" href="{% url 'dato:reporte_nivel3' %}">Nivel 3</a>
+                                   
+                                </ul>
+                              </li>
+                              
+                              {% endif %}
+                              {% if user.is_profesor %}
+                              {% for filtros in filtro%}
+                                    <li class="nav-item">
+                                      <a class="nav-link" href="{% url 'dato:nivel1' %}">Estudiantes</a>
+                                    </li>
+                              {% endfor %}
+                              {% endif %}
+                              {% if user.is_profesor and not user.is_superuser %}               
+                              {% endif %}
+                              <li class="nav-item dropdown " style="float: right;">
+                                <a class="nav-link dropdown-toggle"  data-toggle="dropdown"
+                                   href="#!" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cog"></i>
+                                 </a>
+                                 <div class="dropdown-menu dropdown-menu-right"> 
+                                  {% if request.user.is_alumno and not request.user.is_superuser %}
+                                  {% if var1 != "III" %}
+                                    {% if inscripcion1 %}
+                                    <a href="{% url 'dato:pasar_nivel'%}" class="dropdown-item">Inscribirme</a><br>
+                                    }
+                                    {% endif %}
+                                    {% endif %}
+                                    <a href="{% url 'dato:aplicacion_editar' pk=request.user.ci %}" class="dropdown-item">Actualizar Datos</a><br>
+                                  {% endif %}
+                                    <a href="{% url 'dato:change_password' %}" class="dropdown-item">Cambiar Contraseña</a><br>
+
+                                    <a class="dropdown-item" href="{% url 'logout' %}">Salir</a>
+
+                                </div>
+                              </li>
+                              {% if user.is_alumno and not user.is_inscripcion and not user.is_superuser %}
+                              <li class="nav-item dropdown " style="float: right;">
+                                <a class="nav-link dropdown-toggle"  data-toggle="dropdown"
+                                   href="#!" role="button" aria-haspopup="true" aria-expanded="false">Solicitudes<span class="caret"></span>
+                                 </a>
+                                 <div class="dropdown-menu dropdown-menu-right"> 
+                                    <a href="{% url 'dato:solicitud' %}" class="dropdown-item">Retirarme</a>
+                                </div>
+                              </li>
+                              {% endif %}
+                              </li>
+                              
+
                             </ul>
                         </div>
                             
@@ -80,7 +154,6 @@
 			<td><center> Profesor</center></td>
 			<td><center> Materia</center></td>
 			<td><center> Nivel</center></td>
-			<td><center> Acciones</center></td>
 
 		</tr>
 		
@@ -95,11 +168,6 @@
 				<td>{{ persona.profesor.nombre_profesor }}</td>
 				<td>{{ persona.materia.nombre_materia }}</td>
 				<td>{{ persona.materia.id_nivel.nivel }}</td>
-			<td>
-				<center>
-          <a class="btn btn-primary" href="#" >Cargar Nota</a>
-          <a class="btn btn-warning" href="#" >Ver Notas</a>
-			</td>
 		</tr>
     {% endfor %}
 
@@ -107,7 +175,7 @@
 </div>
 		{% else %}
     <img class="imgr" src="{% static 'assets/img/error.gif'%}" alt="Nosotros" width="300" class="img-fluid my-1 mb-2 " style="margin-top: 50px;">
-		<h1 style="color:#010101;">No se encuentran estudiantes</h1>
+		<h1 style="color:#010101;">No se encuentran materias</h1>
     <a class="btn btn-danger" href="javascript:window.history.back();">&laquo; Volver atrás</a>
     <br>
     <br>

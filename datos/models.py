@@ -85,7 +85,14 @@ class Inscripcion(models.Model):
 	cedula = models.ForeignKey(Persona)
 	id_nivel = models.ForeignKey(Nivel)
 	lapso_ano = models.DateField(auto_now_add=True)
-	estatus = models.NullBooleanField()
+	est=(
+		("0","Aprobado"),
+		("1","Reprobado"),
+
+	)
+	estatus = models.CharField(max_length=20,choices=est,blank=True)
+	terminado = models.BooleanField(default=False)
+
 
 	def __str__(self):
 		return str(self.id)

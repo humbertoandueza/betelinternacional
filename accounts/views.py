@@ -107,6 +107,12 @@ class UsersCreateView_profesor(CreateView):
 def Success_user_profesor(request):
     return render(request, '.html')
 
+class update_user(UpdateView):
+    model = Users
+    form_class = UsersUpdateModelForm
+    template_name = 'aplicacion/update_user.html'
+    success_url = reverse_lazy('dato:app_inicio')
+
 #@login_required()
 #@gzip_page
 #def EliminarUser(request, pk):

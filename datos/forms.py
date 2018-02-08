@@ -87,9 +87,11 @@ class InscripcionForm(forms.ModelForm):
 		fields= [
 			'cedula',
 			'id_nivel',
+			'estatus',
 		]
 		widgets = {
             'cedula': forms.NumberInput(attrs={'placeholder': 'Cedula', 'class':'form-control', 'autocomplete':'off','oninput':'maxLengthCheck(this)','maxlength':'8','onKeyUp':'this.value=this.value.toUpperCase();'}),
+			
 			#'id_nivel': forms.TextInput(attrs={'value':'1','class':'form-control','readonly':'readonly'}),
 		}
 

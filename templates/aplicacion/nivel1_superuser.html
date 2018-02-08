@@ -20,14 +20,28 @@
 
 
 </style>
-{% if user.is_superuser %}
+<script>
+          function abrir_modal(url)
+          {
+            $('#popup').load(url, function()
+            {
+              $(this).modal('show');
+            });
+            return false;
+          }
+
+          function cerrar_modal()
+          {
+            $('#popup').modal('hide');
+            return false;
+          };
+        </script>
 <div class="top-content">
             <div class="container">
                 <div class="row">
 
                     <div class="col-sm-12 col-md-12  col-lg-12 form- f11" style="padding: 0px;background-image: url('{% static 'assets/img/line.png'%}'); background-size: cover; color: #3c3c3c;">
                         <div id="form" class="fixed-top"  >
-                            
                             <ul class="nav nav-tabs">
                               <li class="nav-item">
                                 <a class="nav-link active" href="{% url 'dato:app_inicio' %}">Inicio</a>
@@ -134,18 +148,33 @@
                             </ul>
                         </div>
                             
-{% if user.is_superuser %} 
 <br>
 <div class="row">
 <div class="col-sm-4">
 </div>   
-     
+
+  <div class="col-sm-3 col-sm-offset-4 col-md-3 col-md-offset-4 col-xs-offset-5">
+      <div class="input-group">
+         <span class="input-group-addon">
+          <i class="fa fa-user" id="icon" aria-hidden="true"></i>
+        </span> 
+          <form method="get" action="">
+          <input class="form-control" autocomplete="off" type="number" name="q" placeholder="Buscar..." value="{{ request.GET.q }}">
+        </form> 
+      </div>
+  </div>
+</div>
+<div id="popup" class="modal fade" role="dialog">
+
+</div> 
 <div class="col-md-offset-2 col-sm-offset-2" style="width: 100%; margin-left: auto; padding: 15px !important; padding-top: 20px;">
   <div class="col-md-6 col-md-offset-3">
 <p style="font-size: 36px;">Bienvenido {{user.first_name}}</p>
-<p>Lista de Todos los Profesores Incritos</p>
+<p>Lista de Todos los alumnos Incritos en este nivel</p>
   </div>
+
 <center>
+
   <div class="ba col-md-10 col-md-offset-1" style="background: #fff; padding-top:50px;  margin-bottom: 50px; box-shadow: 0px 0px 6px 1px;">
 <table class="table table-bordered" >
 	<thead>
@@ -154,7 +183,8 @@
 			<td><center> Cedula</center></td>
 			<td><center> Nombre</center></td>
 			<td><center> Apellido</center></td>
-      <td><center> Estatus</center></td>
+			<td><center> Correo</center></td>
+			<td><center> Acciones</center></td>
 
 		</tr>
 		
@@ -162,26 +192,41 @@
 	<tbody>
     
 
-		{% if object_list %}
+		{% if nivel %}
 		<tr>
-		{% for persona in object_list %}
+		{% for persona in nivel %}
     <td>  {{ forloop.counter }}</td>
-				<td>{{ persona.cedula_profesor }}</td>
-				<td>{{ persona.nombre_profesor }}</td>
-				<td>{{ persona.apellido_profesor }}</td>
-        {% if persona.estatus == True %}
-          <td style="background-color: #0eff0e;">Activo</td>
+				<td>{{ persona.cedula.cedula }}</td>
+				<td>{{ persona.cedula.nombre }}</td>
+				<td>{{ persona.cedula.apellido }}</td>
+				<td>{{ persona.cedula.email }}</td>
+			<td>
+				<center>
+          <a class="btn" data-toggle="tooltip" data-placement="top" title="Ver más" href="{% url 'dato:listar_per' pk=persona.cedula %}" ><span class="glyphicon glyphicon glyphicon-zoom-in"></span>
+          </a>
+        {% if persona.estatus == "" %}
+
+          <a data-toggle="tooltip" data-placement="top" title="Ver Nota" onclick="return abrir_modal('{% url 'dato:ver_notas_super2' persona.cedula persona.estatus %}')" class="btn"><span class="glyphicon glyphicon-eye-open"></span>
+          </a>
         {% else %}
-          <td style="background-color: red; color: #fff;">Inactivo</td>
-          {% endif %}
+        <a data-toggle="tooltip" data-placement="top" title="Ver Nota" onclick="return abrir_modal('{% url 'dato:ver_notas_super2' persona.cedula persona.estatus %}')" class="btn"><span class="glyphicon glyphicon-eye-open"></span>
+          </a>
+        {% endif %}
+
+
+          <a class="btn" data-toggle="tooltip" data-placement="top" title="Ver PDF" href="{% url 'dato:reporte_personal' pk=persona.id %}" ><span class="glyphicon glyphicon glyphicon-print"></span>
+          </a>
+          <a data-toggle="tooltip" data-placement="top" title="Retirar estudiante" href="{% url 'dato:retiro' persona.cedula %}" class="btn"><span class="glyphicon glyphicon glyphicon-trash"></span>
+          </a>
+        </center>
+			</td>
 		</tr>
-    {% endfor %}
 
-
+		{% endfor %}
 </div>
 		{% else %}
     <img class="imgr" src="{% static 'assets/img/error.gif'%}" alt="Nosotros" width="300" class="img-fluid my-1 mb-2 " style="margin-top: 50px;">
-		<h1 style="color:#010101;">No se encuentran profesores</h1>
+		<h1 style="color:#010101;">No se encuentran estudiantes</h1>
     <a class="btn btn-danger" href="javascript:window.history.back();">&laquo; Volver atrás</a>
     <br>
     <br>
@@ -216,25 +261,6 @@
     </div> 
 </div>
 
-{% else %}
-<div class="top-content">
-            <div class="container">
-                <div class="row">
-
-                    <div class="col-sm-12 col-md-12  col-lg-12 form- f11" style="padding: 0px;background-image: url('{% static 'assets/img/line.png'%}'); background-size: cover; color: #3c3c3c;">
-                      <img class="imgr" src="{% static 'assets/img/error.gif'%}" alt="Nosotros" width="300" class="img-fluid my-1 mb-2 " style="margin-top: 50px;">
-                            <center><div style="width: 700px; padding-bottom: 50px;">
-                             <h2 style="color: #3c3c3c;">!No tiene Permisos Suficientes para
-                              acceder a esta pagina¡
-                           </h2>
-              <p class="lead"><a class="btn btn-primary btn-xl page-scroll" style="    line-height: 0px;" href="{% url 'dato:app_inicio' %}">Volver</a></p> 
-                       </div ></center>
-                    </div>
-                </div>
-            </div>
-        </div>
-{% endif %}
-
 </center>
 </div >
 
@@ -243,7 +269,6 @@
 </div>
 
 </div>
-{% endif %}
 {% if not user.is_profesor  %}
 <div class="top-content">
             <div class="container">

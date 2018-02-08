@@ -1,6 +1,5 @@
 {% extends 'aplicacion/paneladminnw.html' %}
 {% load static %}
-
 {% block content %}
 <style>
 	.table-bordered>thead>tr>td, .table-bordered>thead>tr>th {
@@ -21,6 +20,22 @@
 
 </style>
 {% if user.is_profesor %}
+<script>
+          function abrir_modal(url)
+          {
+            $('#popup').load(url, function()
+            {
+              $(this).modal('show');
+            });
+            return false;
+          }
+
+          function cerrar_modal()
+          {
+            $('#popup').modal('hide');
+            return false;
+          };
+        </script>
 <div class="top-content">
             <div class="container">
                 <div class="row">
@@ -83,6 +98,9 @@
 <p style="font-size: 36px;">Bienvenido {{user.first_name}}</p>
 <p>Lista de Todos los alumnos Incritos en el nivel {{filtro2}}</p>
   </div>
+<div id="popup" class="modal fade" role="dialog">
+
+</div>
 <center>
   <div class="ba col-md-10 col-md-offset-1" style="background: #fff; padding-top:50px;  margin-bottom: 50px; box-shadow: 0px 0px 6px 1px;">
 <table class="table table-bordered" >
@@ -111,12 +129,11 @@
 				<td>{{ persona.cedula.email }}</td>
 			<td>
 				<center>
-          <a class="btn btn-primary" href="{% url 'dato:nota' pk=persona.cedula %}" >Cargar Nota</a>
-          <a class="btn btn-warning" href="#" >Ver Notas</a>
+          <a data-toggle="tooltip" data-placement="top" title="Cargar Nota" href="{% url 'dato:nota' pk=persona.cedula %}" ><span class="glyphicon glyphicon glyphicon-open"></span></a>
+          <a data-toggle="tooltip" data-placement="top" title="Ver Nota" onclick="return abrir_modal('{% url 'dato:ver_notas_super' persona.id %}')" class="btn"><span class="glyphicon glyphicon-eye-open"></span>
+          </a>
 			</td>
 		</tr>
-
-
 		{% endfor %}
 </div>
 		{% else %}
@@ -181,5 +198,6 @@
                 </div>
             </div>
         </div>
+
 {% endif %}
 {% endblock %}

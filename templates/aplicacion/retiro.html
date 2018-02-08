@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<style>
+  .dropdown-menu {
+    text-align: center;}
+  .dropdown-item:hover {
+    text-decoration: none;
+    background-color: #eee;}
+    .dropdown-item {
+      margin-top: 0px;
+      padding: 5px;}
+</style>
+{% block navbar %}
+{% endblock %}
+{% if not user.is_superuser and user.is_alumno %} 
+<div class="top-content">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12 col-md-12  col-lg-12 form- f11" style="padding: 0px; background-image: url('{% static 'assets/img/line.png'%}'); background-size: cover; background-repeat: no-repeat;">
+                        <div id="form" class="fixed-top"  >
+                            
+                            <ul class="nav nav-tabs">
+                              <li class="nav-item">
+                                <a class="nav-link active" href="{% url 'dato:app_inicio' %}">Inicio</a>
+                              </li>
+                              {% if user.is_alumno and not user.is_inscripcion and not user.is_superuser %}
+                              <li class="nav-item">
+                                <a class="nav-link" href="{% url 'dato:ver_notas' %}">Ver Notas</a>
+                              </li>
+                              {% endif %} 
+                              <li class="nav-item dropdown " style="float: right;">
+                                <a class="nav-link dropdown-toggle"  data-toggle="dropdown"
+                                   href="#!" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cog"></i>
+                                 </a>
+                                 <div class="dropdown-menu dropdown-menu-right"> 
+                                  {% if request.user.is_alumno and not request.user.is_superuser %}
+                                  {% if var1 != "III" %}
+                                    {% if inscripcion1 %}
+                                    <a href="{% url 'dato:pasar_nivel'%}" class="dropdown-item">Inscribirme</a><br>
+                                    }
+                                    {% endif %}
+                                    {% endif %}
+                                    <a href="{% url 'dato:aplicacion_editar' pk=request.user.ci %}" class="dropdown-item">Actualizar Datos</a><br>
+                                  {% endif %}
+                                    <a href="{% url 'dato:change_password' %}" class="dropdown-item">Cambiar Contraseña</a><br>
+
+                                    <a class="dropdown-item" href="{% url 'logout' %}">Salir</a>
+
+                                </div>
+                              </li>
+                            </ul>
+
+                        </div>
+                        
+                         {% if user.is_alumno and not user.is_inscripcion %}
+                            <img class="imgr" src="{% static 'assets/img/gif.gif'%}" alt="Nosotros" width="300" class="img-fluid my-1 mb-2 " style="margin-top: 50px;">
+                             <h2 style="color: #3c3c3c;">¿Desea Inscribirse?</h2>
+                            <center><div style="width: 700px; padding-bottom: 50px;">
+
+                             	<form method="post">
+									{% csrf_token %}
+									<a class="btn btn-danger" href="{% url 'dato:app_inicio' %}">No</a>
+									<button class="btn btn-primary" type="submit">Si</button>
+									
+								</form>
+                             </div ></center>
+                            {% endif %}
+                    </div >
+                </div>
+                    
+            </div ">
+        </div >
+{% endif %}
+{% endblock %}

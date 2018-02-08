@@ -76,6 +76,9 @@
     </div>
   </div>
 </div>
+<div id="popup" class="modal fade" role="dialog">
+
+</div>
         {% endblock %}
         {% block content %}
         {% endblock %}
@@ -117,6 +120,22 @@
           }
           time();
           time1();
+        </script>
+        <script>
+          function abrir_modal(url)
+          {
+            $('#popup').load(url, function()
+            {
+              $(this).modal('show');
+            });
+            return false;
+          }
+
+          function cerrar_modal()
+          {
+            $('#popup').modal('hide');
+            return false;
+          };
         </script>
 
     </body>

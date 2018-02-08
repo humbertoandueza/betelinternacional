@@ -27,10 +27,9 @@ SECRET_KEY = '+s!7-bs!e#l)gwm#2ckpbq=(%4v%4qx=am-*q+1km3hjbs8nad'
 #<<<<<<< HEAD
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
-ALLOWED_HOSTS = ['humberto.pythonanywhere.com']
-#ALLOWED_HOSTS = []
+#ALLOWED_HOSTS = ['humberto.pythonanywhere.com']
+ALLOWED_HOSTS = []
 
-#>>>>>>> d9c1d0b5d486a68905c8dfe590338b2f2372e74d
 
 AUTH_USER_MODEL = 'accounts.Users'
 
@@ -80,7 +79,7 @@ WSGI_APPLICATION = 'aplicacion.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
-"""
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -100,7 +99,7 @@ DATABASES = {
         'HOST':'humberto.mysql.pythonanywhere-services.com',
     }
 }
-
+"""
 """
 DATABASES = {
     'default': {
@@ -172,8 +171,9 @@ EMAIL_HOST_USER = 'humbertoanduezaa@gmail.com'
 EMAIL_HOST_PASSWORD = '01051998a'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 #SESSION EXPIRED
+"""
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_COOKIE_AGE = 120 # set just 10 seconds to test
 SESSION_SAVE_EVERY_REQUEST = True
 #HTTPS
-SECURE_SSL_REDIRECT = True
+SECURE_SSL_REDIRECT = True"""

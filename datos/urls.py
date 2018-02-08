@@ -3,16 +3,14 @@ from django.contrib.auth.decorators import login_required
 from .views import *
 urlpatterns=[
 	url(r'^$',index, name="inicio"),
+    url(r'^password/$', login_required(change_password), name='change_password'),
 	url(r'^aplicacion/inicio/$',login_required(app_index), name="app_inicio"),
-	url(r'^aplicacion/inicio1/(?P<pk>[0-9]+)/$',home, name="app_inicio1"),
-	url(r'^aplicacion/inicio2/(?P<pk>[0-9]+)/$',home, name="app_inicio2"),
     url(r'^aplicacion/materia/$',login_required(MateriaCreate.as_view()), name='materia'),
     url(r'^aplicacion/nota/(?P<pk>[0-9]+)/$',login_required(post_new), name='nota'),
     url(r'^aplicacion/inscripciones/$',login_required(InscripcionCreate.as_view()), name='inscripcion'),
     url(r'^aplicacion/profesor/$',login_required(ProfesorCreate), name='profesor'),
     url(r'^aplicacion/nivel/$',login_required(NivelCreate.as_view()), name='nivel'),
     url(r'^aplicacion/nivel_ver/$',login_required(nivel1_new), name='nivel1'),
-    url(r'^aplicacion/confirmar/$',login_required(ConfirmarInscripcion), name='confirmar1'),
 
     url(r'^aplicacion/editar/(?P<pk>\d+)/$', login_required(SolicitudUpdate.as_view()), name='aplicacion_editar'),
     url(r'^aplicacion/eliminar/(?P<pk>\d+)/$', login_required(SolicitudDelete.as_view()), name='aplicacion_eliminar'),
@@ -29,6 +27,19 @@ urlpatterns=[
     url(r'^notificaciones/(?P<pk>\d+)/$',login_required(notificacion), name="notificacion"),
     url(r'^aplicacion/ver_profesores/$',login_required(ListProfesor.as_view()), name="ver_profesores"),
     url(r'^aplicacion/ver_asignaciones/$',login_required(ListAsignarMateria.as_view()), name="ver_asignaciones"),
+    url(r'^aplicacion/solicitud/$',login_required(solicitud), name="solicitud"),
+
+    url(r'^aplicacion/nivel1/$',login_required(nivel1_superuser), name="nivel_1"),
+    url(r'^aplicacion/nivel2/$',login_required(nivel2_superuser), name="nivel_2"),
+    url(r'^aplicacion/nivel3/$',login_required(nivel3_superuser), name="nivel_3"),
+    url(r'^aplicacion/ver_notas_super/(?P<pk>\d+)/$',login_required(DetalleProveedor), name="ver_notas_super"),
+    url(r'^aplicacion/ver_notas_super_2/(?P<pk>\d+)/(?P<estatus>\d+)$',login_required(DetalleProveedor_2), name="ver_notas_super2"),
+    url(r'^aplicacion/retiro/(?P<pk>\d+)/$',login_required(retiro), name="retiro"),
+    url(r'^aplicacion/pasar_nivel/$',login_required(pasar_nivel), name="pasar_nivel"),
+    url(r'^aplicacion/pdf_nivel1/$',login_required(nivel1_pdf.as_view()), name="reporte_nivel1"),
+    url(r'^aplicacion/pdf_nivel2/$',login_required(nivel2_pdf.as_view()), name="reporte_nivel2"),
+    url(r'^aplicacion/pdf_nivel3/$',login_required(nivel3_pdf.as_view()), name="reporte_nivel3"),
+
 
 
 

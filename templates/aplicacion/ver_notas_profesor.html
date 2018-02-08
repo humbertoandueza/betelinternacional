@@ -1,0 +1,52 @@
+
+<style type="text/css">
+	html {
+		color: #3c3c3c !important;
+
+	}
+</style>
+<div class="modal-dialog modal-lg">
+	<div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal">x</button>
+			<h3 style="color: #3c3c3c;">Notas alumno</h3>
+		</div>
+		<div class="modal-body">
+			<div class="row">
+				<div class="col-lg-6 col-lg-offset-3" >
+					<label style="font-weight: bold; font-size: 25px;">Alumno: {{alumno.cedula.nombre}} {{alumno.cedula.apellido}}</label>
+					<table class="table table-bordered" style="width: 100%">
+					{% for nota in notas %}
+						<tr>
+							<th>
+								<center>Nota {{forloop.counter}}</center> 
+							</th>
+							<th>
+								<center>
+							{% if nota.nota_persona == '1' %}
+								A
+							{% endif %}
+							{% if nota.nota_persona == '0' %}
+								R
+							{% endif %}
+								</center>
+							</th>
+						</tr>
+					</p>
+					{% endfor %}
+					</table>
+					{% if estatus != '' %}
+						{% if estatus == 'Aprobado' %}
+						<p style="font-size: 35px; color:lime;">{{estatus}}</p>
+						{% else %}
+						<p style="font-size: 35px; color:red;">{{estatus}}</p>
+
+						{% endif %}
+
+					{% endif %}
+				</div>
+					
+			</div>
+		</div>
+	</div>
+</div>

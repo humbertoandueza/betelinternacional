@@ -12,20 +12,17 @@
     .table-bordered {
     border: 1px solid #333;}
 .table {
-    width: 90% !important;
+    width: 80% !important;
     max-width: 100%;
-    margin-bottom: 20px;
-     
-  }
+    margin-bottom: 20px;}
 
 
 </style>
-{% if user.is_superuser %}
 <div class="top-content">
             <div class="container">
                 <div class="row">
 
-                    <div class="col-sm-12 col-md-12  col-lg-12 form- f11" style="padding: 0px;background-image: url('{% static 'assets/img/line.png'%}'); background-size: cover; color: #3c3c3c;">
+                    <div class="col-xs-12 col-sm-12 col-md-12  col-lg-12 form- f11" style="padding: 0px;background-image: url('{% static 'assets/img/line.png'%}'); background-size: cover; color: #3c3c3c;">
                         <div id="form" class="fixed-top"  >
                             
                             <ul class="nav nav-tabs">
@@ -133,133 +130,155 @@
 
                             </ul>
                         </div>
-                            
-{% if user.is_superuser %} 
-<br>
-<div class="row">
-<div class="col-sm-4">
-</div>   
-     
-<div class="col-md-offset-2 col-sm-offset-2" style="width: 100%; margin-left: auto; padding: 15px !important; padding-top: 20px;">
-  <div class="col-md-6 col-md-offset-3">
-<p style="font-size: 36px;">Bienvenido {{user.first_name}}</p>
-<p>Lista de Todos los Profesores Incritos</p>
-  </div>
 <center>
-  <div class="ba col-md-10 col-md-offset-1" style="background: #fff; padding-top:50px;  margin-bottom: 50px; box-shadow: 0px 0px 6px 1px;">
-<table class="table table-bordered" >
-	<thead>
-		<tr>
-      <td><center> N°</center></td>
-			<td><center> Cedula</center></td>
-			<td><center> Nombre</center></td>
-			<td><center> Apellido</center></td>
-      <td><center> Estatus</center></td>
-
-		</tr>
-		
-	</thead>
-	<tbody>
-    
-
-		{% if object_list %}
-		<tr>
-		{% for persona in object_list %}
-    <td>  {{ forloop.counter }}</td>
-				<td>{{ persona.cedula_profesor }}</td>
-				<td>{{ persona.nombre_profesor }}</td>
-				<td>{{ persona.apellido_profesor }}</td>
-        {% if persona.estatus == True %}
-          <td style="background-color: #0eff0e;">Activo</td>
-        {% else %}
-          <td style="background-color: red; color: #fff;">Inactivo</td>
-          {% endif %}
-		</tr>
-    {% endfor %}
-
-
+<div class="col-sm-12">
+<div style="color:#3c3c3c !important; margin-bottom: 120px;">                  
+<h2 style="color:#3c3c3c !important;">Notas del alumno {{inscripcion1.cedula.nombre}} {{inscripcion1.cedula.apellido}}</h2>
 </div>
-		{% else %}
-    <img class="imgr" src="{% static 'assets/img/error.gif'%}" alt="Nosotros" width="300" class="img-fluid my-1 mb-2 " style="margin-top: 50px;">
-		<h1 style="color:#010101;">No se encuentran profesores</h1>
-    <a class="btn btn-danger" href="javascript:window.history.back();">&laquo; Volver atrás</a>
-    <br>
-    <br>
-		{% endif %}
-  </tbody>
+<div class="col-sm-2 col-sm-offset-1">                    
+<table class="table table-bordered">
+  <tr>
+    <th style="width: 200px; background-color: #7b7b7b36;">Materia</th>
+  </tr>
+</table > 
+</div>
+<div class="col-sm-6">                    
+<table class="table table-bordered">
+  <tr>
+    <th style="background-color: #7b7b7b36;">1</th>
+    <th style="background-color: #7b7b7b36;">2</th>
+    <th style="background-color: #7b7b7b36;">3</th>
+    <th style="background-color: #7b7b7b36;">4</th>
+    <th style="background-color: #7b7b7b36;">5</th>
+    <th style="background-color: #7b7b7b36;">6</th>
+    <th style="background-color: #7b7b7b36;">7</th>
+    <th style="background-color: #7b7b7b36;">8</th>
+    <th style="background-color: #7b7b7b36;">9</th>
+    <th style="padding:4px;padding-top:8px; background-color: #7b7b7b36;">10</th>
+
+  </tr>
+</table > 
+</div>
+<div class="col-sm-2">
+  <table class="table table-bordered">
+    <tr>
+      <th style="background-color: #7b7b7b36;">Estatus</th>
+    </tr>
+  </table>
+</div>
+</div>
+
+<div class="col-sm-12">
+<div class="col-sm-2 col-sm-offset-1">                    
+<table class="table table-bordered">
+  <tr>
+    <th style="width: 200px;">{{materia1}}</th>
+  </tr>
+</table > 
+</div>
+<div class="col-sm-6">                    
+<table class="table table-bordered">
   
+  {% if cantidad12 == 0 %}
+  <tr>
+    <th>No hay notas cargadas</th>
+  {% else %}
+  </tr>
+  <tr>
+    {% for persona in notas %}
+    {% if persona.id_materia.nombre_materia == materia1 %}
+    <th style="float: left;padding-left: 16px;padding-right:16.5px; border-left:none; border-bottom:none; border-top:none; ">
+      {% if persona.nota_persona == '1' %}
+        A
+      {% endif %}
+      {% if persona.nota_persona == '0' %}
+       R
+      {% endif %} 
+    </th>
+      
 
-
-</table >
-<div class="pagination" style="margin:0px; ">
-    {% if nivel.has_other_pages %}
-            <ul class="pagination">
-              {% if nivel.has_previous %}
-              <li><a href="?page={{ nivel.previous_page_number }}">&laquo;</a></li>
-              {% else %}
-              <li class="disabled"><span>&laquo;</span></li>
-              {% endif %}
-              {% for i in nivel.paginator.page_range %}
-              {% if nivel.number == i %}
-              <li class="active"><span>{{ i }}<span class="sr-only">(current)</span></span></li>
-              {% else %}
-              <li><a href="?page={{ i }}">{{ i }}</a></li>
-              {% endif %}
-              {% endfor %}
-              {% if nivel.has_next %}
-              <li><a href="?page={{ nivel.next_page_number }}">&raquo;</a></li>
-              {% else %}
-              <li class="disabled"><span>&raquo;</span></li>
-              {% endif %}
-            </ul>
-            {% endif %}
-    </div> 
+    {% endif %}
+    {% endfor %}
+  </tr>
+  {% endif %}
+</table>
+</div>
+<div class="col-sm-2">
+  <table class="table table-bordered">
+    <tr>
+      {% if estat == 'Aprobado' %}
+        <th style="background-color: lime;">{{ estat }}</th>
+      {% else%}
+        <th style="background-color: red; color: #fff;">{{ estat }}</th>
+      {% endif %}
+    </tr>
+  </table>
+</div>
 </div>
 
-{% else %}
-<div class="top-content">
-            <div class="container">
-                <div class="row">
+<div class="col-sm-12">
+<div class="col-sm-2 col-sm-offset-1">                    
+<table class="table table-bordered">
+  <tr>
+    <th style="width: 200px;">{{materia2}}</th>
+  </tr>
+</table > 
+</div>
+<div class="col-sm-6">                    
+<table class="table table-bordered">
+  
+  {% if cantidad13 == 0 %}
+  <tr>
+    <th>No hay notas cargadas</th>
+  {% else %}
+  <tr>
+    {% for persona in notas1 %}
+    {% if persona.id_materia.nombre_materia == materia2 %}
 
-                    <div class="col-sm-12 col-md-12  col-lg-12 form- f11" style="padding: 0px;background-image: url('{% static 'assets/img/line.png'%}'); background-size: cover; color: #3c3c3c;">
-                      <img class="imgr" src="{% static 'assets/img/error.gif'%}" alt="Nosotros" width="300" class="img-fluid my-1 mb-2 " style="margin-top: 50px;">
-                            <center><div style="width: 700px; padding-bottom: 50px;">
-                             <h2 style="color: #3c3c3c;">!No tiene Permisos Suficientes para
-                              acceder a esta pagina¡
-                           </h2>
-              <p class="lead"><a class="btn btn-primary btn-xl page-scroll" style="    line-height: 0px;" href="{% url 'dato:app_inicio' %}">Volver</a></p> 
-                       </div ></center>
-                    </div>
-                </div>
-            </div>
-        </div>
-{% endif %}
+    <th style="float: left;padding-left: 16px;padding-right:16.5px; border-left:none; border-bottom:none; border-top:none;  ">
+      {% if persona.nota_persona == '1' %}
+        A
+      {% endif %}
+      {% if persona.nota_persona == '0' %}
+       R
+      {% endif %}
+    </th>
 
+    {% endif %}
+    {% endfor %}
+  </tr>
+  {% endif %}
+</table>
+</div>
+<div class="col-sm-2">
+  <table class="table table-bordered">
+    <tr>
+      {% if estatus == 'Aprobado' %}
+        <th style="background-color: lime;">{{ estatus }}</th>
+      {% else%}
+        <th style="background-color: red; color: #fff;">{{ estatus }}</th>
+      {% endif %}
+    </tr>
+  </table>
+</div>
+</div>
+
+
+<div class="col-sm-12">
+<div class="col-sm-2 col-sm-offset-1">                    
+  <p style="padding-top: 80px; font-size: 15px; text-align: left;">Nota:
+    <br>
+    A:Aprobado,
+    R:Reprobado</p>
+</div>
+</div>
+
+
+
+
+</div>
+</div>
+</div>
+</div>
 </center>
-</div >
-
-</div>
-</div>
-</div>
-
-</div>
-{% endif %}
-{% if not user.is_profesor  %}
-<div class="top-content">
-            <div class="container">
-                <div class="row">
-
-                    <div class="col-sm-12 col-md-12  col-lg-12 form- f11" style="padding: 0px;background-image: url('{% static 'assets/img/line.png'%}'); background-size: cover; color: #3c3c3c;">
-                    	<img class="imgr" src="{% static 'assets/img/error.gif'%}" alt="Nosotros" width="300" class="img-fluid my-1 mb-2 " style="margin-top: 50px;">
-                            <center><div style="width: 700px; padding-bottom: 50px;">
-                             <h2 style="color: #3c3c3c;">!No tiene Permisos Suficientes para
-                             	acceder a esta pagina¡
-                           </h2>
-							<p class="lead"><a class="btn btn-primary btn-xl page-scroll" style="    line-height: 0px;" href="{% url 'dato:app_inicio' %}">Volver</a></p>	
-                       </div ></center>
-                    </div>
-                </div>
-            </div>
-        </div>
-{% endif %}
-{% endblock %}
+{% endblock%}

@@ -1,6 +1,21 @@
 {% extends 'base.html' %}
 {% load static %}
+<script>
+function abrir_modal(url)
+{
+  $('#popup').load(url, function()
+  {
+    $(this).modal('show');
+  });
+  return false;
+}
 
+function cerrar_modal()
+{
+  $('#popup').modal('hide');
+  return false;
+};
+</script>
 {% block content %}
 <style>
   .dropdown-menu {
@@ -25,11 +40,10 @@
                               <li class="nav-item">
                                 <a class="nav-link active" href="{% url 'dato:app_inicio' %}">Inicio</a>
                               </li>
-                              {% if user.is_alumno and not user.is_inscripcion %}
+                              {% if user.is_alumno and not user.is_inscripcion and not user.is_superuser %}
                               <li class="nav-item">
                                 <a class="nav-link" href="{% url 'dato:ver_notas' %}">Ver Notas</a>
                               </li>
-
                               {% endif %} 
                               {% if user.is_superuser %}
                               <li role="presentation" class="dropdown">
@@ -54,9 +68,34 @@
                                    
                                 </ul>
                               </li>
-                              <li class="nav-item">
-                                <a class="nav-link" href="{% url 'dato:reporte' %}">reportes</a>
+                              <li role="presentation" class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                  Niveles<span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                <a class="nav-link" href="{% url 'dato:nivel_1' %}">Nivel 1</a>
+                                <br>
+                                <a class="nav-link" href="{% url 'dato:nivel_2' %}">Nivel 2</a>
+                                <br>
+                                <a class="nav-link" href="{% url 'dato:nivel_3' %}">Nivel 3</a>
+                                   
+                                </ul>
                               </li>
+                              <li role="presentation" class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                  Reportes<span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                  <p style="color:#00b0f0;">Generales</p>
+                                <a class="nav-link" href="{% url 'dato:reporte_nivel1' %}">Nivel 1</a>
+                                <br>
+                                <a class="nav-link" href="{% url 'dato:reporte_nivel2' %}">Nivel 2</a>
+                                <br>
+                                <a class="nav-link" href="{% url 'dato:reporte_nivel3' %}">Nivel 3</a>
+                                   
+                                </ul>
+                              </li>
+                              
                               {% endif %}
                               {% if user.is_profesor %}
                               {% for filtros in filtro%}
@@ -67,11 +106,37 @@
                               {% endif %}
                               {% if user.is_profesor and not user.is_superuser %}               
                               {% endif %}
-                              <li style="float: right;">
-                                <a  href="{% url 'logout' %}">Salir</a></nav>
-                                
+                              <li class="nav-item dropdown " style="float: right;">
+                                <a class="nav-link dropdown-toggle"  data-toggle="dropdown"
+                                   href="#!" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cog"></i>
+                                 </a>
+                                 <div class="dropdown-menu dropdown-menu-right"> 
+                                  {% if request.user.is_alumno and not request.user.is_superuser %}
+                                  {% if var1 != "III" %}
+                                    {% if inscripcion1 %}
+                                    <a href="{% url 'dato:pasar_nivel'%}" class="dropdown-item">Inscribirme</a><br>
+                                    }
+                                    {% endif %}
+                                    {% endif %}
+                                    <a href="{% url 'dato:aplicacion_editar' pk=request.user.ci %}" class="dropdown-item">Actualizar Datos</a><br>
+                                  {% endif %}
+                                    <a href="{% url 'dato:change_password' %}" class="dropdown-item">Cambiar Contraseña</a><br>
+
+                                    <a class="dropdown-item" href="{% url 'logout' %}">Salir</a>
+
+                                </div>
                               </li>
                               {% if user.is_alumno and not user.is_inscripcion and not user.is_superuser %}
+                              <li class="nav-item dropdown " style="float: right;">
+                                <a class="nav-link dropdown-toggle"  data-toggle="dropdown"
+                                   href="#!" role="button" aria-haspopup="true" aria-expanded="false">Solicitudes<span class="caret"></span>
+                                 </a>
+                                 <div class="dropdown-menu dropdown-menu-right"> 
+                                    <a href="{% url 'dato:solicitud' %}" class="dropdown-item">Retirarme</a>
+                                </div>
+                              </li>
+                              {% endif %}
+                              {% if user.is_alumno or user.is_superuser %}
 
                               <li class="nav-item dropdown" style="float: right;">
                                 <a class="nav-link dropdown-toggle"  data-toggle="dropdown"
@@ -81,39 +146,63 @@
                                   .boxNotification {
                                     width: 100%;
                                     height: 100%;
-                                    padding: .2em;
                                     display: flex;
+                                    padding: .2em;
                                     flex-direction: column;
                                     align-items: center;
                                     text-align: center;
+                                    color: #00b0f0 !important;
                                   } .boxNotification a {
                                     text-align: center;
                                     width: 100%;
+                                    padding: .2em;
                                     line-height: 1em;
-                                    padding: .5em;
+                                  }
+                                  .boxNotification p {
+                                    text-align: center;
+                                    width: 100%;
+                                    padding: .2em;
+                                    line-height: 1em;
                                   }
                                   .dropdown-menu{
                                     max-height: 50vh;
                                     overflow-y: scroll;
                                   }
                                 </style>
-                                <div class="dropdown-menu" id="style-2"> 
+                                <div class="dropdown-menu dropdown-menu-right" id="style-2"> 
                                     {% if notificacion %}
                                   {% for noti in notificacion %}
                                   <div class="boxNotification" id="style-2">
                                   {% if noti.estatus == True %}
+                                    {% if user.is_superuser %}
+                                    <a href="#" class="dropdown-item">
+                                      <p style="text-align: center; font-size: 14px;">Solicitud de retiro</p>
+                                        <p style="float: left; text-align: center; font-size: 14px;">El alumno <br>{{noti.user.nombre}} {{noti.user.apellido}} solicita retirarse de la escuela de formación
+                                    <i style="float: right !important; " class="fa fa-check-circle-o" aria-hidden="true"></i>
+                                    </p>
+                                    <p style="float: left; text-align: left; font-size: 10px;">{{ noti.hora }}</p>
+                                  </a>
+                                      {% else %}
                                     <a href="#" class="dropdown-item">
                                     {{ noti.titulo }}<br> <br>
                                     <p style="float: left; text-align: left; font-size: 14px;">{{ noti.descripcion }}</p> <br><br>
+                                    <i style="float: right !important; " class="fa fa-check-circle-o" aria-hidden="true"></i>
                                     <p style="float: left; text-align: left; font-size: 10px;">{{ noti.hora }}</p>
-                                    <i class="fa fa-check-circle-o" aria-hidden="true"></i>
                                     </a>
+                                    {% endif %}
                                   {% endif %}
                                   {% if noti.estatus == False %}
                                     <a href="{% url 'dato:notificacion' pk=noti.id %}" class="dropdown-item" id="style-2">
+                                      {% if user.is_superuser %}
+                                      <p style="text-align: center; font-size: 14px;">Solicitud de retiro</p>
+                                      <br>
+                                        <p style="float: left; text-align: center; font-size: 14px;">El alumno <br>{{noti.user.nombre}} {{noti.user.apellido}} solicita retirarse de la escuela de formación</p>
+                                        <p style="float: left; text-align: left; font-size: 10px;">{{ noti.hora }}</p>
+                                      {% else %}
                                     {{ noti.titulo }}<br> <br>
                                     <p style="float: left; text-align: left; font-size: 14px;">{{ noti.descripcion }}</p> <br><br>
                                     <p style="float: left; text-align: left; font-size: 10px;">{{ noti.hora }}</p>
+                                    {% endif %}
                                     </a>
                                   {% endif %}
                                   </div>
@@ -126,6 +215,8 @@
                                   </div>
                               {% endif %}
                               </li>
+                              
+
                             </ul>
 
                         </div>
