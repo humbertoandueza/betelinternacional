@@ -34,7 +34,8 @@ ALLOWED_HOSTS = ['iglesiabetel.pythonanywhere.com']
 AUTH_USER_MODEL = 'accounts.Users'
 
 # Application definition
-
+from templated_email.backends.vanilla_django import TemplateBackend
+TEMPLATED_EMAIL_BACKEND = TemplateBackend
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -44,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'datos',
     'accounts',
+    'mail_templated',
 ]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -84,7 +86,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'iglesiabetel$default',
         'USER': 'iglesiabetel',
-        'PASSWORD': '01051998a.',
+        'PASSWORD': '01051998a',
         'HOST':'iglesiabetel.mysql.pythonanywhere-services.com',
     }
 }

@@ -9,11 +9,12 @@ from .formsDate import *
 
 class UsersModelForm(UserCreationForm):
     password1 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Contraseña', 'class':'form-control', 'autocomplete':'off'}))
+    
     password2 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Confirme Contraseña', 'class':'form-control', 'autocomplete':'off'}))
     class Meta:
         model = Users
         exclude = ('created_at', 'updated_at', 'user_permissions',
-            'last_login', 'is_active', 'date_joined', 'password')
+            'last_login', 'is_active', 'date_joined', 'password','password1','password2')
 
         widgets = {
             'ci': forms.NumberInput(attrs={'placeholder': 'Cedula', 'class':'form-control', 'autocomplete':'off','oninput':'maxLengthCheck(this)','maxlength':'8','onKeyUp':'this.value=this.value.toUpperCase();'}),
@@ -37,13 +38,12 @@ class UsersModelForm(UserCreationForm):
 
 
 class UsersUpdateModelForm(UserChangeForm):
-    password1 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Contraseña', 'class':'form-control', 'autocomplete':'off'}))
-    password2 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Confirme Contraseña', 'class':'form-control', 'autocomplete':'off'}))
     class Meta:
         model = Users
         exclude = ('created_at', 'updated_at', 'user_permissions',
-            'last_login', 'is_active', 'date_joined','is_alumno'
+            'last_login', 'is_active', 'date_joined'
             ,'is_profesor','username','id_usuario','email',
-            'last_name','first_name','ci','birthday','is_staff')
+            'last_name','first_name','password','ci','birthday','is_staff','password1','password2')
         widgets = {
+            'is_alumno': forms.CheckboxInput(attrs={'checked':'checked'}),
         }

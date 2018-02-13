@@ -8,16 +8,16 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin,BaseUs
 from django.utils.translation import ugettext, ugettext_lazy as _
 from django.utils import timezone
 from .models import *
+from django.contrib.auth.hashers import make_password
 
 class UserManager(BaseUserManager):
-	def create_user(self,ci,password=None ,**kwargs):
+	def create_user(self,ci,password=None,**kwargs):
 		if not ci:
 			raise ValueError('Users must have invalid ci.')
 
 		account = self.model(
 			ci=self.model.normalize_username(ci)
 		)
-
 		account.set_password(password)
 		account.save()
 
@@ -51,9 +51,7 @@ class Users(AbstractBaseUser, PermissionsMixin):
 
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)
-
 	objects = UserManager()
-
 	USERNAME_FIELD = 'ci'
 	REQUIRED_FIELD = ['email']
 
@@ -68,5 +66,6 @@ class Users(AbstractBaseUser, PermissionsMixin):
 
 	def save(self, *args, **kwargs):
 		if self.username:
+			print (self.ci)
 			self.username = self.ci
 			super(Users, self).save(*args, **kwargs)
