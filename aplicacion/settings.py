@@ -34,7 +34,8 @@ ALLOWED_HOSTS = ['iglesiabetel.pythonanywhere.com']
 AUTH_USER_MODEL = 'accounts.Users'
 
 # Application definition
-
+from templated_email.backends.vanilla_django import TemplateBackend
+TEMPLATED_EMAIL_BACKEND = TemplateBackend
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -44,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'datos',
     'accounts',
+    'mail_templated',
 ]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

@@ -20,7 +20,7 @@ from io import BytesIO
 from django.db.models import Sum
 
 from io import BytesIO
-
+from .tokens import *
 from reportlab.platypus import SimpleDocTemplate, Paragraph, TableStyle,PageBreak
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib import colors
@@ -39,60 +39,68 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from django.contrib.auth.decorators import permission_required
 
+from templated_email import send_templated_mail
+from templated_email import InlineImage
 def index(request):
 	return render(request,'index.html')
 
 
 def change_password(request):
-    if request.method == 'POST':
-        form = PasswordChangeForm(request.user, request.POST)
-        if form.is_valid():
-            user = form.save()
-            update_session_auth_hash(request, user)  # Important!
-            messages.success(request, 'Your password was successfully updated!')
-            return redirect('dato:app_inicio')
-        else:
-            messages.error(request, 'Please correct the error below.')
-    else:
-        form = PasswordChangeForm(request.user)
-    return render(request, 'aplicacion/change_password.html', {
-        'form': form
+	if request.method == 'POST':
+		form = PasswordChangeForm(request.user, request.POST)
+		if form.is_valid():
+			user1 = request.user
+			user1.is_alumno = True
+			user1.save()
+			user = form.save()
+			update_session_auth_hash(request, user)  # Important!
+			messages.success(request, 'Your password was successfully updated!')
+			return redirect('dato:app_inicio')
+		else:
+			messages.error(request, 'Please correct the error below.')
+	else:
+		form = PasswordChangeForm(request.user)
+	return render(request, 'aplicacion/change_password.html', {
+		'form': form
     })
 
 
 def app_index(request):
-	filtro = Asigna_Materia.objects.filter(profesor_id=request.user.ci)
-	#print (filtro)
-	if request.user.is_alumno and not request.user.is_inscripcion and not request.user.is_superuser:
-		notificacion = Notificacion.objects.filter(titulo='Carga de nota',user_id=request.user.ci).order_by('-hora','-id')
-		inscripcion1 =Inscripcion.objects.filter(cedula_id=request.user.ci,estatus=0,terminado=False)
-		for i in inscripcion1:
-			form = str(i.id_nivel_id)
-			nivel = Nivel.objects.get(id_nivel=form)
-			var1= nivel.nivel
-			print (var1)
-		notificaciones = Notificacion.objects.filter(titulo='Carga de nota',user_id=request.user.ci,estatus=False)
-		var = len(notificaciones)
-		if inscripcion1:
-			return render(request,'aplicacion/paneladminnw.html', {'var1':var1,'inscripcion1':inscripcion1,'var':var,"filtro":filtro,'notificacion':notificacion})
+	if request.user.is_active and request.user.is_superuser or request.user.is_alumno or request.user.is_profesor:
+		filtro = Asigna_Materia.objects.filter(profesor_id=request.user.ci)
+		#print (filtro)
+		if request.user.is_alumno and not request.user.is_inscripcion and not request.user.is_superuser:
+			notificacion = Notificacion.objects.filter(titulo='Carga de nota',user_id=request.user.ci).order_by('-hora','-id')
+			inscripcion1 =Inscripcion.objects.filter(cedula_id=request.user.ci,estatus=0,terminado=False)
+			for i in inscripcion1:
+				form = str(i.id_nivel_id)
+				nivel = Nivel.objects.get(id_nivel=form)
+				var1= nivel.nivel
+				print (var1)
+			notificaciones = Notificacion.objects.filter(titulo='Carga de nota',user_id=request.user.ci,estatus=False)
+			var = len(notificaciones)
+			if inscripcion1:
+				return render(request,'aplicacion/paneladminnw.html', {'var1':var1,'inscripcion1':inscripcion1,'var':var,"filtro":filtro,'notificacion':notificacion})
 
-		return render(request,'aplicacion/paneladminnw.html', {'var':var,"filtro":filtro,'notificacion':notificacion})
-	if request.user.is_superuser:
-		notificacion = Notificacion.objects.filter(titulo='Retiro').order_by('-hora','-id')
+			return render(request,'aplicacion/paneladminnw.html', {'var':var,"filtro":filtro,'notificacion':notificacion})
+		if request.user.is_superuser:
+			notificacion = Notificacion.objects.filter(titulo='Retiro').order_by('-hora','-id')
 
-		notificaciones = Notificacion.objects.filter(titulo='Retiro',estatus=False)
-		var = len(notificaciones)
+			notificaciones = Notificacion.objects.filter(titulo='Retiro',estatus=False)
+			var = len(notificaciones)
 
-		return render(request,'aplicacion/paneladminnw.html', {'var':var,"filtro":filtro,'notificacion':notificacion})
+			return render(request,'aplicacion/paneladminnw.html', {'var':var,"filtro":filtro,'notificacion':notificacion})
 
-	return render(request,'aplicacion/paneladminnw.html', {"filtro":filtro})
-
+		return render(request,'aplicacion/paneladminnw.html', {"filtro":filtro})
+	else:
+		return redirect('dato:change_password')
 def notificacion(request,pk):
 	notificaciones = Notificacion.objects.filter(pk=pk).update(estatus=True)
 	return redirect('dato:app_inicio')
 
 def notas_filter(request):
 	if request.user.is_alumno and not request.user.is_superuser:
+		mensaje = 'Su usuario es: '+request.user.first_name + ' '+request.user.last_name
 		inscripcion2 = Inscripcion.objects.filter(cedula_id=request.user.ci)
 		for i in inscripcion2:
 			if i.estatus != 2:
@@ -693,11 +701,60 @@ def UsersCreateView_profesor(request,*args, **kwargs):
 	if request.method == 'POST':
 		form = UsersModelForm(request.POST)
 		if form.is_valid():
+			with open('static/assets/img/logo.png', 'rb') as lena:
+				image = lena.read()
+			inline_image = InlineImage(filename="logo.png", content=image)
+			with open('static/assets/img/imagen.png', 'rb') as lena1:
+				image1 = lena1.read()
+			inline_image1 = InlineImage(filename="logo.png", content=image1)
+			send_templated_mail(
+	        template_name='welcome',
+	        from_email='',
+	        recipient_list=[request.POST['email']],
+	        context={
+	        	'lena_image': inline_image,
+	        	'lena_image1': inline_image1,
+	            'username':request.POST['first_name'],
+	            'full_name':request.POST['last_name'],
+	            'cedula':request.POST['ci'],
+	            'password':request.POST['password1']
+
+	        },)
 			form.save()
 			return redirect('dato:app_inicio')
 	else:
 		form = UsersModelForm()
 	return render(request, 'aplicacion/form_create_profesor.html', {'form':form})
+
+def UsersCreateView_alumno(request,*args, **kwargs):
+	if request.method == 'POST':
+		form = UsersModelForm(request.POST)
+		if form.is_valid():
+			with open('static/assets/img/logo.png', 'rb') as lena:
+				image = lena.read()
+			inline_image = InlineImage(filename="logo.png", content=image)
+			with open('static/assets/img/imagen.png', 'rb') as lena1:
+				image1 = lena1.read()
+			inline_image1 = InlineImage(filename="logo.png", content=image1)
+			send_templated_mail(
+	        template_name='welcome',
+	        from_email='',
+	        recipient_list=[request.POST['email']],
+	        context={
+	        	'lena_image': inline_image,
+	        	'lena_image1': inline_image1,
+	            'username':request.POST['first_name'],
+	            'full_name':request.POST['last_name'],
+	            'cedula':request.POST['ci'],
+	            'password':request.POST['password1']
+
+	        },)
+			form.save()
+			return redirect('dato:app_inicio')
+	else:
+		form = UsersModelForm()
+	return render(request, 'aplicacion/form_create_alumno.html', {'form':form})
+
 
 class ListProfesor(ListView):
 	model = Profesor
