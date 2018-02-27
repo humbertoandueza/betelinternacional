@@ -23,9 +23,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '+s!7-bs!e#l)gwm#2ckpbq=(%4v%4qx=am-*q+1km3hjbs8nad'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-#<<<<<<< HEAD
-DEBUG = False
+
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 #ALLOWED_HOSTS = ['humberto.pythonanywhere.com']
 ALLOWED_HOSTS = []
@@ -178,10 +177,3 @@ SESSION_SAVE_EVERY_REQUEST = True
 #HTTPS
 <<<<<<< HEAD
 SECURE_SSL_REDIRECT = True"""
-=======
-<<<<<<< HEAD
-SECURE_SSL_REDIRECT = True
-=======
-SECURE_SSL_REDIRECT = True
->>>>>>> c1f86f6a4055cf87c7b9556230caf316758d69e4
->>>>>>> 470e1a459eb95dd77710a2628ab5e05ee52cb141

@@ -31,6 +31,7 @@
 							{% endif %}
 								</center>
 							</th>
+							<th><center><a data-toggle="tooltip" data-placement="top" title="Cambiar Nota" href="{% url 'dato:editar_nota' pk=nota.id_nota %}" ><span class="glyphicon glyphicon glyphicon-open"></span></a></center></th>
 						</tr>
 					</p>
 					{% endfor %}

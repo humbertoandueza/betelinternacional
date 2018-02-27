@@ -1,0 +1,188 @@
+{% extends 'aplicacion/paneladminnw.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+  .dropdown-menu {
+    text-align: center;}
+  .dropdown-item:hover {
+    text-decoration: none;
+    background-color: #eee;}
+    .dropdown-item {
+      margin-top: 0px;
+      padding: 5px;}
+  @keyframes scaleAnimation {
+  0% {
+    opacity: 0;
+    transform: scale(1.5);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes drawCircle {
+  0% {
+    stroke-dashoffset: $circle-length;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes drawCheck {
+  0% {
+    stroke-dashoffset: $check-length;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+#successAnimationCircle {
+  stroke-dasharray: $circle-length $circle-length;
+  stroke: #57da00;
+  fill: #fff;
+
+}
+
+#successAnimationCheck {
+  stroke-dasharray: $check-length $check-length;
+  stroke: #57da00;
+  fill: #fff;
+
+}
+
+#successAnimationResult {
+  fill: #57da00;
+  opacity: 0;
+  fill: #fff;
+}
+
+#successAnimation.animated {
+  animation: 1s ease-out 0s 1 both scaleAnimation;
+  
+  #successAnimationCircle {
+    animation: 1s cubic-bezier(0.77, 0, 0.175, 1) 0s 1 both drawCircle,
+               0.3s linear 0.9s 1 both fadeOut;
+  }
+  
+  #successAnimationCheck {
+    animation: 1s cubic-bezier(0.77, 0, 0.175, 1) 0s 1 both drawCheck,
+               0.3s linear 0.9s 1 both fadeOut;
+  }
+  
+  #successAnimationResult {
+    animation: 0.3s linear 0.9s both fadeIn;
+  }
+}
+</style>
+{% if user.is_profesor and not user.is_superuser %}
+<div class="top-content">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-sm-12 col-md-12  col-lg-12 form- f11" style="padding: 0px; background-image: url('{% static 'assets/img/line.png'%}'); background-size: cover; background-repeat: no-repeat;">
+                        <div id="form" class="fixed-top"  >
+                            
+                            <ul class="nav nav-tabs">
+                              <li class="nav-item">
+                                <a class="nav-link active" href="{% url 'dato:app_inicio' %}">Inicio</a>
+                              </li>
+                                
+                              {% if user.is_superuser %}
+                              <li class="nav-item">
+                                <a class="nav-link" href="{% url 'dato:reporte' %}">reportes</a>
+                              </li>
+                              <li class="nav-item">
+                                <a class="nav-link" href="{% url 'dato:profesor' %}">Añadir Profesor</a>
+                              </li>
+                              <li class="nav-item">
+                                <a class="nav-link" href="{% url 'dato:materia' %}">Añadir Materia</a>
+                              </li>
+                              {% endif %}
+                              {% if user.is_profesor %}
+                      
+                              {% endif %}
+            
+                              {% if user.is_alumno %}
+                              <li class="nav-item">
+                                <a class="nav-link" href="{% url 'dato:ver_notas' %}">Ver Notas</a>
+                              </li>
+                              {% endif %}                                  
+                              <li style="float: right;">
+                                <a  href="{% url 'logout' %}">Salir</a></nav>
+                                
+                              </li>
+                            </ul>
+                        </div>
+                        
+                            <form action="" method="post">
+                              {% csrf_token %}  
+                                <div class="form-horizontal" >
+                              <br>
+                              <br>
+
+                            <div class="datos col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3" style="color:#010101; background: #fff; box-shadow: 0px 0px 6px 1px;">
+                                <div class="row">
+                                  <div class="col-md-6">
+                                <h3 style="color:#010101; border-bottom: 1px solid #010101;"> Datos del Estudiante: </h3>
+                                <br>
+                                  <p style="text-align:left;">Nombre: {{object.cedula.cedula.nombre}}</p> 
+                                  <p style="text-align:left;">Apellido: {{object.cedula.cedula.apellido}}</p> 
+                                  <p style="text-align:left;">Email: {{object.cedula.cedula.email}}</p>
+                                </div>
+                                <br>
+                                  <div class="col-md-5 col-md-offset-0 col-sm-5 col-sm-offset-3">
+                                    <div class="foto" >
+                                      <img class="imgr" src="{% static 'assets/img/nosotros.svg'%}" width="250" class="img-fluid my-1 mb-2 " >
+                                    </div>
+                                  </div>
+
+                                </div>
+                                <br>
+                            </div>
+                            <br>
+                            <br>
+                                <div class="form-group">
+                                    <div class="col-sm-6 col-sm-offset-3" data-toggle="tooltip" data-placement="top" title="Ingrese la nota a cargar">
+                                    <br>
+                                    <h4 style="color: #010101;">Actualizar Nota</h4>  
+                                        <div class="input-group">   
+                                                <span class="input-group-addon">
+                                                <i class="fa fa-book" id="icon" aria-hidden="true"></i>
+                                               
+                                            </span>
+                                            {{form.nota_persona}}
+
+                                        </div>
+                                    </div>
+                                </div>
+                                    <button class="btn btn-danger"><a style="color:#fff;" href="{% url 'dato:nivel1' %}">Cancelar</a></button>
+                                    
+                                    <button type="submit"  class="btn btn-submit">Cargar</button>
+
+                            </form>
+                            <br>
+                            <br>
+{% endif %}
+{% endblock %}

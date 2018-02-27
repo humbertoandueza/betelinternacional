@@ -39,6 +39,7 @@ urlpatterns=[
     url(r'^aplicacion/pdf_nivel1/$',login_required(nivel1_pdf.as_view()), name="reporte_nivel1"),
     url(r'^aplicacion/pdf_nivel2/$',login_required(nivel2_pdf.as_view()), name="reporte_nivel2"),
     url(r'^aplicacion/pdf_nivel3/$',login_required(nivel3_pdf.as_view()), name="reporte_nivel3"),
+    url(r'^aplicacion/editar_nota/(?P<pk>\d+)/$',login_required(updateNota.as_view()), name="editar_nota"),
 
 
 

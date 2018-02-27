@@ -164,6 +164,18 @@ class NotasForm(forms.ModelForm):
 			'nota_persona': forms.Select(attrs={'class':'form-control', 'autocomplete':'off','onKeyUp':'this.value=this.value.toUpperCase();'}),            
 		}
 
+class NotasUpdateForm(forms.ModelForm):
+
+	class Meta:
+		model = Notas
+		exclude = ('cedula', 'id_materia')
+		fields= [
+			'nota_persona'
+		]
+		widgets = {
+			'nota_persona': forms.Select(attrs={'class':'form-control', 'autocomplete':'off','onKeyUp':'this.value=this.value.toUpperCase();'}),            
+		}
+
 class NotificacionesForm(forms.ModelForm):
 
 	class Meta:

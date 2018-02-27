@@ -38,6 +38,8 @@ from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from django.contrib.auth.decorators import permission_required
+import datetime
+import time
 
 def index(request):
 	return render(request,'index.html')
@@ -623,6 +625,13 @@ def post_new(request,*args, **kwargs):
 		return render(request, 'aplicacion/nota_form.html', {'var2':var2,'nivel':nivel, 'nota4':nota4,'filtro1':filtro1,'nota3':nota3,'form':form,'cedula':cedula,'filtro':filtro})
 	else:
 		return redirect('dato:app_inicio')
+
+class updateNota(UpdateView):
+	model = Notas
+	form_class = NotasUpdateForm
+	template_name = 'aplicacion/nota_form1.html'
+	success_url = reverse_lazy('dato:nivel1')
+
 def solicitud(request):
 	if request.user.is_alumno and not request.user.is_superuser:
 		if request.method == 'POST':
@@ -751,7 +760,7 @@ class generar_pdf(View):
 		    header=Paragraph('Lista de usuarios registrados',styles['Heading1'])
 		    clientes.append(header)
 		    headings = ('Cedula','Nombre', 'Apellido', 'Correo')
-		    allclientes = [(p.ci,p.first_name, p.last_name, p.email) for p in Users.objects.all()]
+		    allclientes = [(len(p),p.ci,p.first_name, p.last_name, p.email) for p in Users.objects.all()]
 		    t = Table([headings] + allclientes)
 		    t.setStyle(TableStyle(
 		    	[	('GRID', (0, 0), (7, -1), 1, colors.black),
@@ -794,6 +803,18 @@ class nivel1_pdf(View):
 		#guananare
 		header = Paragraph('Guanare-Portuguesa', styles['Heading4'])
 		w, h = header.wrap(doc.width-120, doc.topMargin)
+		header20 = Paragraph('Fecha: '+ time.strftime("%x"), styles['Normal'])
+		w, h = header20.wrap(doc.width-320, doc.topMargin)
+		header20.drawOn(canvas, 520, doc.height + doc.topMargin+15 )
+
+		title = Paragraph('Lista de alumnos inscritos en el nivel 1', styles['Heading2'])
+		w, h = title.wrap(doc.width-120, doc.topMargin)
+		title.drawOn(canvas, 180, doc.height + doc.topMargin - 90)
+
+		title1 = Paragraph('Alumnos:', styles['Heading4'])
+		w, h = title1.wrap(doc.width-120, doc.topMargin)
+		title1.drawOn(canvas, 280, doc.height + doc.topMargin - 160)
+
 		header.drawOn(canvas, 250, doc.height + doc.topMargin - 41)
 		footer = Paragraph('Iglesia Cristiana Bet-el Internacional', styles['Normal'])
 		w, h = footer.wrap(doc.width, doc.bottomMargin)
@@ -815,8 +836,6 @@ class nivel1_pdf(View):
 		if request.user.is_superuser:
 			clientes = []
 			styles = getSampleStyleSheet()
-			header=Paragraph('Lista de Alumnos del nivel I',styles['Heading1'])
-			clientes.append(header)
 			materias = Materia.objects.filter(id_nivel_id=1)
 			id_materia1 = materias[0]
 			id_materia2 = materias[1]
@@ -826,34 +845,59 @@ class nivel1_pdf(View):
 			nombre1 = nombre_pro.profesor.nombre_profesor
 			apellido1 = nombre_pro.profesor.apellido_profesor
 			materia1 = id_materia1.nombre_materia
-			nombre_completo = 'Profesor: '+nombre1+ ' '+apellido1+ ' Materia: '+materia1 
+			nombre_completo = 'Profesor: '+nombre1+ ' '+apellido1+ ', Materia: '+materia1 
 			print(nombre_completo)
 
 			nombre_pro1 = Asigna_Materia.objects.get(materia_id=obtener_id2)
 			nombre2 = nombre_pro1.profesor.nombre_profesor
 			apellido2 = nombre_pro1.profesor.apellido_profesor
 			materia2 = id_materia2.nombre_materia
-			nombre_completo2 = 'Profesor: '+nombre2+ ' '+apellido2+ ' Materia: '+materia2 
+			nombre_completo2 = 'Profesor: '+nombre2+ ' '+apellido2+ ', Materia: '+materia2 
 			nombre_profesor1=Paragraph(nombre_completo,styles['Heading4'])
+			header4=Paragraph('',styles['Heading3'])
+			clientes.append(header4)
+			clientes.append(header4)
+			clientes.append(header4)
+			clientes.append(header4)
+
+
+
 			clientes.append(nombre_profesor1)
 			nombre_profesor=Paragraph(nombre_completo2,styles['Heading4'])
 			clientes.append(nombre_profesor)
-			header1=Paragraph('ALumnos:',styles['Heading3'])
-
-			clientes.append(header1)
+			
 			header4=Paragraph('',styles['Heading3'])
 			clientes.append(header4)
+			clientes.append(header4)
+			clientes.append(header4)
+
 			print(nombre_completo2)
-			headings = ('Cedula','Nombre', 'Apellido','Correo', 'Estatus')
-			allclientes = [(p.cedula_id,p.cedula.nombre, p.cedula.apellido,p.cedula.email,p.estatus) for p in Inscripcion.objects.filter(id_nivel_id=1,terminado=False)]
-			
-			t = Table([headings] + allclientes)
+			headings = ('N°','Cedula','Nombre', 'Apellido','Correo', 'Estatus')
+			acum = 0
+			lista = []
+			for p in Inscripcion.objects.filter(id_nivel_id=1,terminado=False).order_by('cedula_id'):
+				acum = acum+1
+				if p.estatus=='1':
+					estatus='Aprobado'
+				else:
+					estatus='Reprobado'
+				print ('estatus ',estatus)
+				var12 = (acum,p.cedula_id,p.cedula.nombre, p.cedula.apellido,p.cedula.email,estatus)
+				lista.append(var12)
+			t = Table([headings] + lista)
 			t.setStyle(TableStyle(
 		    	[	('GRID', (0, 0), (7, -1), 1, colors.black),
 		    	('LINEBELOW', (0, 0), (-1, 0), 2, colors.black),
 		    	('BACKGROUND', (0, 0), (-1, 0), colors.dodgerblue)
 		    	]))
 			clientes.append(t)
+			header4=Paragraph('',styles['Heading3'])
+			clientes.append(header4)
+			cantidad = 'Cantidad de alumnos inscritos: '+str((len(lista)))
+
+			header4=Paragraph(cantidad,styles['Normal'])
+			clientes.append(header4)
+
 			doc.build(clientes,onFirstPage=self._header_footer,onLaterPages=self._header_footer,canvasmaker=NumberedCanvas)
 		else:
 			clientes = []
