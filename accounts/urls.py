@@ -6,7 +6,7 @@ from django.contrib import admin
 from django.conf import settings
 from .views import *
 from django.contrib.auth.decorators import login_required
-
+from datos.views import *
 urlpatterns = [
     url(
             r'^loguet/$',
@@ -17,7 +17,7 @@ urlpatterns = [
     # CREAR USUARIOS ALUMNOS
     url(
         r'^crear_usuario_alumno/$',
-        UsersCreateView_alumno.as_view(),
+        UsersCreateView_alumno,
         name='crear_usuario_alumno'
     ), 
     url(
