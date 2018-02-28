@@ -701,10 +701,10 @@ def UsersCreateView_profesor(request,*args, **kwargs):
 	if request.method == 'POST':
 		form = UsersModelForm(request.POST)
 		if form.is_valid():
-			with open('static/assets/img/logo.png', 'rb') as lena:
+			with open('/home/iglesiabetel/betelinternacional/static/assets/img/logo.png', 'rb') as lena:
 				image = lena.read()
 			inline_image = InlineImage(filename="logo.png", content=image)
-			with open('static/assets/img/imagen.png', 'rb') as lena1:
+			with open('/home/iglesiabetel/betelinternacional/static/assets/img/imagen.png', 'rb') as lena1:
 				image1 = lena1.read()
 			inline_image1 = InlineImage(filename="logo.png", content=image1)
 			send_templated_mail(
@@ -730,10 +730,10 @@ def UsersCreateView_alumno(request,*args, **kwargs):
 	if request.method == 'POST':
 		form = UsersModelForm(request.POST)
 		if form.is_valid():
-			with open('static/assets/img/logo.png', 'rb') as lena:
+			with open('/home/iglesiabetel/betelinternacional/static/assets/img/logo.png', 'rb') as lena:
 				image = lena.read()
 			inline_image = InlineImage(filename="logo.png", content=image)
-			with open('static/assets/img/imagen.png', 'rb') as lena1:
+			with open('/home/iglesiabetel/betelinternacional/static/assets/img/imagen.png', 'rb') as lena1:
 				image1 = lena1.read()
 			inline_image1 = InlineImage(filename="logo.png", content=image1)
 			send_templated_mail(
