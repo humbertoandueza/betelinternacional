@@ -24,6 +24,17 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '+s!7-bs!e#l)gwm#2ckpbq=(%4v%4qx=am-*q+1km3hjbs8nad'
 
 
+<<<<<<< HEAD
+=======
+=======
+# SECURITY WARNING: don't run with debug turned on in production!
+<<<<<<< HEAD
+
+=======
+#<<<<<<< HEAD
+>>>>>>> 2e500457c73cce9fe59bda1daf346ed32d663dec
+>>>>>>> 88b1e3ccdd144ff10f1656278c3e1b7068dba69d
+>>>>>>> 173e1c494cbcfb57a1d5397da78189c0c594397e
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 #ALLOWED_HOSTS = ['iglesiabetel.pythonanywhere.com']
