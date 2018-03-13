@@ -942,24 +942,6 @@ class nivel1_pdf(View):
 			id_materia2 = materias[1]
 			obtener_id1 = id_materia1.id_materia
 			obtener_id2 = id_materia2.id_materia
-			nombre_pro = Asigna_Materia.objects.get(materia_id=obtener_id1)
-			nombre1 = nombre_pro.profesor.nombre_profesor
-			apellido1 = nombre_pro.profesor.apellido_profesor
-			materia1 = id_materia1.nombre_materia
-
-			nombre_completo = 'Profesor: '+nombre1+ ' '+apellido1+ ', Materia: '+materia1
-
-			print(nombre_completo)
-
-			nombre_pro1 = Asigna_Materia.objects.get(materia_id=obtener_id2)
-			nombre2 = nombre_pro1.profesor.nombre_profesor
-			apellido2 = nombre_pro1.profesor.apellido_profesor
-			materia2 = id_materia2.nombre_materia
-
-			nombre_completo2 = 'Profesor: '+nombre2+ ' '+apellido2+ ', Materia: '+materia2
-
-			nombre_profesor1=Paragraph(nombre_completo,styles['Heading4'])
-
 			asignadas = Asigna_Materia.objects.filter(materia_id=obtener_id1)
 			asignadas1 = Asigna_Materia.objects.filter(materia_id=obtener_id2)
 
