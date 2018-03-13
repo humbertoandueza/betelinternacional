@@ -43,7 +43,7 @@ class Persona(models.Model):
 	trabaja = models.CharField(max_length=10,choices=tr)
 	profesion = models.CharField(max_length=60)
 	estudio_ori = models.CharField(max_length=60)
-	ing_famil = models.CharField(max_length=60)
+	ing_famil = models.CharField(max_length=9)
 	iglesia = models.CharField(max_length=60)
 	pastor = models.CharField(max_length=25)
 	es = (

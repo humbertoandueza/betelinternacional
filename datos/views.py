@@ -762,8 +762,6 @@ def UsersCreateView_profesor(request,*args, **kwargs):
 	if request.method == 'POST':
 		form = UsersModelForm(request.POST)
 		if form.is_valid():
-<<<<<<< HEAD
-=======
 			with open('/home/iglesiabetel/betelinternacional/static/assets/img/logo.png', 'rb') as lena:
 				image = lena.read()
 			inline_image = InlineImage(filename="logo.png", content=image)
@@ -783,7 +781,6 @@ def UsersCreateView_profesor(request,*args, **kwargs):
 	            'password':request.POST['password1']
 
 	        },)
->>>>>>> 173e1c494cbcfb57a1d5397da78189c0c594397e
 			form.save()
 			return redirect('dato:app_inicio')
 	else:
