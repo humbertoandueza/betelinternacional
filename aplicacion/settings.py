@@ -23,23 +23,16 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '+s!7-bs!e#l)gwm#2ckpbq=(%4v%4qx=am-*q+1km3hjbs8nad'
 
-<<<<<<< HEAD
 
-=======
-# SECURITY WARNING: don't run with debug turned on in production!
-#<<<<<<< HEAD
->>>>>>> 2e500457c73cce9fe59bda1daf346ed32d663dec
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
-ALLOWED_HOSTS = ['iglesiabetel.pythonanywhere.com']
-#ALLOWED_HOSTS = []
+#ALLOWED_HOSTS = ['iglesiabetel.pythonanywhere.com']
+ALLOWED_HOSTS = []
 
 
 AUTH_USER_MODEL = 'accounts.Users'
 
 # Application definition
-from templated_email.backends.vanilla_django import TemplateBackend
-TEMPLATED_EMAIL_BACKEND = TemplateBackend
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -49,7 +42,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'datos',
     'accounts',
-    'mail_templated',
 ]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -88,10 +80,10 @@ WSGI_APPLICATION = 'aplicacion.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'iglesiabetel$default',
-        'USER': 'iglesiabetel',
-        'PASSWORD': '01051998a',
-        'HOST':'iglesiabetel.mysql.pythonanywhere-services.com',
+        'NAME': 'db_school',
+        'USER': 'root',
+        'PASSWORD': '',
+        #'HOST':'iglesiabetel.mysql.pythonanywhere-services.com',
     }
 }
 
@@ -152,16 +144,10 @@ EMAIL_HOST_USER = 'humbertoanduezaa@gmail.com'
 EMAIL_HOST_PASSWORD = '01051998a'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 #SESSION EXPIRED
-
+"""
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_COOKIE_AGE = 120 # set just 10 seconds to test
 SESSION_SAVE_EVERY_REQUEST = True
 #HTTPS
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 SECURE_SSL_REDIRECT = True"""
-=======
-
-SECURE_SSL_REDIRECT = True
-
->>>>>>> 2e500457c73cce9fe59bda1daf346ed32d663dec

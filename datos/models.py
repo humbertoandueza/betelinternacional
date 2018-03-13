@@ -43,8 +43,7 @@ class Persona(models.Model):
 	trabaja = models.CharField(max_length=10,choices=tr)
 	profesion = models.CharField(max_length=60)
 	estudio_ori = models.CharField(max_length=60)
-	ing_famil = models.IntegerField()
-
+	ing_famil = models.CharField(max_length=60)
 	iglesia = models.CharField(max_length=60)
 	pastor = models.CharField(max_length=25)
 	es = (
@@ -81,23 +80,6 @@ class Nivel(models.Model):
 	def __str__(self):
 		return str(self.nivel)
 
-class Inscripcion(models.Model):
-	cedula = models.ForeignKey(Persona)
-	id_nivel = models.ForeignKey(Nivel)
-	lapso_ano = models.DateField(auto_now_add=True)
-	est=(
-		("0","Aprobado"),
-		("1","Reprobado"),
-
-	)
-	estatus = models.CharField(max_length=20,choices=est,blank=True)
-	terminado = models.BooleanField(default=False)
-
-
-	def __str__(self):
-		return str(self.id)
-
-
 class Profesor(models.Model):
 	cedula_profesor = models.IntegerField(primary_key=True)
 	nombre_profesor = models.CharField(max_length=20)
@@ -118,11 +100,33 @@ class  Materia(models.Model):
 	def __str__(self): #si es python 2.7 es def __unicode__(self):
 		return '{}, {}' .format(self.nombre_materia, self.id_nivel)
 
+
+class Inscripcion(models.Model):
+	cedula = models.ForeignKey(Persona)
+	id_nivel = models.ForeignKey(Nivel)
+	lapso_ano = models.DateField(auto_now_add=True)
+	est=(
+		("0","Aprobado"),
+		("1","Reprobado"),
+
+	)
+	estatus = models.CharField(max_length=20,choices=est,blank=True)
+	terminado = models.BooleanField(default=False)
+
+
+	def __str__(self):
+		return str(self.id)
+
+
 class Asigna_Materia(models.Model):
 	materia = models.OneToOneField(Materia)
 	profesor = models.OneToOneField(Profesor)
+	fecha = models.DateField(auto_now_add=True)
+
+
 	def __str__(self): #si es python 2.7 es def __unicode__(self):
 		return '{}, {}' .format(self.materia, self.profesor)
+
 
 class Notas(models.Model):
 	id_nota = models.AutoField(primary_key=True)

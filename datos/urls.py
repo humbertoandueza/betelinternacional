@@ -20,7 +20,7 @@ urlpatterns=[
     url(r'^aplicacion/nueva/$',login_required(SolicitudCreate.as_view()), name='aplicacion_crear'),
 	url(r'^aplicacion/pdf/$',login_required(generar_pdf.as_view()), name="reporte"),
     url(r'^aplicacion/pdf_personal/(?P<pk>\d+)/$',login_required(generar_pdf_personal.as_view()), name="reporte_personal"),
-    url(r'^aplicacion/crear_usuario_profesor/$',login_required(UsersCreateView_profesor), name="crear_usuario_profesor"),
+    url(r'^aplicacion/crear_usuario_profesor/$',UsersCreateView_profesor, name="crear_usuario_profesor"),
     url(r'^aplicacion/asignar_materias/$',login_required(AsignarMateria), name="asigna"),
 
     url(r'^aplicacion/ver_notas/$',login_required(notas_filter), name="ver_notas"),
@@ -37,9 +37,14 @@ urlpatterns=[
     url(r'^aplicacion/retiro/(?P<pk>\d+)/$',login_required(retiro), name="retiro"),
     url(r'^aplicacion/pasar_nivel/$',login_required(pasar_nivel), name="pasar_nivel"),
     url(r'^aplicacion/pdf_nivel1/$',login_required(nivel1_pdf.as_view()), name="reporte_nivel1"),
+    url(r'^aplicacion/estudiantes/$',login_required(Estudiantes.as_view()), name="estudiante"),
+    url(r'^aplicacion/notas_p/$',login_required(Notas_P.as_view()), name="notas_p"),
+
+
     url(r'^aplicacion/pdf_nivel2/$',login_required(nivel2_pdf.as_view()), name="reporte_nivel2"),
     url(r'^aplicacion/pdf_nivel3/$',login_required(nivel3_pdf.as_view()), name="reporte_nivel3"),
     url(r'^aplicacion/editar_nota/(?P<pk>\d+)/$',login_required(updateNota.as_view()), name="editar_nota"),
+    url(r'^aplicacion/cambiar_profesor/(?P<pk>\d+)/$',login_required(UpdateMateria.as_view()), name="cambiar_profesor"),
 
 
 

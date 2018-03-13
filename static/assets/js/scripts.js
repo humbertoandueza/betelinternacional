@@ -155,14 +155,14 @@ jQuery(document).ready(function() {
                 next_step = false;
             }
 
-            if(edad <= 13 ){
+            if(edad <= 15 ){
                 $(fecha_naci).removeClass('hidden');
                 $(form.fecha_de_nacimiento).addClass('input-error');
                 document.getElementById('fecha_naci').innerHTML="NO POSEE LA EDAD ADECUADA PARA INSCRIBIRSE";
                 next_step = false;
             }
 
-            if(edad > 13 ){
+            if(edad > 15 ){
                 $(fecha_naci).addClass('hidden');
                 $(form.fecha_de_nacimiento).removeClass('input-error');
             }
@@ -321,14 +321,35 @@ function showDiv(select){
     document.getElementById('hidden_div2').style.display = "block";
 
    } if(select.value== 'no'){
-    document.getElementById('hidden_div').style.display = "none";
-    document.getElementById('hidden_div').style.display = "none";
+    document.getElementById('hidden_div1').style.display = "none";
+    document.getElementById('hidden_div2').style.display = "none";
 
    }
 }
 function submitform(){
     buscar.submit();
 }
+
+
+
+$('#form1').submit(function(e){
+    var next_step1 = true;
+    var telefono = document.getElementById('id_telefono_profesor')
+
+    if (telefono.value.length!=11){
+        $(telefono_profesor).removeClass('hidden');
+        $(telefono).addClass('input-error');
+        document.getElementById('telefono_profesor').innerHTML="NUMBERO DE TELEFONO INVALIDO";
+        e.preventDefault()
+        next_step = false;
+    }
+    if(telefono.value.length == 0 ){
+        $(telefono_profesor).addClass('hidden');
+        $(telefono).removeClass('input-error');
+
+    }});
+
+
 
 $('#form').submit(function(e){
     var next_step1 = true;

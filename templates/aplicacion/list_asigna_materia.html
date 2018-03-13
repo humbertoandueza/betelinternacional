@@ -154,6 +154,7 @@
 			<td><center> Profesor</center></td>
 			<td><center> Materia</center></td>
 			<td><center> Nivel</center></td>
+      <td><center>Acciones</center></td>
 
 		</tr>
 		
@@ -168,6 +169,9 @@
 				<td>{{ persona.profesor.nombre_profesor }}</td>
 				<td>{{ persona.materia.nombre_materia }}</td>
 				<td>{{ persona.materia.id_nivel.nivel }}</td>
+        <td><a href="{% url 'dato:cambiar_profesor' pk=persona.id %}">Cambiar profesor</a></td>
+
+        
 		</tr>
     {% endfor %}
 

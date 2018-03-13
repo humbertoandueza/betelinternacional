@@ -51,12 +51,13 @@ def change_password(request):
 	if request.method == 'POST':
 		form = PasswordChangeForm(request.user, request.POST)
 		if form.is_valid():
-			user1 = request.user
-			user1.is_alumno = True
-			user1.save()
+			if request.user.is_inscripcion and not request.user.is_alumno and not request.user.is_superuser:
+				user1 = request.user
+				user1.is_alumno = True
+				user1.save()
 			user = form.save()
 			update_session_auth_hash(request, user)  # Important!
-			messages.success(request, 'Your password was successfully updated!')
+			messages.success(request, 'Tu contraseña a sido cambiada exitosamente')
 			return redirect('dato:app_inicio')
 		else:
 			messages.error(request, 'Please correct the error below.')
@@ -103,6 +104,7 @@ def notificacion(request,pk):
 def notas_filter(request):
 	if request.user.is_alumno and not request.user.is_superuser:
 		mensaje = 'Su usuario es: '+request.user.first_name + ' '+request.user.last_name
+		print (mensaje)
 		inscripcion2 = Inscripcion.objects.filter(cedula_id=request.user.ci)
 		for i in inscripcion2:
 			if i.estatus != 2:
@@ -118,7 +120,7 @@ def notas_filter(request):
 			obtener_id1 = id_materia1.id_materia
 			obtener_id2 = id_materia2.id_materia
 
-			print ('id de la materia: ',id_materia1 ,'es : ',obtener_id1)
+			print ('id de la materia: ',id_materia1.nombre_materia ,'es : ',obtener_id1)
 			print ('id de la materia: ',id_materia2 ,'es : ',obtener_id2)
 		if filtro :
 			#calculo de notas y saber cuantas notas van cargadas en familia
@@ -156,7 +158,18 @@ def notas_filter(request):
 			elif cantidad13 >=9 and cantidad1 <= 6:
 				estatus = 'Reprobado'
 			nota = Notas.objects.filter(cedula_id=request.user.ci)
-			return render(request, "aplicacion/notas_list.html", {'cantidad12':cantidad12,'cantidad13':cantidad13, 'materia1':materia1,'materia2':materia2, 'estatus':estatus,'estat':estatus1,'inscripcion1':inscripcion1,"notas":notas,"notas1":notas1,})
+			total_no = cantidad12 + cantidad13
+			if total_no ==20:
+				estado=inscripcion1.estatus
+				if estado =='1':
+					estado = 'Reprobado'
+				if estado =='0':
+					estado = 'Aprobado'
+			else:
+				estado = ''
+
+			print ('estado: ',estado)
+			return render(request, "aplicacion/notas_list.html", {'estado':estado,'cantidad12':cantidad12,'cantidad13':cantidad13, 'materia1':materia1,'materia2':materia2, 'estatus':estatus,'estat':estatus1,'inscripcion1':inscripcion1,"notas":notas,"notas1":notas1,})
 
 		estatus = 'no defined'
 		return render(request, "aplicacion/notas_list.html", {'inscripcion1':inscripcion1,"notas":nota,})
@@ -257,7 +270,18 @@ def DetalleProveedor_2(request,pk,estatus=None):
 				cantidad13 = 0
 				estatus ='No posee Notas'
 			nota = Notas.objects.filter(cedula_id=pk)
-			return render(request, "aplicacion/ver_notas_profesor_super.html", {'nombre_completo':nombre_completo,'nombre_completo1':nombre_completo1,'cantidad12':cantidad12,'cantidad13':cantidad13, 'materia1':materia1,'materia2':materia2, 'estatus':estatus,'estat':estatus1,'inscripcion1':inscripcion1,"notas":notas,"notas1":notas1,})
+			total_no = cantidad12 + cantidad13
+			if total_no ==20:
+				estado=inscripcion1.estatus
+				if estado =='1':
+					estado = 'Reprobado'
+				if estado =='0':
+					estado = 'Aprobado'
+			else:
+				estado = ''
+
+				print ('estado: ',estado)
+			return render(request, "aplicacion/ver_notas_profesor_super.html", {'estado':estado,'nombre_completo':nombre_completo,'nombre_completo1':nombre_completo1,'cantidad12':cantidad12,'cantidad13':cantidad13, 'materia1':materia1,'materia2':materia2, 'estatus':estatus,'estat':estatus1,'inscripcion1':inscripcion1,"notas":notas,"notas1":notas1,})
 
 		estatus = 'no defined'
 		return render(request, "aplicacion/ver_notas_profesor_super.html", {'inscripcion1':inscripcion1,"notas":nota,})
@@ -265,22 +289,38 @@ def DetalleProveedor_2(request,pk,estatus=None):
 		return redirect('dato:app_inicio')
 def pasar_nivel(request):
 	if request.method == 'POST':
-		inscripcion1 = get_object_or_404(Inscripcion,cedula_id=request.user.ci,estatus=0,terminado=False)
+		inscripcion1 = get_object_or_404(Inscripcion,cedula_id=request.user.ci,terminado=False)
 		filtro = inscripcion1.id_nivel_id
-		nivel = get_object_or_404(Nivel,id_nivel=filtro)
-		avanzar= str(nivel.nivel + 'I')
-		nivel_a = get_object_or_404(Nivel,nivel=avanzar)
+		if inscripcion1.estatus == '0':
+			nivel = get_object_or_404(Nivel,id_nivel=filtro)
+			avanzar= str(nivel.nivel + 'I')
+			nivel_a = get_object_or_404(Nivel,nivel=avanzar)
 
-		print (nivel_a.id_nivel)
-		inscripcion = {
-			'cedula': request.user.ci,
-			'id_nivel': nivel_a.id_nivel,
-			'estatus':1,
-			}
-		inscripciones =InscripcionForm(inscripcion)
-		inscripciones.save()
-		inscripcion1 = Inscripcion.objects.filter(cedula_id=request.user.ci,estatus=0,terminado=False).update(terminado=True)
-		return redirect('dato:app_inicio')
+			print (nivel_a.id_nivel)
+			inscripcion = {
+				'cedula': request.user.ci,
+				'id_nivel': nivel_a.id_nivel,
+				'estatus':1,
+				}
+			inscripciones =InscripcionForm(inscripcion)
+			inscripciones.save()
+			inscripcion1 = Inscripcion.objects.filter(cedula_id=request.user.ci,estatus=0,terminado=False).update(terminado=True)
+			return redirect('dato:app_inicio')
+		if inscripcion1.estatus == '1':
+			nivel = get_object_or_404(Nivel,id_nivel=filtro)
+			avanzar= str(nivel.nivel)
+			nivel_a = get_object_or_404(Nivel,nivel=avanzar)
+
+			print (nivel_a.id_nivel)
+			inscripcion = {
+				'cedula': request.user.ci,
+				'id_nivel': nivel_a.id_nivel,
+				'estatus':1,
+				}
+			inscripciones =InscripcionForm(inscripcion)
+			inscripcion1 = Inscripcion.objects.filter(cedula_id=request.user.ci,estatus=1,terminado=False).update(terminado=True)
+			inscripciones.save()
+			return redirect('dato:app_inicio')
 
 	return render(request,'aplicacion/retiro.html')
 
@@ -297,7 +337,7 @@ def notas_filter_super(request,pk):
 			obtener_id1 = id_materia1.id_materia
 			obtener_id2 = id_materia2.id_materia
 
-			print ('id de la materia: ',id_materia1 ,'es : ',obtener_id1)
+			print ('id de la materia: ',id_materia1.nombre_materia ,'es : ',obtener_id1)
 			print ('id de la materia: ',id_materia2 ,'es : ',obtener_id2)
 		if filtro :
 			#calculo de notas y saber cuantas notas van cargadas en familia
@@ -354,7 +394,7 @@ def nivel1_new(request):
 		nivel = Inscripcion.objects.filter(id_nivel_id=filtro2,estatus__range=["", "1"],terminado=False)
 		nivel1 = len(Inscripcion.objects.filter(id_nivel_id=filtro2,estatus__range=["", "1"],terminado=False))
 		print (nivel1)
-		paginator = Paginator(nivel, 7)
+		paginator = Paginator(nivel, 5)
 		page = request.GET.get("page", 1)
 		try:
 			nivel = paginator.page(page)
@@ -369,11 +409,11 @@ def nivel1_new(request):
 			if query == "":
 				return redirect ('dato:nivel1')
 			#querys = (Q(cedula__icontains=query))
-			nivel = Inscripcion.objects.filter(cedula_id=query)
+			nivel = Inscripcion.objects.filter(cedula_id=query,estatus__range=["", "1"],terminado=False)
 			#print (nivel)
 
 			if len(nivel) == 0:
-				nivel = Inscripcion.objects.filter(cedula_id=query)
+				nivel = Inscripcion.objects.filter(cedula_id=query,estatus__range=["", "1"],terminado=False)
 			else:
 				return render(request,'aplicacion/nivel1.html', {'filtro2':filtro2,'nivel1':nivel1,"filtro":filtro,"nivel":nivel})
 		return render(request,'aplicacion/nivel1.html', {'filtro2':filtro2,'nivel1':nivel1,"filtro":filtro,"nivel":nivel})
@@ -426,6 +466,12 @@ def AsignarMateria(request,*args,**kwargs):
 		form = AsignaMateriaForm()
 	return render(request,'aplicacion/form_asigna_materia.html',{'form':form})
 
+class UpdateMateria(UpdateView):
+	model = Asigna_Materia
+	form_class = AsignaMateriaForm
+	template_name = 'aplicacion/form_asigna_materia.html'
+	success_url = reverse_lazy('dato:app_inicio')
+
 class ListAsignarMateria(ListView):
 	model = Asigna_Materia
 	template_name = 'aplicacion/list_asigna_materia.html'
@@ -434,30 +480,7 @@ def nivel1_superuser(request):
 	if request.user.is_superuser:
 		nivel = Inscripcion.objects.filter(id_nivel_id=1,estatus__range=["", "1"],terminado=False)
 		materias = Materia.objects.filter(id_nivel_id=1)
-		if len(materias) < 2:
-			print ("error")
-		else:
-			id_materia1 = materias[0]
-			id_materia2 = materias[1]
-			obtener_id1 = id_materia1.id_materia
-			obtener_id2 = id_materia2.id_materia
-			nombre_pro = Asigna_Materia.objects.get(materia_id=obtener_id1)
-			nombre1 = nombre_pro.profesor.nombre_profesor
-			apellido1 = nombre_pro.profesor.apellido_profesor
-			materia1 = id_materia1.nombre_materia
-			nombre_completo = 'Profesor: '+nombre1+ ' '+apellido1+ ' Materia: '+materia1
-			print(nombre_completo)
-
-			nombre_pro1 = Asigna_Materia.objects.get(materia_id=obtener_id2)
-			nombre2 = nombre_pro1.profesor.nombre_profesor
-			apellido2 = nombre_pro1.profesor.apellido_profesor
-			materia2 = id_materia2.nombre_materia
-			nombre_completo2 = 'Profesor: '+nombre2+ ' '+apellido2+ ' Materia: '+materia2
-
-			print(nombre_completo2)
-
-
-		paginator = Paginator(nivel, 7)
+		paginator = Paginator(nivel, 5)
 		page = request.GET.get("page", 1)
 		try:
 			nivel = paginator.page(page)
@@ -472,14 +495,43 @@ def nivel1_superuser(request):
 				if query == "":
 					return redirect ('dato:nivel1')
 				#querys = (Q(cedula__icontains=query))
-				nivel = Inscripcion.objects.filter(cedula_id=query)
+				nivel = Inscripcion.objects.filter(cedula_id=query,estatus__range=["", "1"],terminado=False)
 				#print (nivel)
 
 				if len(nivel) == 0:
-					nivel = Inscripcion.objects.filter(cedula_id=query)
+					nivel = Inscripcion.objects.filter(cedula_id=query,estatus__range=["", "1"],terminado=False)
 				else:
 					return render(request,'aplicacion/nivel1_superuser.html', {"nivel":nivel,})
-		return render(request,'aplicacion/nivel1_superuser.html', {'nombre_completo':nombre_completo,'nombre_completo2':nombre_completo2,"nivel":nivel})
+		if len(materias) < 2:
+			print ("error")
+		else:
+			id_materia1 = materias[0]
+			id_materia2 = materias[1]
+			obtener_id1 = id_materia1.id_materia
+			obtener_id2 = id_materia2.id_materia
+			asignadas = Asigna_Materia.objects.filter(materia_id=obtener_id1)
+			asignadas1 = Asigna_Materia.objects.filter(materia_id=obtener_id2)
+
+			print('materias asignadas',len(asignadas),len(asignadas1))
+			if len(asignadas) ==1 and len(asignadas1) ==1  :
+				nombre_pro = Asigna_Materia.objects.get(materia_id=obtener_id1)
+				nombre_pro1 = Asigna_Materia.objects.get(materia_id=obtener_id2)
+				nombre1 = nombre_pro.profesor.nombre_profesor
+				apellido1 = nombre_pro.profesor.apellido_profesor
+				materia1 = id_materia1.nombre_materia
+				nombre_completo = 'Profesor: '+nombre1+ ' '+apellido1+ ' Materia: '+materia1
+				print(nombre_completo)
+
+				nombre2 = nombre_pro1.profesor.nombre_profesor
+				apellido2 = nombre_pro1.profesor.apellido_profesor
+				materia2 = id_materia2.nombre_materia
+				nombre_completo2 = 'Profesor: '+nombre2+ ' '+apellido2+ ' Materia: '+materia2
+
+				print(nombre_completo2)
+				return render(request,'aplicacion/nivel1_superuser.html', {'nombre_completo':nombre_completo,'nombre_completo2':nombre_completo2,"nivel":nivel})
+
+			else:
+				return render(request,'aplicacion/nivel1_superuser.html', {"nivel":nivel,})
 	else:
 		return redirect('dato:app_inicio')
 
@@ -501,11 +553,11 @@ def nivel2_superuser(request):
 				if query == "":
 					return redirect ('dato:nivel1')
 				#querys = (Q(cedula__icontains=query))
-				nivel = Inscripcion.objects.filter(cedula_id=query)
+				nivel = Inscripcion.objects.filter(cedula_id=query,estatus__range=["", "1"],terminado=False)
 				#print (nivel)
 
 				if len(nivel) == 0:
-					nivel = Inscripcion.objects.filter(cedula_id=query)
+					nivel = Inscripcion.objects.filter(cedula_id=query,estatus__range=["", "1"],terminado=False)
 				else:
 					return render(request,'aplicacion/nivel1_superuser.html', {"nivel":nivel})
 		return render(request,'aplicacion/nivel1_superuser.html', {"nivel":nivel})
@@ -530,11 +582,11 @@ def nivel3_superuser(request):
 				if query == "":
 					return redirect ('dato:nivel1')
 				#querys = (Q(cedula__icontains=query))
-				nivel = Inscripcion.objects.filter(cedula_id=query)
+				nivel = Inscripcion.objects.filter(cedula_id=query,estatus__range=["", "1"],terminado=False)
 				#print (nivel)
 
 				if len(nivel) == 0:
-					nivel = Inscripcion.objects.filter(cedula_id=query)
+					nivel = Inscripcion.objects.filter(cedula_id=query,estatus__range=["", "1"],terminado=False)
 				else:
 					return render(request,'aplicacion/nivel1_superuser.html', {"nivel":nivel})
 		return render(request,'aplicacion/nivel1_superuser.html', {"nivel":nivel})
@@ -710,25 +762,6 @@ def UsersCreateView_profesor(request,*args, **kwargs):
 	if request.method == 'POST':
 		form = UsersModelForm(request.POST)
 		if form.is_valid():
-			with open('static/assets/img/logo.png', 'rb') as lena:
-				image = lena.read()
-			inline_image = InlineImage(filename="logo.png", content=image)
-			with open('static/assets/img/imagen.png', 'rb') as lena1:
-				image1 = lena1.read()
-			inline_image1 = InlineImage(filename="logo.png", content=image1)
-			send_templated_mail(
-	        template_name='welcome',
-	        from_email='',
-	        recipient_list=[request.POST['email']],
-	        context={
-	        	'lena_image': inline_image,
-	        	'lena_image1': inline_image1,
-	            'username':request.POST['first_name'],
-	            'full_name':request.POST['last_name'],
-	            'cedula':request.POST['ci'],
-	            'password':request.POST['password1']
-
-	        },)
 			form.save()
 			return redirect('dato:app_inicio')
 	else:
@@ -774,7 +807,7 @@ class generar_pdf(View):
 		canvas.saveState()
 		canvas.setTitle("PDF")
 		styles = getSampleStyleSheet()
-		archivo_imagen = 'home/iglesiabetel/betelinternacional/static/assets/img/gif.gif'
+		archivo_imagen = 'static/assets/img/gif.gif'
 		canvas.drawImage(archivo_imagen, 60, 700, width=75,height=75,preserveAspectRatio=True)
 		#iglesia
 		header1 = Paragraph('Iglesia Cristiana Bet-el Internacional', styles['Heading4'])
@@ -843,7 +876,7 @@ class nivel1_pdf(View):
 		canvas.saveState()
 		canvas.setTitle("PDF")
 		styles = getSampleStyleSheet()
-		archivo_imagen = '/home/iglesiabetel/betelinternacional/static/assets/img/gif.gif'
+		archivo_imagen = 'static/assets/img/gif.gif'
 		canvas.drawImage(archivo_imagen, 60, 700, width=75,height=75,preserveAspectRatio=True)
 		#iglesia
 		header1 = Paragraph('Iglesia Cristiana Bet-el Internacional', styles['Heading4'])
@@ -863,14 +896,6 @@ class nivel1_pdf(View):
 		header20 = Paragraph('Fecha: '+ time.strftime("%x"), styles['Normal'])
 		w, h = header20.wrap(doc.width-320, doc.topMargin)
 		header20.drawOn(canvas, 520, doc.height + doc.topMargin+15 )
-
-		title = Paragraph('Lista de alumnos inscritos en el nivel 1', styles['Heading2'])
-		w, h = title.wrap(doc.width-120, doc.topMargin)
-		title.drawOn(canvas, 180, doc.height + doc.topMargin - 90)
-
-		title1 = Paragraph('Alumnos:', styles['Heading4'])
-		w, h = title1.wrap(doc.width-120, doc.topMargin)
-		title1.drawOn(canvas, 280, doc.height + doc.topMargin - 160)
 
 		header.drawOn(canvas, 250, doc.height + doc.topMargin - 41)
 		footer = Paragraph('Iglesia Cristiana Bet-el Internacional', styles['Normal'])
@@ -898,35 +923,40 @@ class nivel1_pdf(View):
 			id_materia2 = materias[1]
 			obtener_id1 = id_materia1.id_materia
 			obtener_id2 = id_materia2.id_materia
-			nombre_pro = Asigna_Materia.objects.get(materia_id=obtener_id1)
-			nombre1 = nombre_pro.profesor.nombre_profesor
-			apellido1 = nombre_pro.profesor.apellido_profesor
-			materia1 = id_materia1.nombre_materia
-<<<<<<< HEAD
-			nombre_completo = 'Profesor: '+nombre1+ ' '+apellido1+ ', Materia: '+materia1 
-=======
-			nombre_completo = 'Profesor: '+nombre1+ ' '+apellido1+ ' Materia: '+materia1
->>>>>>> 2e500457c73cce9fe59bda1daf346ed32d663dec
-			print(nombre_completo)
+			asignadas = Asigna_Materia.objects.filter(materia_id=obtener_id1)
+			asignadas1 = Asigna_Materia.objects.filter(materia_id=obtener_id2)
 
-			nombre_pro1 = Asigna_Materia.objects.get(materia_id=obtener_id2)
-			nombre2 = nombre_pro1.profesor.nombre_profesor
-			apellido2 = nombre_pro1.profesor.apellido_profesor
-			materia2 = id_materia2.nombre_materia
-<<<<<<< HEAD
-			nombre_completo2 = 'Profesor: '+nombre2+ ' '+apellido2+ ', Materia: '+materia2 
-=======
-			nombre_completo2 = 'Profesor: '+nombre2+ ' '+apellido2+ ' Materia: '+materia2
->>>>>>> 2e500457c73cce9fe59bda1daf346ed32d663dec
-			nombre_profesor1=Paragraph(nombre_completo,styles['Heading4'])
+			print('materias asignadas',len(asignadas),len(asignadas1))
+			if len(asignadas) ==1 and len(asignadas1) ==1  :
+				nombre_pro = Asigna_Materia.objects.get(materia_id=obtener_id1)
+				nombre_pro1 = Asigna_Materia.objects.get(materia_id=obtener_id2)
+				nombre1 = nombre_pro.profesor.nombre_profesor
+				apellido1 = nombre_pro.profesor.apellido_profesor
+				materia1 = id_materia1.nombre_materia
+				nombre_completo = 'Profesor: '+nombre1+ ' '+apellido1+ ', Materia: '+materia1 
+				nombre_completo = 'Profesor: '+nombre1+ ' '+apellido1+ ' Materia: '+materia1
+				print(nombre_completo)
+
+				nombre2 = nombre_pro1.profesor.nombre_profesor
+				apellido2 = nombre_pro1.profesor.apellido_profesor
+				materia2 = id_materia2.nombre_materia
+				nombre_completo2 = 'Profesor: '+nombre2+ ' '+apellido2+ ', Materia: '+materia2 
+				nombre_completo2 = 'Profesor: '+nombre2+ ' '+apellido2+ ' Materia: '+materia2
+			else:
+				nombre_completo = 'No hay profesores asignados'
+				nombre_completo2 = 'No hay profesores asignados'
+
+
 			header4=Paragraph('',styles['Heading3'])
 			clientes.append(header4)
+			header5=Paragraph('Lista de alumnos inscritos en el nivel 1',styles['Heading1'])
 			clientes.append(header4)
 			clientes.append(header4)
-			clientes.append(header4)
+			clientes.append(header5)
 
 
 
+			nombre_profesor1=Paragraph(nombre_completo,styles['Heading4'])
 			clientes.append(nombre_profesor1)
 			nombre_profesor=Paragraph(nombre_completo2,styles['Heading4'])
 			clientes.append(nombre_profesor)
@@ -937,7 +967,6 @@ class nivel1_pdf(View):
 			clientes.append(header4)
 
 			print(nombre_completo2)
-<<<<<<< HEAD
 			headings = ('N°','Cedula','Nombre', 'Apellido','Correo', 'Estatus')
 			acum = 0
 			lista = []
@@ -951,12 +980,7 @@ class nivel1_pdf(View):
 				var12 = (acum,p.cedula_id,p.cedula.nombre, p.cedula.apellido,p.cedula.email,estatus)
 				lista.append(var12)
 			t = Table([headings] + lista)
-=======
-			headings = ('Cedula','Nombre', 'Apellido','Correo', 'Estatus')
-			allclientes = [(p.cedula_id,p.cedula.nombre, p.cedula.apellido,p.cedula.email,p.estatus) for p in Inscripcion.objects.filter(id_nivel_id=1,terminado=False)]
 
-			t = Table([headings] + allclientes)
->>>>>>> 2e500457c73cce9fe59bda1daf346ed32d663dec
 			t.setStyle(TableStyle(
 		    	[	('GRID', (0, 0), (7, -1), 1, colors.black),
 		    	('LINEBELOW', (0, 0), (-1, 0), 2, colors.black),
@@ -981,12 +1005,13 @@ class nivel1_pdf(View):
 		buff.close()
 		return response
 
-class nivel2_pdf(View):
+
+class Estudiantes(View):
 	def _header_footer(self,canvas,doc):
 		canvas.saveState()
 		canvas.setTitle("PDF")
 		styles = getSampleStyleSheet()
-		archivo_imagen = '/home/iglesiabetel/betelinternacional/static/assets/img/gif.gif'
+		archivo_imagen = 'static/assets/img/gif.gif'
 		canvas.drawImage(archivo_imagen, 60, 700, width=75,height=75,preserveAspectRatio=True)
 		#iglesia
 		header1 = Paragraph('Iglesia Cristiana Bet-el Internacional', styles['Heading4'])
@@ -1003,6 +1028,10 @@ class nivel2_pdf(View):
 		#guananare
 		header = Paragraph('Guanare-Portuguesa', styles['Heading4'])
 		w, h = header.wrap(doc.width-120, doc.topMargin)
+		header20 = Paragraph('Fecha: '+ time.strftime("%x"), styles['Normal'])
+		w, h = header20.wrap(doc.width-320, doc.topMargin)
+		header20.drawOn(canvas, 520, doc.height + doc.topMargin+15 )
+
 		header.drawOn(canvas, 250, doc.height + doc.topMargin - 41)
 		footer = Paragraph('Iglesia Cristiana Bet-el Internacional', styles['Normal'])
 		w, h = footer.wrap(doc.width, doc.bottomMargin)
@@ -1021,48 +1050,52 @@ class nivel2_pdf(View):
 			topMargin=95,
 			bottomMargin=40,
 		)
-		if request.user.is_superuser:
+		if request.user.is_profesor and not request.user.is_superuser:
 			clientes = []
 			styles = getSampleStyleSheet()
-			header=Paragraph('Lista de Alumnos del nivel II',styles['Heading1'])
-			clientes.append(header)
-			materias = Materia.objects.filter(id_nivel_id=2)
-			id_materia1 = materias[0]
-			id_materia2 = materias[1]
-			obtener_id1 = id_materia1.id_materia
-			obtener_id2 = id_materia2.id_materia
-			nombre_pro = Asigna_Materia.objects.get(materia_id=obtener_id1)
-			nombre1 = nombre_pro.profesor.nombre_profesor
-			apellido1 = nombre_pro.profesor.apellido_profesor
-			materia1 = id_materia1.nombre_materia
-			nombre_completo = 'Profesor: '+nombre1+ ' '+apellido1+ ' Materia: '+materia1
-			print(nombre_completo)
-
-			nombre_pro1 = Asigna_Materia.objects.get(materia_id=obtener_id2)
-			nombre2 = nombre_pro1.profesor.nombre_profesor
-			apellido2 = nombre_pro1.profesor.apellido_profesor
-			materia2 = id_materia2.nombre_materia
-			nombre_completo2 = 'Profesor: '+nombre2+ ' '+apellido2+ ' Materia: '+materia2
-			nombre_profesor1=Paragraph(nombre_completo,styles['Heading4'])
-			clientes.append(nombre_profesor1)
-			nombre_profesor=Paragraph(nombre_completo2,styles['Heading4'])
-			clientes.append(nombre_profesor)
-			header1=Paragraph('ALumnos:',styles['Heading3'])
-
-			clientes.append(header1)
+			
+			header5=Paragraph('Lista de alumnos',styles['Heading1'])
 			header4=Paragraph('',styles['Heading3'])
-			clientes.append(header4)
-			print(nombre_completo2)
-			headings = ('Cedula','Nombre', 'Apellido','Correo', 'Estatus')
-			allclientes = [(p.cedula_id,p.cedula.nombre, p.cedula.apellido,p.cedula.email,p.estatus) for p in Inscripcion.objects.filter(id_nivel_id=2,terminado=False)]
 
-			t = Table([headings] + allclientes)
+
+			clientes.append(header4)
+			clientes.append(header4)
+			clientes.append(header5)
+			clientes.append(header4)
+			clientes.append(header4)
+
+
+			headings = ('N°','Cedula','          Nombre        ', '         Apellido         ','              Correo                 ', 'Estatus')
+			acum = 0
+			filtro = Asigna_Materia.objects.get(profesor_id=request.user.ci)
+			filtro1 = filtro.materia_id
+			materia = Materia.objects.get(id_materia=filtro1)
+			filtro2 = materia.id_nivel_id
+			lista = []
+			for p in Inscripcion.objects.filter(id_nivel_id=filtro2,estatus__range=["", "1"],terminado=False).order_by('cedula_id'):
+				acum = acum+1
+				if p.estatus=='1':
+					estatus='Aprobado'
+				else:
+					estatus='Reprobado'
+				print ('estatus ',estatus)
+				var12 = (acum,p.cedula_id,p.cedula.nombre, p.cedula.apellido,p.cedula.email,estatus)
+				lista.append(var12)
+			t = Table([headings] + lista)
+
 			t.setStyle(TableStyle(
 		    	[	('GRID', (0, 0), (7, -1), 1, colors.black),
 		    	('LINEBELOW', (0, 0), (-1, 0), 2, colors.black),
 		    	('BACKGROUND', (0, 0), (-1, 0), colors.dodgerblue)
 		    	]))
 			clientes.append(t)
+			header4=Paragraph('',styles['Heading3'])
+			clientes.append(header4)
+			cantidad = 'Cantidad de alumnos inscritos: '+str((len(lista)))
+
+			header4=Paragraph(cantidad,styles['Normal'])
+			clientes.append(header4)
+
 			doc.build(clientes,onFirstPage=self._header_footer,onLaterPages=self._header_footer,canvasmaker=NumberedCanvas)
 		else:
 			clientes = []
@@ -1074,12 +1107,13 @@ class nivel2_pdf(View):
 		buff.close()
 		return response
 
-class nivel3_pdf(View):
+
+class Notas_P(View):
 	def _header_footer(self,canvas,doc):
 		canvas.saveState()
 		canvas.setTitle("PDF")
 		styles = getSampleStyleSheet()
-		archivo_imagen = '/home/iglesiabetel/betelinternacional/static/assets/img/gif.gif'
+		archivo_imagen = 'static/assets/img/gif.gif'
 		canvas.drawImage(archivo_imagen, 60, 700, width=75,height=75,preserveAspectRatio=True)
 		#iglesia
 		header1 = Paragraph('Iglesia Cristiana Bet-el Internacional', styles['Heading4'])
@@ -1096,6 +1130,143 @@ class nivel3_pdf(View):
 		#guananare
 		header = Paragraph('Guanare-Portuguesa', styles['Heading4'])
 		w, h = header.wrap(doc.width-120, doc.topMargin)
+		header.drawOn(canvas, 250, doc.height + doc.topMargin - 41)
+
+		header = Paragraph('Mis notas', styles['Heading1'])
+		w, h = header.wrap(doc.width-120, doc.topMargin)
+		header.drawOn(canvas, 265, doc.height + doc.topMargin - 101)
+		header20 = Paragraph('Fecha: '+ time.strftime("%x"), styles['Normal'])
+		w, h = header20.wrap(doc.width-320, doc.topMargin)
+		header20.drawOn(canvas, 520, doc.height + doc.topMargin+15 )
+
+		footer = Paragraph('Iglesia Cristiana Bet-el Internacional', styles['Normal'])
+		w, h = footer.wrap(doc.width, doc.bottomMargin)
+		footer.drawOn(canvas, doc.leftMargin, h)
+		canvas.restoreState()
+
+	def get(self,request):
+		print ("Genero el PDF")
+		response = HttpResponse(content_type='application/pdf')
+		pdf_name = "clientes.pdf"  # llamado clientes
+		buff = BytesIO()
+		doc = SimpleDocTemplate(buff,
+			pagesize=letter,
+			rightMargin=40,
+			leftMargin=40,
+			topMargin=95,
+			bottomMargin=40,
+		)
+		if request.user.is_alumno and not request.user.is_superuser:
+			clientes = []
+			styles = getSampleStyleSheet()
+			
+			header4=Paragraph('',styles['Heading3'])
+
+
+			clientes.append(header4)
+			clientes.append(header4)
+			clientes.append(header4)
+			clientes.append(header4)
+			clientes.append(header4)
+
+			headings = ('               N°             ','                                 Nota                               ')
+			acum = 0
+			inscripcion1 = get_object_or_404(Inscripcion,cedula_id=request.user.ci,terminado=False)
+			filtro = inscripcion1.id_nivel_id
+			print ('imprimir',inscripcion1)
+			materias = Materia.objects.filter(id_nivel_id=filtro)
+			if len(materias) < 2:
+				print ("error")
+			else:
+				id_materia1 = materias[0]
+				id_materia2 = materias[1]
+				obtener_id1 = id_materia1.id_materia
+				obtener_id2 = id_materia2.id_materia
+
+				header6=Paragraph('Materia: '+str(id_materia1.nombre_materia),styles['Heading3'])
+				clientes.append(header6)
+
+			lista = []
+			for p in Notas.objects.filter(cedula_id=inscripcion1.id,id_materia_id=obtener_id1):
+				acum = acum+1
+				if p.nota_persona=='1':
+					estatus='Aprobado'
+				else:
+					estatus='Reprobado'
+				print ('estatus ',estatus)
+				var12 = (acum,estatus)
+				lista.append(var12)
+			t = Table([headings] + lista)
+
+			t.setStyle(TableStyle(
+		    	[	('GRID', (0, 0), (7, -1), 0, colors.black),
+		    	('LINEBELOW', (0, 0), (-1, 0), 2, colors.black),
+		    	('BACKGROUND', (0, 0), (-1, 0), colors.dodgerblue)
+		    	]))
+			clientes.append(t)
+			header4=Paragraph('',styles['Heading3'])
+			clientes.append(header4)
+			header7=Paragraph('Materia: '+str(id_materia2.nombre_materia),styles['Heading3'])
+			clientes.append(header7)
+
+			lista1 = []
+			acumula = 0
+			for p in Notas.objects.filter(cedula_id=inscripcion1.id,id_materia_id=obtener_id2):
+				acumula = acumula+1
+				if p.nota_persona=='1':
+					estatus='Aprobado'
+				else:
+					estatus='Reprobado'
+				print ('estatus ',estatus)
+				var12 = (acumula,estatus)
+				lista1.append(var12)
+			t1 = Table([headings] + lista1)
+
+			t1.setStyle(TableStyle(
+		    	[	('GRID', (0, 0), (7, -1), 1, colors.black),
+		    	('LINEBELOW', (0, 0), (-1, 0), 2, colors.black),
+		    	('BACKGROUND', (0, 0), (-1, 0), colors.dodgerblue)
+		    	]))
+			clientes.append(t1)
+
+			doc.build(clientes,onFirstPage=self._header_footer,onLaterPages=self._header_footer,canvasmaker=NumberedCanvas)
+		else:
+			clientes = []
+			styles = getSampleStyleSheet()
+			header=Paragraph('Lista de usuarios registrados',styles['Heading1'])
+			clientes.append(header)
+			doc.build(clientes,onFirstPage=self._header_footer,onLaterPages=self._header_footer,canvasmaker=NumberedCanvas)
+		response.write(buff.getvalue())
+		buff.close()
+		return response
+
+
+class nivel3_pdf(View):
+	def _header_footer(self,canvas,doc):
+		canvas.saveState()
+		canvas.setTitle("PDF")
+		styles = getSampleStyleSheet()
+		archivo_imagen = 'static/assets/img/gif.gif'
+		canvas.drawImage(archivo_imagen, 60, 700, width=75,height=75,preserveAspectRatio=True)
+		#iglesia
+		header1 = Paragraph('Iglesia Cristiana Bet-el Internacional', styles['Heading4'])
+		w, h = header1.wrap(doc.width-120, doc.topMargin)
+		header1.drawOn(canvas, 210, doc.height + doc.topMargin - 6)
+		#ministerio
+		header = Paragraph('Ministerio de Educacion Cristiana', styles['Heading4'])
+		w, h = header.wrap(doc.width-120, doc.topMargin)
+		header.drawOn(canvas, 220, doc.height + doc.topMargin - 30)
+		#escuela
+		header = Paragraph('Escuela de Formación y Discipulado', styles['Heading4'])
+		w, h = header.wrap(doc.width-120, doc.topMargin)
+		header.drawOn(canvas, 210, doc.height + doc.topMargin - 18)
+		#guananare
+		header = Paragraph('Guanare-Portuguesa', styles['Heading4'])
+		w, h = header.wrap(doc.width-120, doc.topMargin)
+		header20 = Paragraph('Fecha: '+ time.strftime("%x"), styles['Normal'])
+		w, h = header20.wrap(doc.width-320, doc.topMargin)
+		header20.drawOn(canvas, 520, doc.height + doc.topMargin+15 )
+
 		header.drawOn(canvas, 250, doc.height + doc.topMargin - 41)
 		footer = Paragraph('Iglesia Cristiana Bet-el Internacional', styles['Normal'])
 		w, h = footer.wrap(doc.width, doc.bottomMargin)
@@ -1117,45 +1288,218 @@ class nivel3_pdf(View):
 		if request.user.is_superuser:
 			clientes = []
 			styles = getSampleStyleSheet()
-			header=Paragraph('Lista de Alumnos del nivel III',styles['Heading1'])
-			clientes.append(header)
 			materias = Materia.objects.filter(id_nivel_id=3)
 			id_materia1 = materias[0]
 			id_materia2 = materias[1]
 			obtener_id1 = id_materia1.id_materia
 			obtener_id2 = id_materia2.id_materia
-			nombre_pro = Asigna_Materia.objects.get(materia_id=obtener_id1)
-			nombre1 = nombre_pro.profesor.nombre_profesor
-			apellido1 = nombre_pro.profesor.apellido_profesor
-			materia1 = id_materia1.nombre_materia
-			nombre_completo = 'Profesor: '+nombre1+ ' '+apellido1+ ' Materia: '+materia1
-			print(nombre_completo)
+			asignadas = Asigna_Materia.objects.filter(materia_id=obtener_id1)
+			asignadas1 = Asigna_Materia.objects.filter(materia_id=obtener_id2)
 
-			nombre_pro1 = Asigna_Materia.objects.get(materia_id=obtener_id2)
-			nombre2 = nombre_pro1.profesor.nombre_profesor
-			apellido2 = nombre_pro1.profesor.apellido_profesor
-			materia2 = id_materia2.nombre_materia
-			nombre_completo2 = 'Profesor: '+nombre2+ ' '+apellido2+ ' Materia: '+materia2
+			print('materias asignadas',len(asignadas),len(asignadas1))
+			if len(asignadas) ==1 and len(asignadas1) ==1  :
+				nombre_pro = Asigna_Materia.objects.get(materia_id=obtener_id1)
+				nombre_pro1 = Asigna_Materia.objects.get(materia_id=obtener_id2)
+				nombre1 = nombre_pro.profesor.nombre_profesor
+				apellido1 = nombre_pro.profesor.apellido_profesor
+				materia1 = id_materia1.nombre_materia
+				nombre_completo = 'Profesor: '+nombre1+ ' '+apellido1+ ', Materia: '+materia1 
+				nombre_completo = 'Profesor: '+nombre1+ ' '+apellido1+ ' Materia: '+materia1
+				print(nombre_completo)
+
+				nombre2 = nombre_pro1.profesor.nombre_profesor
+				apellido2 = nombre_pro1.profesor.apellido_profesor
+				materia2 = id_materia2.nombre_materia
+				nombre_completo2 = 'Profesor: '+nombre2+ ' '+apellido2+ ', Materia: '+materia2 
+				nombre_completo2 = 'Profesor: '+nombre2+ ' '+apellido2+ ' Materia: '+materia2
+			else:
+				nombre_completo = 'No hay profesores asignados'
+				nombre_completo2 = 'No hay profesores asignados'
+
+
+			header4=Paragraph('',styles['Heading3'])
+			clientes.append(header4)
+			header5=Paragraph('Lista de alumnos inscritos en el nivel 3',styles['Heading1'])
+			clientes.append(header4)
+			clientes.append(header4)
+			clientes.append(header5)
+
+
+
 			nombre_profesor1=Paragraph(nombre_completo,styles['Heading4'])
 			clientes.append(nombre_profesor1)
 			nombre_profesor=Paragraph(nombre_completo2,styles['Heading4'])
 			clientes.append(nombre_profesor)
-			header1=Paragraph('ALumnos:',styles['Heading3'])
-
-			clientes.append(header1)
+			
 			header4=Paragraph('',styles['Heading3'])
 			clientes.append(header4)
-			print(nombre_completo2)
-			headings = ('Cedula','Nombre', 'Apellido','Correo', 'Estatus')
-			allclientes = [(p.cedula_id,p.cedula.nombre, p.cedula.apellido,p.cedula.email,p.estatus) for p in Inscripcion.objects.filter(id_nivel_id=3,terminado=False)]
+			clientes.append(header4)
+			clientes.append(header4)
 
-			t = Table([headings] + allclientes)
+			print(nombre_completo2)
+			headings = ('N°','Cedula','Nombre', 'Apellido','Correo', 'Estatus')
+			acum = 0
+			lista = []
+			for p in Inscripcion.objects.filter(id_nivel_id=3,terminado=False).order_by('cedula_id'):
+				acum = acum+1
+				if p.estatus=='1':
+					estatus='Aprobado'
+				else:
+					estatus='Reprobado'
+				print ('estatus ',estatus)
+				var12 = (acum,p.cedula_id,p.cedula.nombre, p.cedula.apellido,p.cedula.email,estatus)
+				lista.append(var12)
+			t = Table([headings] + lista)
+
 			t.setStyle(TableStyle(
 		    	[	('GRID', (0, 0), (7, -1), 1, colors.black),
 		    	('LINEBELOW', (0, 0), (-1, 0), 2, colors.black),
 		    	('BACKGROUND', (0, 0), (-1, 0), colors.dodgerblue)
 		    	]))
 			clientes.append(t)
+			header4=Paragraph('',styles['Heading3'])
+			clientes.append(header4)
+			cantidad = 'Cantidad de alumnos inscritos: '+str((len(lista)))
+
+			header4=Paragraph(cantidad,styles['Normal'])
+			clientes.append(header4)
+
+			doc.build(clientes,onFirstPage=self._header_footer,onLaterPages=self._header_footer,canvasmaker=NumberedCanvas)
+		else:
+			clientes = []
+			styles = getSampleStyleSheet()
+			header=Paragraph('Lista de usuarios registrados',styles['Heading1'])
+			clientes.append(header)
+			doc.build(clientes,onFirstPage=self._header_footer,onLaterPages=self._header_footer,canvasmaker=NumberedCanvas)
+		response.write(buff.getvalue())
+		buff.close()
+		return response
+
+
+
+class nivel2_pdf(View):
+	def _header_footer(self,canvas,doc):
+		canvas.saveState()
+		canvas.setTitle("PDF")
+		styles = getSampleStyleSheet()
+		archivo_imagen = 'static/assets/img/gif.gif'
+		canvas.drawImage(archivo_imagen, 60, 700, width=75,height=75,preserveAspectRatio=True)
+		#iglesia
+		header1 = Paragraph('Iglesia Cristiana Bet-el Internacional', styles['Heading4'])
+		w, h = header1.wrap(doc.width-120, doc.topMargin)
+		header1.drawOn(canvas, 210, doc.height + doc.topMargin - 6)
+		#ministerio
+		header = Paragraph('Ministerio de Educacion Cristiana', styles['Heading4'])
+		w, h = header.wrap(doc.width-120, doc.topMargin)
+		header.drawOn(canvas, 220, doc.height + doc.topMargin - 30)
+		#escuela
+		header = Paragraph('Escuela de Formación y Discipulado', styles['Heading4'])
+		w, h = header.wrap(doc.width-120, doc.topMargin)
+		header.drawOn(canvas, 210, doc.height + doc.topMargin - 18)
+		#guananare
+		header = Paragraph('Guanare-Portuguesa', styles['Heading4'])
+		w, h = header.wrap(doc.width-120, doc.topMargin)
+		header20 = Paragraph('Fecha: '+ time.strftime("%x"), styles['Normal'])
+		w, h = header20.wrap(doc.width-320, doc.topMargin)
+		header20.drawOn(canvas, 520, doc.height + doc.topMargin+15 )
+
+		header.drawOn(canvas, 250, doc.height + doc.topMargin - 41)
+		footer = Paragraph('Iglesia Cristiana Bet-el Internacional', styles['Normal'])
+		w, h = footer.wrap(doc.width, doc.bottomMargin)
+		footer.drawOn(canvas, doc.leftMargin, h)
+		canvas.restoreState()
+
+	def get(self,request):
+		print ("Genero el PDF")
+		response = HttpResponse(content_type='application/pdf')
+		pdf_name = "clientes.pdf"  # llamado clientes
+		buff = BytesIO()
+		doc = SimpleDocTemplate(buff,
+			pagesize=letter,
+			rightMargin=40,
+			leftMargin=40,
+			topMargin=95,
+			bottomMargin=40,
+		)
+		if request.user.is_superuser:
+			clientes = []
+			styles = getSampleStyleSheet()
+			materias = Materia.objects.filter(id_nivel_id=2)
+			id_materia1 = materias[0]
+			id_materia2 = materias[1]
+			obtener_id1 = id_materia1.id_materia
+			obtener_id2 = id_materia2.id_materia
+			asignadas = Asigna_Materia.objects.filter(materia_id=obtener_id1)
+			asignadas1 = Asigna_Materia.objects.filter(materia_id=obtener_id2)
+
+			print('materias asignadas',len(asignadas),len(asignadas1))
+			if len(asignadas) ==1 and len(asignadas1) ==1  :
+				nombre_pro = Asigna_Materia.objects.get(materia_id=obtener_id1)
+				nombre_pro1 = Asigna_Materia.objects.get(materia_id=obtener_id2)
+				nombre1 = nombre_pro.profesor.nombre_profesor
+				apellido1 = nombre_pro.profesor.apellido_profesor
+				materia1 = id_materia1.nombre_materia
+				nombre_completo = 'Profesor: '+nombre1+ ' '+apellido1+ ', Materia: '+materia1 
+				nombre_completo = 'Profesor: '+nombre1+ ' '+apellido1+ ' Materia: '+materia1
+				print(nombre_completo)
+
+				nombre2 = nombre_pro1.profesor.nombre_profesor
+				apellido2 = nombre_pro1.profesor.apellido_profesor
+				materia2 = id_materia2.nombre_materia
+				nombre_completo2 = 'Profesor: '+nombre2+ ' '+apellido2+ ', Materia: '+materia2 
+				nombre_completo2 = 'Profesor: '+nombre2+ ' '+apellido2+ ' Materia: '+materia2
+			else:
+				nombre_completo = 'No hay profesores asignados'
+				nombre_completo2 = 'No hay profesores asignados'
+
+
+			header4=Paragraph('',styles['Heading3'])
+			clientes.append(header4)
+			header5=Paragraph('Lista de alumnos inscritos en el nivel 2',styles['Heading1'])
+			clientes.append(header4)
+			clientes.append(header4)
+			clientes.append(header5)
+
+
+
+			nombre_profesor1=Paragraph(nombre_completo,styles['Heading4'])
+			clientes.append(nombre_profesor1)
+			nombre_profesor=Paragraph(nombre_completo2,styles['Heading4'])
+			clientes.append(nombre_profesor)
+			
+			header4=Paragraph('',styles['Heading3'])
+			clientes.append(header4)
+			clientes.append(header4)
+			clientes.append(header4)
+
+			print(nombre_completo2)
+			headings = ('N°','Cedula','Nombre', 'Apellido','Correo', 'Estatus')
+			acum = 0
+			lista = []
+			for p in Inscripcion.objects.filter(id_nivel_id=2,terminado=False).order_by('cedula_id'):
+				acum = acum+1
+				if p.estatus=='1':
+					estatus='Aprobado'
+				else:
+					estatus='Reprobado'
+				print ('estatus ',estatus)
+				var12 = (acum,p.cedula_id,p.cedula.nombre, p.cedula.apellido,p.cedula.email,estatus)
+				lista.append(var12)
+			t = Table([headings] + lista)
+
+			t.setStyle(TableStyle(
+		    	[	('GRID', (0, 0), (7, -1), 1, colors.black),
+		    	('LINEBELOW', (0, 0), (-1, 0), 2, colors.black),
+		    	('BACKGROUND', (0, 0), (-1, 0), colors.dodgerblue)
+		    	]))
+			clientes.append(t)
+			header4=Paragraph('',styles['Heading3'])
+			clientes.append(header4)
+			cantidad = 'Cantidad de alumnos inscritos: '+str((len(lista)))
+
+			header4=Paragraph(cantidad,styles['Normal'])
+			clientes.append(header4)
+
 			doc.build(clientes,onFirstPage=self._header_footer,onLaterPages=self._header_footer,canvasmaker=NumberedCanvas)
 		else:
 			clientes = []
@@ -1172,7 +1516,7 @@ class generar_pdf_personal(View):
 		canvas.saveState()
 		canvas.setTitle("PDF")
 		styles = getSampleStyleSheet()
-		archivo_imagen = '/home/iglesiabetel/betelinternacional/static/assets/img/gif.gif'
+		archivo_imagen = 'static/assets/img/gif.gif'
 		canvas.drawImage(archivo_imagen, 60, 700, width=75,height=75,preserveAspectRatio=True)
 		#iglesia
 		header1 = Paragraph('Iglesia Cristiana Bet-el Internacional', styles['Heading4'])
@@ -1216,7 +1560,7 @@ class generar_pdf_personal(View):
 		    header1=Paragraph('Datos Personales',styles['Heading2'])
 		    clientes.append(header)
 		    clientes.append(header1)
-		    allclientes = get_object_or_404(Inscripcion,pk=pk)
+		    allclientes = Inscripcion.objects.get(pk=pk)
 		    #TABLA NUMERO 1
 		    headings = ('   Cedula      ','    Nombre   ', '    Apellido    ', 'Dirección                                                                                                             ')
 		    lista = (allclientes.cedula_id,allclientes.cedula.nombre,allclientes.cedula.apellido,allclientes.cedula.direccion)
