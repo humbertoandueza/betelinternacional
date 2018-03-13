@@ -149,8 +149,5 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_COOKIE_AGE = 120 # set just 10 seconds to test
 SESSION_SAVE_EVERY_REQUEST = True
-
-SECURE_SSL_REDIRECT = True
-
 SECURE_SSL_REDIRECT = True
 
