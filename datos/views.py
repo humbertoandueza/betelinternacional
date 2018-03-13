@@ -1082,7 +1082,7 @@ class Estudiantes(View):
 			clientes.append(header4)
 
 
-			headings = ('N°','Cedula','          Nombre        ', '         Apellido         ','              Correo                 ', 'Estatus')
+			headings = ('N°','Cedula','          Nombre        ', '         Apellido         ','              Correo                 ')
 			acum = 0
 			filtro = Asigna_Materia.objects.get(profesor_id=request.user.ci)
 			filtro1 = filtro.materia_id
@@ -1091,12 +1091,7 @@ class Estudiantes(View):
 			lista = []
 			for p in Inscripcion.objects.filter(id_nivel_id=filtro2,estatus__range=["", "1"],terminado=False).order_by('cedula_id'):
 				acum = acum+1
-				if p.estatus=='0':
-					estatus='Aprobado'
-				else:
-					estatus='Reprobado'
-				print ('estatus ',estatus)
-				var12 = (acum,p.cedula_id,p.cedula.nombre, p.cedula.apellido,p.cedula.email,estatus)
+				var12 = (acum,p.cedula_id,p.cedula.nombre, p.cedula.apellido,p.cedula.email)
 				lista.append(var12)
 			t = Table([headings] + lista)
 
