@@ -55,7 +55,7 @@ class Persona(models.Model):
 	instituto = models.CharField(max_length=60,null=True,blank=True)
 	titulo_obte = models.CharField(max_length=25,null=True,blank=True)
 	actividad = models.CharField(max_length=60)
-	mini= (	
+	mini= (
 			('', 'Ministerio'),
 			('Adoracion', 'Adoracion y Alabanza'),
 			('Audiovisual','Audiovisual'),
@@ -69,14 +69,14 @@ class Persona(models.Model):
 	razon = models.CharField(max_length=60)
 	user = models.ForeignKey(Users)
 
-	
+
 	def __str__(self):
 		return str(self.cedula)
 
 class Nivel(models.Model):
 	id_nivel = models.AutoField(primary_key=True)
 	nivel = models.CharField(max_length=10)
-	
+
 	def __str__(self):
 		return str(self.nivel)
 
@@ -121,7 +121,6 @@ class Inscripcion(models.Model):
 class Asigna_Materia(models.Model):
 	materia = models.OneToOneField(Materia)
 	profesor = models.OneToOneField(Profesor)
-	fecha = models.DateField(auto_now_add=True)
 
 
 	def __str__(self): #si es python 2.7 es def __unicode__(self):

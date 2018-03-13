@@ -762,8 +762,6 @@ def UsersCreateView_profesor(request,*args, **kwargs):
 	if request.method == 'POST':
 		form = UsersModelForm(request.POST)
 		if form.is_valid():
-<<<<<<< HEAD
-=======
 			with open('/home/iglesiabetel/betelinternacional/static/assets/img/logo.png', 'rb') as lena:
 				image = lena.read()
 			inline_image = InlineImage(filename="logo.png", content=image)
@@ -783,7 +781,6 @@ def UsersCreateView_profesor(request,*args, **kwargs):
 	            'password':request.POST['password1']
 
 	        },)
->>>>>>> 173e1c494cbcfb57a1d5397da78189c0c594397e
 			form.save()
 			return redirect('dato:app_inicio')
 	else:
@@ -829,7 +826,7 @@ class generar_pdf(View):
 		canvas.saveState()
 		canvas.setTitle("PDF")
 		styles = getSampleStyleSheet()
-		archivo_imagen = 'static/assets/img/gif.gif'
+		archivo_imagen = '/home/iglesiabetel/betelinternacional/static/assets/img/gif.gif'
 		canvas.drawImage(archivo_imagen, 60, 700, width=75,height=75,preserveAspectRatio=True)
 		#iglesia
 		header1 = Paragraph('Iglesia Cristiana Bet-el Internacional', styles['Heading4'])
@@ -898,7 +895,7 @@ class nivel1_pdf(View):
 		canvas.saveState()
 		canvas.setTitle("PDF")
 		styles = getSampleStyleSheet()
-		archivo_imagen = 'static/assets/img/gif.gif'
+		archivo_imagen = '/home/iglesiabetel/betelinternacional/static/assets/img/gif.gif'
 		canvas.drawImage(archivo_imagen, 60, 700, width=75,height=75,preserveAspectRatio=True)
 		#iglesia
 		header1 = Paragraph('Iglesia Cristiana Bet-el Internacional', styles['Heading4'])
@@ -945,7 +942,6 @@ class nivel1_pdf(View):
 			id_materia2 = materias[1]
 			obtener_id1 = id_materia1.id_materia
 			obtener_id2 = id_materia2.id_materia
-<<<<<<< HEAD
 			nombre_pro = Asigna_Materia.objects.get(materia_id=obtener_id1)
 			nombre1 = nombre_pro.profesor.nombre_profesor
 			apellido1 = nombre_pro.profesor.apellido_profesor
@@ -963,7 +959,7 @@ class nivel1_pdf(View):
 			nombre_completo2 = 'Profesor: '+nombre2+ ' '+apellido2+ ', Materia: '+materia2
 
 			nombre_profesor1=Paragraph(nombre_completo,styles['Heading4'])
-=======
+
 			asignadas = Asigna_Materia.objects.filter(materia_id=obtener_id1)
 			asignadas1 = Asigna_Materia.objects.filter(materia_id=obtener_id2)
 
@@ -974,21 +970,20 @@ class nivel1_pdf(View):
 				nombre1 = nombre_pro.profesor.nombre_profesor
 				apellido1 = nombre_pro.profesor.apellido_profesor
 				materia1 = id_materia1.nombre_materia
-				nombre_completo = 'Profesor: '+nombre1+ ' '+apellido1+ ', Materia: '+materia1 
+				nombre_completo = 'Profesor: '+nombre1+ ' '+apellido1+ ', Materia: '+materia1
 				nombre_completo = 'Profesor: '+nombre1+ ' '+apellido1+ ' Materia: '+materia1
 				print(nombre_completo)
 
 				nombre2 = nombre_pro1.profesor.nombre_profesor
 				apellido2 = nombre_pro1.profesor.apellido_profesor
 				materia2 = id_materia2.nombre_materia
-				nombre_completo2 = 'Profesor: '+nombre2+ ' '+apellido2+ ', Materia: '+materia2 
+				nombre_completo2 = 'Profesor: '+nombre2+ ' '+apellido2+ ', Materia: '+materia2
 				nombre_completo2 = 'Profesor: '+nombre2+ ' '+apellido2+ ' Materia: '+materia2
 			else:
 				nombre_completo = 'No hay profesores asignados'
 				nombre_completo2 = 'No hay profesores asignados'
 
 
->>>>>>> 5f781448e5f8d51a42c341302393969dc135dbce
 			header4=Paragraph('',styles['Heading3'])
 			clientes.append(header4)
 			header5=Paragraph('Lista de alumnos inscritos en el nivel 1',styles['Heading1'])
@@ -1022,10 +1017,6 @@ class nivel1_pdf(View):
 				var12 = (acum,p.cedula_id,p.cedula.nombre, p.cedula.apellido,p.cedula.email,estatus)
 				lista.append(var12)
 			t = Table([headings] + lista)
-<<<<<<< HEAD
-=======
-
->>>>>>> 5f781448e5f8d51a42c341302393969dc135dbce
 			t.setStyle(TableStyle(
 		    	[	('GRID', (0, 0), (7, -1), 1, colors.black),
 		    	('LINEBELOW', (0, 0), (-1, 0), 2, colors.black),
@@ -1056,7 +1047,7 @@ class Estudiantes(View):
 		canvas.saveState()
 		canvas.setTitle("PDF")
 		styles = getSampleStyleSheet()
-		archivo_imagen = 'static/assets/img/gif.gif'
+		archivo_imagen = '/home/iglesiabetel/betelinternacional/static/assets/img/gif.gif'
 		canvas.drawImage(archivo_imagen, 60, 700, width=75,height=75,preserveAspectRatio=True)
 		#iglesia
 		header1 = Paragraph('Iglesia Cristiana Bet-el Internacional', styles['Heading4'])
@@ -1098,7 +1089,7 @@ class Estudiantes(View):
 		if request.user.is_profesor and not request.user.is_superuser:
 			clientes = []
 			styles = getSampleStyleSheet()
-			
+
 			header5=Paragraph('Lista de alumnos',styles['Heading1'])
 			header4=Paragraph('',styles['Heading3'])
 
@@ -1158,7 +1149,7 @@ class Notas_P(View):
 		canvas.saveState()
 		canvas.setTitle("PDF")
 		styles = getSampleStyleSheet()
-		archivo_imagen = 'static/assets/img/gif.gif'
+		archivo_imagen = '/home/iglesiabetel/betelinternacional/static/assets/img/gif.gif'
 		canvas.drawImage(archivo_imagen, 60, 700, width=75,height=75,preserveAspectRatio=True)
 		#iglesia
 		header1 = Paragraph('Iglesia Cristiana Bet-el Internacional', styles['Heading4'])
@@ -1204,7 +1195,7 @@ class Notas_P(View):
 		if request.user.is_alumno and not request.user.is_superuser:
 			clientes = []
 			styles = getSampleStyleSheet()
-			
+
 			header4=Paragraph('',styles['Heading3'])
 
 
@@ -1291,7 +1282,7 @@ class nivel3_pdf(View):
 		canvas.saveState()
 		canvas.setTitle("PDF")
 		styles = getSampleStyleSheet()
-		archivo_imagen = 'static/assets/img/gif.gif'
+		archivo_imagen = '/home/iglesiabetel/betelinternacional/static/assets/img/gif.gif'
 		canvas.drawImage(archivo_imagen, 60, 700, width=75,height=75,preserveAspectRatio=True)
 		#iglesia
 		header1 = Paragraph('Iglesia Cristiana Bet-el Internacional', styles['Heading4'])
@@ -1348,14 +1339,14 @@ class nivel3_pdf(View):
 				nombre1 = nombre_pro.profesor.nombre_profesor
 				apellido1 = nombre_pro.profesor.apellido_profesor
 				materia1 = id_materia1.nombre_materia
-				nombre_completo = 'Profesor: '+nombre1+ ' '+apellido1+ ', Materia: '+materia1 
+				nombre_completo = 'Profesor: '+nombre1+ ' '+apellido1+ ', Materia: '+materia1
 				nombre_completo = 'Profesor: '+nombre1+ ' '+apellido1+ ' Materia: '+materia1
 				print(nombre_completo)
 
 				nombre2 = nombre_pro1.profesor.nombre_profesor
 				apellido2 = nombre_pro1.profesor.apellido_profesor
 				materia2 = id_materia2.nombre_materia
-				nombre_completo2 = 'Profesor: '+nombre2+ ' '+apellido2+ ', Materia: '+materia2 
+				nombre_completo2 = 'Profesor: '+nombre2+ ' '+apellido2+ ', Materia: '+materia2
 				nombre_completo2 = 'Profesor: '+nombre2+ ' '+apellido2+ ' Materia: '+materia2
 			else:
 				nombre_completo = 'No hay profesores asignados'
@@ -1375,7 +1366,7 @@ class nivel3_pdf(View):
 			clientes.append(nombre_profesor1)
 			nombre_profesor=Paragraph(nombre_completo2,styles['Heading4'])
 			clientes.append(nombre_profesor)
-			
+
 			header4=Paragraph('',styles['Heading3'])
 			clientes.append(header4)
 			clientes.append(header4)
@@ -1427,7 +1418,7 @@ class nivel2_pdf(View):
 		canvas.saveState()
 		canvas.setTitle("PDF")
 		styles = getSampleStyleSheet()
-		archivo_imagen = 'static/assets/img/gif.gif'
+		archivo_imagen = '/home/iglesiabetel/betelinternacional/static/assets/img/gif.gif'
 		canvas.drawImage(archivo_imagen, 60, 700, width=75,height=75,preserveAspectRatio=True)
 		#iglesia
 		header1 = Paragraph('Iglesia Cristiana Bet-el Internacional', styles['Heading4'])
@@ -1484,14 +1475,14 @@ class nivel2_pdf(View):
 				nombre1 = nombre_pro.profesor.nombre_profesor
 				apellido1 = nombre_pro.profesor.apellido_profesor
 				materia1 = id_materia1.nombre_materia
-				nombre_completo = 'Profesor: '+nombre1+ ' '+apellido1+ ', Materia: '+materia1 
+				nombre_completo = 'Profesor: '+nombre1+ ' '+apellido1+ ', Materia: '+materia1
 				nombre_completo = 'Profesor: '+nombre1+ ' '+apellido1+ ' Materia: '+materia1
 				print(nombre_completo)
 
 				nombre2 = nombre_pro1.profesor.nombre_profesor
 				apellido2 = nombre_pro1.profesor.apellido_profesor
 				materia2 = id_materia2.nombre_materia
-				nombre_completo2 = 'Profesor: '+nombre2+ ' '+apellido2+ ', Materia: '+materia2 
+				nombre_completo2 = 'Profesor: '+nombre2+ ' '+apellido2+ ', Materia: '+materia2
 				nombre_completo2 = 'Profesor: '+nombre2+ ' '+apellido2+ ' Materia: '+materia2
 			else:
 				nombre_completo = 'No hay profesores asignados'
@@ -1511,7 +1502,7 @@ class nivel2_pdf(View):
 			clientes.append(nombre_profesor1)
 			nombre_profesor=Paragraph(nombre_completo2,styles['Heading4'])
 			clientes.append(nombre_profesor)
-			
+
 			header4=Paragraph('',styles['Heading3'])
 			clientes.append(header4)
 			clientes.append(header4)
@@ -1561,7 +1552,7 @@ class generar_pdf_personal(View):
 		canvas.saveState()
 		canvas.setTitle("PDF")
 		styles = getSampleStyleSheet()
-		archivo_imagen = 'static/assets/img/gif.gif'
+		archivo_imagen = '/home/iglesiabetel/betelinternacional/static/assets/img/gif.gif'
 		canvas.drawImage(archivo_imagen, 60, 700, width=75,height=75,preserveAspectRatio=True)
 		#iglesia
 		header1 = Paragraph('Iglesia Cristiana Bet-el Internacional', styles['Heading4'])
