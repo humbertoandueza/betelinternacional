@@ -902,22 +902,18 @@ class nivel1_pdf(View):
 			nombre1 = nombre_pro.profesor.nombre_profesor
 			apellido1 = nombre_pro.profesor.apellido_profesor
 			materia1 = id_materia1.nombre_materia
-<<<<<<< HEAD
-			nombre_completo = 'Profesor: '+nombre1+ ' '+apellido1+ ', Materia: '+materia1 
-=======
-			nombre_completo = 'Profesor: '+nombre1+ ' '+apellido1+ ' Materia: '+materia1
->>>>>>> 2e500457c73cce9fe59bda1daf346ed32d663dec
+
+			nombre_completo = 'Profesor: '+nombre1+ ' '+apellido1+ ', Materia: '+materia1
+
 			print(nombre_completo)
 
 			nombre_pro1 = Asigna_Materia.objects.get(materia_id=obtener_id2)
 			nombre2 = nombre_pro1.profesor.nombre_profesor
 			apellido2 = nombre_pro1.profesor.apellido_profesor
 			materia2 = id_materia2.nombre_materia
-<<<<<<< HEAD
-			nombre_completo2 = 'Profesor: '+nombre2+ ' '+apellido2+ ', Materia: '+materia2 
-=======
-			nombre_completo2 = 'Profesor: '+nombre2+ ' '+apellido2+ ' Materia: '+materia2
->>>>>>> 2e500457c73cce9fe59bda1daf346ed32d663dec
+
+			nombre_completo2 = 'Profesor: '+nombre2+ ' '+apellido2+ ', Materia: '+materia2
+
 			nombre_profesor1=Paragraph(nombre_completo,styles['Heading4'])
 			header4=Paragraph('',styles['Heading3'])
 			clientes.append(header4)
@@ -930,14 +926,13 @@ class nivel1_pdf(View):
 			clientes.append(nombre_profesor1)
 			nombre_profesor=Paragraph(nombre_completo2,styles['Heading4'])
 			clientes.append(nombre_profesor)
-			
+
 			header4=Paragraph('',styles['Heading3'])
 			clientes.append(header4)
 			clientes.append(header4)
 			clientes.append(header4)
 
 			print(nombre_completo2)
-<<<<<<< HEAD
 			headings = ('N°','Cedula','Nombre', 'Apellido','Correo', 'Estatus')
 			acum = 0
 			lista = []
@@ -951,12 +946,6 @@ class nivel1_pdf(View):
 				var12 = (acum,p.cedula_id,p.cedula.nombre, p.cedula.apellido,p.cedula.email,estatus)
 				lista.append(var12)
 			t = Table([headings] + lista)
-=======
-			headings = ('Cedula','Nombre', 'Apellido','Correo', 'Estatus')
-			allclientes = [(p.cedula_id,p.cedula.nombre, p.cedula.apellido,p.cedula.email,p.estatus) for p in Inscripcion.objects.filter(id_nivel_id=1,terminado=False)]
-
-			t = Table([headings] + allclientes)
->>>>>>> 2e500457c73cce9fe59bda1daf346ed32d663dec
 			t.setStyle(TableStyle(
 		    	[	('GRID', (0, 0), (7, -1), 1, colors.black),
 		    	('LINEBELOW', (0, 0), (-1, 0), 2, colors.black),
