@@ -7,130 +7,150 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm-10 col-sm-offset-1 col-md-10 col-lg-8 col-lg-offset-2 form-box" >
-                       
-        
-                        <form role="form" id="form" action="" method="post" class="f1" autocomplete="off">
+
+
+                        <form role="form" id="form" action="" method="post" class="f1" autocomplete="off" novalidate="novalidate">
                          <div>
                                                     <div id="form" class="fixed-top"  >
-                        
+
                             <ul class="nav nav-tabs">
                               <li style="float: right;">
                                 <a  href="{% url 'logout' %}">Salir</a></nav>
-                                
+
                               </li>
                             </ul>
                         </div>
                             <h3 style="color:#3f9cf3; padding: 20px">Crear Usuario Profesor</h3>
                         </div>
-                            {% csrf_token %}    
+                            {% csrf_token %}
                             <fieldset>
                             <div class="form-horizontal">
                                 <div class="form-group">
-                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Ingrese su Cedula">   
-                                        <div class="input-group">   
+                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Ingrese su Cedula">
+                                        <div class="input-group">
                                                 <span class="input-group-addon">
-                                                <i class="fa fa-address-card-o" id="icon" aria-hidden="true"></i>
-                                               
-                                            </span> 
-                                        {{form.ci}}
+                                                <i class="fa fa-user" id="icon" aria-hidden="true"></i>
+
+                                            </span>
+                                        <input type="number" name="ci" required=""oninput="maxLengthCheck(this)" id="id_ci" autocomplete="off" placeholder="Cedula"  class="form-control" maxlength="8" onkeyup="this.value=this.value.toUpperCase();" oninput="maxLengthCheck(this)">
                                         </div>
                                     </div>
+                                </div>
+                                <div class="alert alert-danger alert-dismissible hidden " role="alert" id="cedulaale">
                                 </div>
                                 <div class="form-group hidden">
-                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Ingrese su Cedula">   
-                                        <div class="input-group">   
+                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Ingrese su Cedula">
+                                        <div class="input-group">
                                                 <span class="input-group-addon">
                                                 <i class="fa fa-address-card-o" id="icon" aria-hidden="true"></i>
-                                               
-                                            </span> 
+
+                                            </span>
                                         {{form.is_profesor}}
                                         {{form.is_inscripcion}}
-
-                                        
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="form-group">
-                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Ingrese su Cedula">   
-                                        <div class="input-group">   
+                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Ingrese su Nombre">
+                                        <div class="input-group">
                                                 <span class="input-group-addon">
-                                                <i class="fa fa-address-card-o" id="icon" aria-hidden="true"></i>
-                                               
-                                            </span> 
+                                                <i class="fa fa-user" id="icon" aria-hidden="true"></i>
+
+                                            </span>
                                         {{form.first_name}}
                                         </div>
                                     </div>
                                 </div>
+                                <div class="alert alert-danger alert-dismissible hidden " role="alert" id="nombreale">
+                                </div>
                                 <div class="form-group">
-                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Ingrese su Cedula">   
-                                        <div class="input-group">   
+                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Ingrese su Apellido">
+                                        <div class="input-group">
                                                 <span class="input-group-addon">
-                                                <i class="fa fa-address-card-o" id="icon" aria-hidden="true"></i>
-                                               
-                                            </span> 
+                                                <i class="fa fa-user" id="icon" aria-hidden="true"></i>
+
+                                            </span>
                                         {{form.last_name}}
                                         </div>
                                     </div>
                                 </div>
+                                <div class="alert alert-danger alert-dismissible hidden " role="alert" id="apellidoale">
+                                </div>
                                 <div class="form-group">
-                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Ingrese su Cedula">   
-                                        <div class="input-group">   
+                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Ingrese su Correo">
+                                        <div class="input-group">
                                                 <span class="input-group-addon">
-                                                <i class="fa fa-address-card-o" id="icon" aria-hidden="true"></i>
-                                               
-                                            </span> 
+                                                <i class="fa fa-envelope" id="icon" aria-hidden="true"></i>
+
+                                            </span>
                                         {{form.email}}
                                         </div>
                                     </div>
                                 </div>
+                                <div class="alert alert-danger alert-dismissible hidden " role="alert" id="emailale">
+                                </div>
                                 <div class="form-group">
-                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Ingrese su Cedula">   
-                                        <div class="input-group">   
+                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Ingrese su Contraseña">
+                                        <div class="input-group">
                                                 <span class="input-group-addon">
-                                                <i class="fa fa-address-card-o" id="icon" aria-hidden="true"></i>
-                                               
-                                            </span> 
+                                                <i class="fa fa-unlock-alt" id="icon" aria-hidden="true"></i>
+
+                                            </span>
                                         {{form.password1}}
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Ingrese su Cedula">   
-                                        <div class="input-group">   
+                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Repita su Contraseña">
+                                        <div class="input-group">
                                                 <span class="input-group-addon">
-                                                <i class="fa fa-address-card-o" id="icon" aria-hidden="true"></i>
-                                               
-                                            </span> 
+                                                <i class="fa fa-unlock-alt" id="icon" aria-hidden="true"></i>
+
+                                            </span>
                                         {{form.password2}}
                                         </div>
                                     </div>
                                 </div>
+                                {% if form.errors %}
+                                    {% for field in form %}
+                                        {% for error in field.errors %}
+                                            <div class="alert alert-danger">
+                                                <strong>{{ error }}</strong>
+                                            </div>
+                                        {% endfor %}
+                                    {% endfor %}
+                                    {% for error in form.non_field_errors %}
+                                        <div class="alert alert-danger">
+                                            <strong>{{ error }}</strong>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                                <div class="alert alert-danger alert-dismissible hidden " role="alert" id="contraseñaale">
+                                </div>
                                 <div class="form-group hidden">
-                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Ingrese su Cedula">   
-                                        <div class="input-group">   
+                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Ingrese su Cedula">
+                                        <div class="input-group">
                                                 <span class="input-group-addon">
                                                 <i class="fa fa-address-card-o" id="icon" aria-hidden="true"></i>
-                                               
+
                                             </span>
-                                            <div class="hidden"> 
                                         {{form.username}}
-                                        </div>
+                                        {{form.id_usuario}}
                                         </div>
                                     </div>
                                 </div>
-
-
                             </div>
-                                <br>    
+                                <br>
                                 <div class="f1-buttons">
                                     <button type="submit"  class="btn btn-submit">Crear</button>
                                 </div>
                             </fieldset>
-                        
+
                         </form>
                     </div>
                 </div>
-                    
+
             </div>
         </div>
 {% endblock %}

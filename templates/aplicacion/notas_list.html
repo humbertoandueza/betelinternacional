@@ -101,12 +101,6 @@
                                  </a>
                                  <div class="dropdown-menu dropdown-menu-right"> 
                                   {% if request.user.is_alumno and not request.user.is_superuser %}
-                                  {% if var1 != "III" %}
-                                    {% if inscripcion1 %}
-                                    <a href="{% url 'dato:pasar_nivel'%}" class="dropdown-item">Inscribirme</a><br>
-                                    
-                                    {% endif %}
-                                    {% endif %}
                                     <a href="{% url 'dato:aplicacion_editar' pk=request.user.ci %}" class="dropdown-item">Actualizar Datos</a><br>
                                   {% endif %}
                                     <a href="{% url 'dato:change_password' %}" class="dropdown-item">Cambiar Contraseña</a><br>
@@ -263,11 +257,35 @@
   </table>
 </div>
 </div>
+<div class="col-md-12" style="margin-top:40px; ">
+{% if estado != ''%}
+  <center>
+    <p style="font-size: 25px;color: #040404;">Estatus Final: {{estado}}</p>
+    {%  if estado == 'Reprobado'%} 
+      <p>!Lo sentimos a reprobado este nivel¡</p>
+      <p>¿Desea Inscribirse nuevamente en este nivel?</p>
+      <a href="{% url 'dato:pasar_nivel'%}"><button class="btn btn-primary">
+        Inscribirme</button></a>
+    {%endif %}
+    {% if estado == 'Aprobado' %}
+      <p>!Felicidades has Aprobado este nivel¡</p>
+      <p>¿Desea Inscribirse en el siguiente nivel?</p>
+      <a href="{% url 'dato:pasar_nivel'%}"><button class="btn btn-primary">
+        Inscribirme</button></a>
+
+    {%endif %}
+    <br>
+    <br>
+    <a href="{% url 'dato:notas_p'%}" target="_blank"><button class="btn btn-primary">Imprmir Notas</button></a>
+
+  </center>
+{% endif %}
+</div>
 
 
 <div class="col-sm-12">
 <div class="col-sm-2 col-sm-offset-1">                    
-  <p style="padding-top: 80px; font-size: 15px; text-align: left;">Nota:
+  <p style="padding-top: 30px; font-size: 15px; text-align: left;">Nota:
     <br>
     A:Aprobado,
     R:Reprobado</p>

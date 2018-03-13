@@ -90,6 +90,22 @@
 
 					{% endif %}
 				</div>
+
+				<center>
+
+					{% if estado != '' %}
+					{% if estado == 'Aprobado' %}
+						<br>
+						<br>
+						<p style="font-size: 35px; color:lime;">Estado final: {{estado}}</p>
+						{% else %}
+						<br>
+						<br>
+						<p style="font-size: 35px; color:red;">Estado final: {{estado}}</p>
+
+						{% endif %}
+					{% endif %}
+					</center>
 					
 			</div>
 		</div>

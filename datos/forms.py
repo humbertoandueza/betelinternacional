@@ -57,7 +57,7 @@ class PersonaForm(forms.ModelForm):
 			'trabaja': forms.Select(attrs={'class':'form-control', 'autocomplete':'off','onKeyUp':'this.value=this.value.toUpperCase();'}),
 			'profesion': forms.TextInput(attrs={'placeholder':'Profesion','class':'form-control', 'autocomplete':'off','onkeypress':'return text(event)','onKeyUp':'this.value=this.value.toUpperCase();'}),
 			'estudio_ori':forms.TextInput(attrs={'placeholder':'Origen de Estudio','class':'form-control', 'autocomplete':'off','onkeypress':'return text(event)','onKeyUp':'this.value=this.value.toUpperCase();'}),
-			'ing_famil':forms.NumberInput(attrs={'placeholder':'Ingreso Familiar','class':'form-control', 'autocomplete':'off','onKeyUp':'this.value=this.value.toUpperCase();'}),
+			'ing_famil':forms.NumberInput(attrs={'placeholder':'Ingreso Familiar','class':'form-control', 'autocomplete':'off','oninput':'maxLengthCheck(this)','maxlength':'8','onKeyUp':'this.value=this.value.toUpperCase();'}),
 			'iglesia':forms.TextInput(attrs={'placeholder':'Iglesia a la que Asiste','class':'form-control', 'autocomplete':'off','onkeypress':'return text(event)','onKeyUp':'this.value=this.value.toUpperCase();'}),
 			'pastor':forms.TextInput(attrs={'placeholder':'Pastor de Congregacion','class':'form-control', 'autocomplete':'off','onkeypress':'return text(event)','onKeyUp':'this.value=this.value.toUpperCase();'}),
 			'estudio_teo':forms.Select(attrs={'class':'form-control ', 'autocomplete':'off','onkeypress':'return text(event)','onKeyUp':'this.value=this.value.toUpperCase();','onchange':'showDiv(this)'}),
