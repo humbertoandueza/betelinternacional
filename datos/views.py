@@ -942,6 +942,25 @@ class nivel1_pdf(View):
 			id_materia2 = materias[1]
 			obtener_id1 = id_materia1.id_materia
 			obtener_id2 = id_materia2.id_materia
+<<<<<<< HEAD
+			nombre_pro = Asigna_Materia.objects.get(materia_id=obtener_id1)
+			nombre1 = nombre_pro.profesor.nombre_profesor
+			apellido1 = nombre_pro.profesor.apellido_profesor
+			materia1 = id_materia1.nombre_materia
+
+			nombre_completo = 'Profesor: '+nombre1+ ' '+apellido1+ ', Materia: '+materia1
+
+			print(nombre_completo)
+
+			nombre_pro1 = Asigna_Materia.objects.get(materia_id=obtener_id2)
+			nombre2 = nombre_pro1.profesor.nombre_profesor
+			apellido2 = nombre_pro1.profesor.apellido_profesor
+			materia2 = id_materia2.nombre_materia
+
+			nombre_completo2 = 'Profesor: '+nombre2+ ' '+apellido2+ ', Materia: '+materia2
+
+			nombre_profesor1=Paragraph(nombre_completo,styles['Heading4'])
+=======
 			asignadas = Asigna_Materia.objects.filter(materia_id=obtener_id1)
 			asignadas1 = Asigna_Materia.objects.filter(materia_id=obtener_id2)
 
@@ -966,6 +985,7 @@ class nivel1_pdf(View):
 				nombre_completo2 = 'No hay profesores asignados'
 
 
+>>>>>>> 5f781448e5f8d51a42c341302393969dc135dbce
 			header4=Paragraph('',styles['Heading3'])
 			clientes.append(header4)
 			header5=Paragraph('Lista de alumnos inscritos en el nivel 1',styles['Heading1'])
@@ -979,7 +999,7 @@ class nivel1_pdf(View):
 			clientes.append(nombre_profesor1)
 			nombre_profesor=Paragraph(nombre_completo2,styles['Heading4'])
 			clientes.append(nombre_profesor)
-			
+
 			header4=Paragraph('',styles['Heading3'])
 			clientes.append(header4)
 			clientes.append(header4)
@@ -999,7 +1019,10 @@ class nivel1_pdf(View):
 				var12 = (acum,p.cedula_id,p.cedula.nombre, p.cedula.apellido,p.cedula.email,estatus)
 				lista.append(var12)
 			t = Table([headings] + lista)
+<<<<<<< HEAD
+=======
 
+>>>>>>> 5f781448e5f8d51a42c341302393969dc135dbce
 			t.setStyle(TableStyle(
 		    	[	('GRID', (0, 0), (7, -1), 1, colors.black),
 		    	('LINEBELOW', (0, 0), (-1, 0), 2, colors.black),
