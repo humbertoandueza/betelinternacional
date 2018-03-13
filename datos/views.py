@@ -1091,7 +1091,7 @@ class Estudiantes(View):
 			lista = []
 			for p in Inscripcion.objects.filter(id_nivel_id=filtro2,estatus__range=["", "1"],terminado=False).order_by('cedula_id'):
 				acum = acum+1
-				if p.estatus=='1':
+				if p.estatus=='0':
 					estatus='Aprobado'
 				else:
 					estatus='Reprobado'
