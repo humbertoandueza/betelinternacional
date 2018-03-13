@@ -983,7 +983,6 @@ class nivel1_pdf(View):
 				nombre_completo = 'No hay profesores asignados'
 				nombre_completo2 = 'No hay profesores asignados'
 
-
 			header4=Paragraph('',styles['Heading3'])
 			clientes.append(header4)
 			header5=Paragraph('Lista de alumnos inscritos en el nivel 1',styles['Heading1'])
