@@ -3,6 +3,13 @@
 
 {% block content %}
 {% if user.is_alumno %}
+<style type="text/css">
+    #icon {
+        font-size: 20px;
+        max-width: 20px;
+        min-width: 20px;
+    }
+</style>
 <div class="top-content">
             <div class="container">
                 <div class="row">
@@ -180,7 +187,7 @@
                                     <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Seleccione su estado civil">   
                                         <div class="input-group">   
                                                 <span class="input-group-addon">
-                                                <i class="fa fa-legal" id="icon" aria-hidden="true"></i>
+                                                <i class="fa fa-heart" id="icon" aria-hidden="true"></i>
                                                
                                             </span> 
                                         {{form.estado_civil}}
@@ -193,7 +200,7 @@
                                     <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="¿Trabaja?">   
                                         <div class="input-group">   
                                                 <span class="input-group-addon">
-                                                <i class="fa fa-legal" id="icon" aria-hidden="true"></i>
+                                                <i class="fa fa-building" id="icon" aria-hidden="true"></i>
                                                
                                             </span> 
                                          {{form.trabaja}}
@@ -206,7 +213,7 @@
                                     <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Ingrese su profesion">   
                                         <div class="input-group">   
                                                 <span class="input-group-addon">
-                                                <i class="fa fa-legal" id="icon" aria-hidden="true"></i>
+                                                <i class="fa fa-graduation-cap" id="icon" aria-hidden="true"></i>
                                                
                                             </span> 
                                          {{form.profesion}}
@@ -219,7 +226,7 @@
                                     <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="¿De donde Egreso?">   
                                         <div class="input-group">   
                                                 <span class="input-group-addon">
-                                                <i class="fa fa-legal" id="icon" aria-hidden="true"></i>
+                                                <i class="fa fa-graduation-cap" id="icon" aria-hidden="true"></i>
                                                
                                             </span> 
                                          {{form.estudio_ori}}
@@ -232,7 +239,7 @@
                                     <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Ingrese su ingreso familiar">   
                                         <div class="input-group">   
                                                 <span class="input-group-addon">
-                                                <i class="fa fa-legal" id="icon" aria-hidden="true"></i>
+                                                <i class="fa fa-bitcoin" id="icon" aria-hidden="true"></i>
                                                
                                             </span> 
                                          {{form.ing_famil}}
@@ -256,7 +263,7 @@
                                     <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Ingrese a que iglesia asiste">   
                                         <div class="input-group">   
                                                 <span class="input-group-addon">
-                                                <i class="fa fa-legal" id="icon" aria-hidden="true"></i>
+                                                <i class="fa fa-building" id="icon" aria-hidden="true"></i>
                                                
                                             </span> 
                                          {{form.iglesia}}
@@ -269,7 +276,7 @@
                                     <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="¿Quien es su pastor?">   
                                         <div class="input-group">   
                                                 <span class="input-group-addon">
-                                                <i class="fa fa-legal" id="icon" aria-hidden="true"></i>
+                                                <i class="fa fa-user" id="icon" aria-hidden="true"></i>
                                                
                                             </span> 
                                          {{form.pastor}}
@@ -282,7 +289,7 @@
                                     <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="¿Estudio Teologia?">   
                                         <div class="input-group">   
                                                 <span class="input-group-addon">
-                                                <i class="fa fa-legal" id="icon" aria-hidden="true"></i>
+                                                <i class="fa fa-building" id="icon" aria-hidden="true"></i>
                                                
                                             </span> 
                                          {{form.estudio_teo}}
@@ -295,7 +302,7 @@
                                     <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Ingrese el intituto de donde Egreso">   
                                         <div class="input-group">   
                                                 <span class="input-group-addon">
-                                                <i class="fa fa-legal" id="icon" aria-hidden="true"></i>
+                                                <i class="fa fa-building" id="icon" aria-hidden="true"></i>
                                                
                                             </span> 
                                          {{form.instituto}}
@@ -308,7 +315,7 @@
                                     <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="¿Que titulo obtuvo?">   
                                         <div class="input-group">   
                                                 <span class="input-group-addon">
-                                                <i class="fa fa-legal" id="icon" aria-hidden="true"></i>
+                                                <i class="fa fa-building" id="icon" aria-hidden="true"></i>
                                                
                                             </span> 
                                          {{form.titulo_obte}}
@@ -321,7 +328,7 @@
                                     <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="¿Que actividad realiza en la iglesia?">   
                                         <div class="input-group">   
                                                 <span class="input-group-addon">
-                                                <i class="fa fa-legal" id="icon" aria-hidden="true"></i>
+                                                <i class="fa fa-rocket" id="icon" aria-hidden="true"></i>
                                                
                                             </span> 
                                          {{form.actividad}}
@@ -334,7 +341,7 @@
                                     <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Seleccion el ministerio en el cual desea participar">   
                                         <div class="input-group">   
                                                 <span class="input-group-addon">
-                                                <i class="fa fa-legal" id="icon" aria-hidden="true"></i>
+                                                <i class="fa fa-address-book" id="icon" aria-hidden="true"></i>
                                                
                                             </span> 
                                          {{form.ministerio}}
@@ -347,7 +354,7 @@
                                     <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="¿Razon por la cual desea estudiar en la escuela?">   
                                         <div class="input-group">   
                                                 <span class="input-group-addon">
-                                                <i class="fa fa-legal" id="icon" aria-hidden="true"></i>
+                                                <i class="fa fa-book" id="icon" aria-hidden="true"></i>
                                                
                                             </span> 
                                          {{form.razon}}
