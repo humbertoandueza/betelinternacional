@@ -81,7 +81,7 @@ WSGI_APPLICATION = 'aplicacion.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'iglesiabetel$default',
+        'NAME': 'iglesiabetel$iglesia',
         'USER': 'iglesiabetel',
         'PASSWORD': '01051998a',
         'HOST':'iglesiabetel.mysql.pythonanywhere-services.com',

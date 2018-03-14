@@ -73,12 +73,6 @@ class Persona(models.Model):
 	def __str__(self):
 		return str(self.cedula)
 
-class Nivel(models.Model):
-	id_nivel = models.AutoField(primary_key=True)
-	nivel = models.CharField(max_length=10)
-
-	def __str__(self):
-		return str(self.nivel)
 
 class Profesor(models.Model):
 	cedula_profesor = models.IntegerField(primary_key=True)
@@ -95,12 +89,40 @@ class Profesor(models.Model):
 class  Materia(models.Model):
 	id_materia = models.AutoField(primary_key=True)
 	nombre_materia = models.CharField(max_length=40)
-	id_nivel = models.ForeignKey(Nivel)
 
 	def __str__(self): #si es python 2.7 es def __unicode__(self):
-		return '{}, {}' .format(self.nombre_materia, self.id_nivel)
+		return self.nombre_materia
 
 
+
+
+
+class Nivel(models.Model):
+	id_nivel = models.AutoField(primary_key=True)
+	est=(
+		("","nivel"),
+		("I","I"),
+		("II","II"),
+		("III","III"),
+	)
+	nivel = models.CharField(max_length=10,choices=est)
+	fecha = models.DateField(auto_now_add=True)
+	estatus= models.BooleanField(default=False)
+
+	def __str__(self):
+		return '{},{}' .format(self.nivel,self.fecha)
+
+class Asigna_Materia(models.Model):
+	materia = models.ForeignKey(Materia)
+	profesor = models.ForeignKey(Profesor)
+	id_nivel = models.ForeignKey(Nivel)
+	terminado = models.BooleanField(default=False)
+	
+
+
+
+	def __str__(self): #si es python 2.7 es def __unicode__(self):
+		return '{}, {}' .format(self.materia, self.profesor)
 class Inscripcion(models.Model):
 	cedula = models.ForeignKey(Persona)
 	id_nivel = models.ForeignKey(Nivel)
@@ -115,18 +137,7 @@ class Inscripcion(models.Model):
 
 
 	def __str__(self):
-		return str(self.id)
-
-
-class Asigna_Materia(models.Model):
-	materia = models.OneToOneField(Materia)
-	profesor = models.OneToOneField(Profesor)
-
-
-	def __str__(self): #si es python 2.7 es def __unicode__(self):
-		return '{}, {}' .format(self.materia, self.profesor)
-
-
+		return str(self.cedula.cedula)
 class Notas(models.Model):
 	id_nota = models.AutoField(primary_key=True)
 	cedula = models.ForeignKey(Inscripcion)

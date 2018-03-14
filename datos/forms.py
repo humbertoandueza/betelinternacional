@@ -74,10 +74,13 @@ class NivelForm(forms.ModelForm):
 	class Meta:
 		model = Nivel
 		fields= [
-			'nivel'
+			'nivel',
+			'estatus'
 		]
 		widgets = {
-            'nivel': forms.TextInput(attrs={'placeholder': 'Nivel', 'class':'form-control', 'autocomplete':'off', 'onKeyUp':'this.value=this.value.toUpperCase();','onkeypress':'return texto(event)'}),
+            'nivel': forms.Select(attrs={'placeholder': 'Nivel', 'class':'form-control', 'autocomplete':'off', 'onKeyUp':'this.value=this.value.toUpperCase();','onkeypress':'return texto(event)'}),
+            'estatus': forms.CheckboxInput(attrs={'checked':'checked'}),
+			
 		}
 
 class InscripcionForm(forms.ModelForm):
@@ -125,11 +128,9 @@ class MateriaForm(forms.ModelForm):
 		model = Materia
 		fields= [
 			'nombre_materia',
-			'id_nivel',
 		]
 		widgets = {
             'nombre_materia': forms.TextInput(attrs={'placeholder': 'Nombre', 'class':'form-control', 'autocomplete':'off','onkeypress':'return text(event)','onKeyUp':'this.value=this.value.toUpperCase();'}),
-			'id_nivel': forms.Select(attrs={'class':'form-control', 'autocomplete':'off','onKeyUp':'this.value=this.value.toUpperCase();'}),
             
 		}
 
@@ -141,10 +142,13 @@ class AsignaMateriaForm(forms.ModelForm):
 		fields= [
 			'materia',
 			'profesor',
+			'id_nivel',
+			
 		]
 		widgets = {
 			'profesor': forms.Select(attrs={'class':'form-control', 'autocomplete':'off','onKeyUp':'this.value=this.value.toUpperCase();'}),
 			'materia': forms.Select(attrs={'class':'form-control', 'autocomplete':'off','onKeyUp':'this.value=this.value.toUpperCase();'}),
+			'id_nivel': forms.Select(attrs={'class':'form-control', 'autocomplete':'off','onKeyUp':'this.value=this.value.toUpperCase();'}),
             
 		}
 

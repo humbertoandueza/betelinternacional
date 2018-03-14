@@ -19,59 +19,115 @@
 
                     <div class="col-sm-12 col-md-12  col-lg-12 form- f11" style="padding: 0px; background-image: url('{% static 'assets/img/line.png'%}'); background-size: cover; background-repeat: no-repeat;">
                         <div id="form" class="fixed-top"  >
-                            
-                            <ul class="nav nav-tabs">
+                              <ul class="nav nav-tabs">
                               <li class="nav-item">
                                 <a class="nav-link active" href="{% url 'dato:app_inicio' %}">Inicio</a>
                               </li>
-                                  {% if user.is_profesor %}
-
-                              <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" data-toggle="dropdown"
-                                   href="#!" role="button" aria-haspopup="true" aria-expanded="false">
-                                   Niveles</a>
-                                <div class="dropdown-menu">
-                                  {% if user.is_superuser %}
-                                  <a class="dropdown-item" href="{% url 'dato:nivel' %}"">Añadir Niveles </a>
-                                  {% endif %}
-                                  <a class="dropdown-item" href="{% url 'dato:nivel1' %}"">Nivel 1 </a>
-                                  <a class="dropdown-item" href="{% url 'dato:nivel2' %}"">Nivel 2 </a>
-                                  <a class="dropdown-item" href="{% url 'dato:nivel3' %}"">Nivel 3 </a>
-                                </div>
-                              </li>
-                                  {% endif %}
-                              {% if user.is_superuser %}
-                              <li class="nav-item">
-                                <a class="nav-link" href="{% url 'dato:reporte' %}">reportes</a>
-                              </li>
-                              <li class="nav-item">
-                                <a class="nav-link" href="{% url 'dato:profesor' %}">Añadir Profesor</a>
-                              </li>
-                              <li class="nav-item">
-                                <a class="nav-link" href="{% url 'dato:materia' %}">Añadir Materia</a>
-                              </li>
-                              {% endif %}
-                              {% if user.is_profesor %}
-                              <li class="nav-item">
-                                <a class="nav-link" href="{% url 'dato:nota' %}">Cargar Nota</a>
-                              </li>                 
-                              {% endif %}
-            
-                              {% if user.is_alumno %}
+                              {% if user.is_alumno and not user.is_inscripcion and not user.is_superuser %}
                               <li class="nav-item">
                                 <a class="nav-link" href="{% url 'dato:ver_notas' %}">Ver Notas</a>
                               </li>
-                              {% endif %}                                  
-                              <li style="float: right;">
-                                <a  href="{% url 'logout' %}">Salir</a></nav>
-                                
+                              {% endif %} 
+                              {% if user.is_superuser %}
+                              <li role="presentation" class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                  Profesores<span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                <a class="nav-link" href="{% url 'dato:crear_usuario_profesor' %}">Añadir Profesor</a>
+                                <br>
+                                <a class="nav-link" href="{% url 'dato:ver_profesores' %}">Ver Profesores</a>
+                                  
+                                </ul>
                               </li>
+                              <li role="presentation" class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                  Materias<span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                <a class="nav-link" href="{% url 'dato:asigna' %}">Asignar Profesor</a>
+                                <br>
+                                <a class="nav-link" href="{% url 'dato:ver_asignaciones' %}">Ver Materias</a>
+                                   
+                                </ul>
+                              </li>
+                              <li role="presentation" class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                  Niveles<span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                <a class="nav-link" href="{% url 'dato:nivel_1' %}">Nivel 1</a>
+                                <br>
+                                <a class="nav-link" href="{% url 'dato:nivel_2' %}">Nivel 2</a>
+                                <br>
+                                <a class="nav-link" href="{% url 'dato:nivel_3' %}">Nivel 3</a>
+                                   
+                                </ul>
+                              </li>
+                              <li role="presentation" class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                  Reportes<span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                  <p style="color:#00b0f0;">Generales</p>
+                                <a class="nav-link" href="{% url 'dato:reporte_nivel1' %}">Nivel 1</a>
+                                <br>
+                                <a class="nav-link" href="{% url 'dato:reporte_nivel2' %}">Nivel 2</a>
+                                <br>
+                                <a class="nav-link" href="{% url 'dato:reporte_nivel3' %}">Nivel 3</a>
+                                   
+                                </ul>
+                              </li>
+                              
+                              {% endif %}
+                              {% if user.is_profesor %}
+                              {% for filtros in filtro%}
+                                    <li class="nav-item">
+                                      <a class="nav-link" href="{% url 'dato:nivel1' %}">Estudiantes</a>
+                                    </li>
+                              {% endfor %}
+                              {% endif %}
+                              {% if user.is_profesor and not user.is_superuser %}               
+                              {% endif %}
+                              <li class="nav-item dropdown " style="float: right;">
+                                <a class="nav-link dropdown-toggle"  data-toggle="dropdown"
+                                   href="#!" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cog"></i>
+                                 </a>
+                                 <div class="dropdown-menu dropdown-menu-right"> 
+                                  {% if request.user.is_alumno and not request.user.is_superuser %}
+                                  {% if var1 != "III" %}
+                                    {% if inscripcion1 %}
+                                    <a href="{% url 'dato:pasar_nivel'%}" class="dropdown-item">Inscribirme</a><br>
+                                    }
+                                    {% endif %}
+                                    {% endif %}
+                                    <a href="{% url 'dato:aplicacion_editar' pk=request.user.ci %}" class="dropdown-item">Actualizar Datos</a><br>
+                                  {% endif %}
+                                    <a href="{% url 'dato:change_password' %}" class="dropdown-item">Cambiar Contraseña</a><br>
+
+                                    <a class="dropdown-item" href="{% url 'logout' %}">Salir</a>
+
+                                </div>
+                              </li>
+                              {% if user.is_alumno and not user.is_inscripcion and not user.is_superuser %}
+                              <li class="nav-item dropdown " style="float: right;">
+                                <a class="nav-link dropdown-toggle"  data-toggle="dropdown"
+                                   href="#!" role="button" aria-haspopup="true" aria-expanded="false">Solicitudes<span class="caret"></span>
+                                 </a>
+                                 <div class="dropdown-menu dropdown-menu-right"> 
+                                    <a href="{% url 'dato:solicitud' %}" class="dropdown-item">Retirarme</a>
+                                </div>
+                              </li>
+                              {% endif %}
+                              </li>
+                              
+
                             </ul>
                         </div>
                             <form action="" method="post">
                               {% csrf_token %}  
-                                <div class="form-horizontal">
-                            <h2 style="color:#3f9cf3; padding: 50px;">Ingrese el nivel a agregar</h2>
+                                <div class="form-horizontal" style="padding-bottom: 150px;">
+                            <h2 style="color:#3f9cf3; padding: 50px;">Ingrese el nivel a iniciar</h2>
 
                                 <div class="form-group">
                                     <div class="col-sm-6 col-sm-offset-3" data-toggle="tooltip" data-placement="top" title="coloque en numeros romanos ejemplo 'I-II-III' ">   
@@ -81,10 +137,13 @@
                                                
                                             </span> 
                                             {{form.nivel}}
+                                            <div class="hidden">
+                                              {{form.estatus}}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                    <button type="submit"  class="btn btn-submit">Inscribir</button>
+                                    <button type="submit"  class="btn btn-submit">Iniciar</button>
 
                             </form>
 

@@ -154,8 +154,7 @@
 			<td><center> Cedula</center></td>
 			<td><center> Nombre</center></td>
 			<td><center> Apellido</center></td>
-      <td><center> Estatus</center></td>
-
+      <td><center> Correo</center></td>
 		</tr>
 		
 	</thead>
@@ -169,11 +168,9 @@
 				<td>{{ persona.cedula_profesor }}</td>
 				<td>{{ persona.nombre_profesor }}</td>
 				<td>{{ persona.apellido_profesor }}</td>
-        {% if persona.estatus == True %}
-          <td style="background-color: #0eff0e;">Activo</td>
-        {% else %}
-          <td style="background-color: red; color: #fff;">Inactivo</td>
-          {% endif %}
+        <td>{{ persona.email_profesor }}</td>
+
+        
 		</tr>
     {% endfor %}
 
