@@ -349,7 +349,7 @@ $('#form1').submit(function(e){
 
     }});
 
-$('.btn-next1').on('click', function() {
+$('.btn-next .bn').on('click', function() {
         var parent_fieldset = $(this).parents('fieldset');
         var next_step = true;
         var ingreso = document.getElementById('id_ing_famil')
@@ -358,7 +358,6 @@ $('.btn-next1').on('click', function() {
             $(ingreso).addClass('input-error');
             document.getElementById('ingresoale').innerHTML="INGRESO INVALIDO, INTRODUZCA UN MINIMO DE 4 CARACTERES";
             next_step = false;
-            e.preventDefault()
         }
     });
 
