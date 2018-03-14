@@ -349,20 +349,6 @@ $('#form1').submit(function(e){
 
     }});
 
-$('.btn-next .bn').on('click', function() {
-        var parent_fieldset = $(this).parents('fieldset');
-        var next_step = true;
-        var ingreso = document.getElementById('id_ing_famil')
-        if (ingreso.value.length <3){
-            $(ingresoale).removeClass('hidden');
-            $(ingreso).addClass('input-error');
-            document.getElementById('ingresoale').innerHTML="INGRESO INVALIDO, INTRODUZCA UN MINIMO DE 4 CARACTERES";
-            next_step = false;
-        }
-    });
-
-
-
 $('#form').submit(function(e){
     var next_step1 = true;
     var nombre = document.getElementById('id_first_name')
