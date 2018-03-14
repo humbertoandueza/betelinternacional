@@ -349,7 +349,7 @@ $('#form1').submit(function(e){
 
     }});
 
-$('.f1 .btn-next1').on('click', function() {
+$('.btn-next1').on('click', function() {
         var parent_fieldset = $(this).parents('fieldset');
         var next_step = true;
         var ingreso = document.getElementBy('id_ing_famil')
