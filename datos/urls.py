@@ -45,6 +45,8 @@ urlpatterns=[
     url(r'^aplicacion/pdf_nivel3/$',login_required(nivel3_pdf.as_view()), name="reporte_nivel3"),
     url(r'^aplicacion/editar_nota/(?P<pk>\d+)/$',login_required(updateNota.as_view()), name="editar_nota"),
     url(r'^aplicacion/cambiar_profesor/(?P<pk>\d+)/$',login_required(UpdateMateria.as_view()), name="cambiar_profesor"),
+    url(r'^aplicacion/terminar_n/(?P<pk>\d+)/$',login_required(terminar), name="terminar"),
+
 
 
 

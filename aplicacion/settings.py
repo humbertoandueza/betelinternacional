@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '+s!7-bs!e#l)gwm#2ckpbq=(%4v%4qx=am-*q+1km3hjbs8nad'
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 ALLOWED_HOSTS = ['iglesiabetel.pythonanywhere.com']
 #ALLOWED_HOSTS = []
@@ -81,7 +81,7 @@ WSGI_APPLICATION = 'aplicacion.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'iglesiabetel$default',
+        'NAME': 'iglesiabetel$iglesia',
         'USER': 'iglesiabetel',
         'PASSWORD': '01051998a',
         'HOST':'iglesiabetel.mysql.pythonanywhere-services.com',

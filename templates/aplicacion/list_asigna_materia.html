@@ -150,7 +150,6 @@
 <table class="table table-bordered" >
 	<thead>
 		<tr>
-      <td><center> N°</center></td>
 			<td><center> Profesor</center></td>
 			<td><center> Materia</center></td>
 			<td><center> Nivel</center></td>
@@ -165,11 +164,13 @@
 		{% if object_list %}
 		<tr>
 		{% for persona in object_list %}
-    <td>  {{ forloop.counter }}</td>
+      {% if persona.terminado == 0 %}
 				<td>{{ persona.profesor.nombre_profesor }}</td>
 				<td>{{ persona.materia.nombre_materia }}</td>
-				<td>{{ persona.materia.id_nivel.nivel }}</td>
+				<td>{{ persona.id_nivel.nivel }}</td>
         <td><a href="{% url 'dato:cambiar_profesor' pk=persona.id %}">Cambiar profesor</a></td>
+      {% endif %}
+
 
         
 		</tr>

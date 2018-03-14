@@ -47,6 +47,17 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <div class="col-sm-12" data-toggle="tooltip" data-placement="top" title="Seleccione el Nivel">   
+                                        <div class="input-group">   
+                                                <span class="input-group-addon">
+                                                <i class="fa fa-address-card-o" id="icon" aria-hidden="true"></i>
+                                               
+                                            </span> 
+                                            {{form.id_nivel}}
+                                        </div>
+                                    </div>
+                                </div>
                                 {% if form.errors %}
                                     {% for field in form %}
                                         {% for error in field.errors %}

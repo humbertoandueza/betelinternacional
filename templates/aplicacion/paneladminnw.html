@@ -46,6 +46,9 @@ function cerrar_modal()
                               </li>
                               {% endif %} 
                               {% if user.is_superuser %}
+                              <li class="nav-item">
+                                <a class="nav-link active" href="{% url 'dato:nivel' %}">Iniciar Nivel</a>
+                              </li>
 
                               <li role="presentation" class="dropdown">
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
