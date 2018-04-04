@@ -585,11 +585,11 @@ def AsignarMateria(request,*args,**kwargs):
 			if len(filtro1) >=1:
 				error = 'YA ESTE NIVEL HA SIDO CERRADO'
 				return render(request,'aplicacion/form_asigna_materia.html',{'form':form,'error':error})
-				
+
 			if len(filtro) >1:
 				error ='YA ALCANZO EL MAXIMO DE ASIGNACIONES EN ESTE NIVEL'
 				return render(request,'aplicacion/form_asigna_materia.html',{'form':form,'error':error})
-				
+
 
 			else:
 				Profesor.objects.filter(cedula_profesor=cedula).update(estatus=True)
@@ -873,7 +873,7 @@ def post_new(request,*args, **kwargs):
 		#print(nivel)
 		filtro1  = Persona.objects.filter(cedula=cedula)
 		#print (filtro1)
-		
+
 		nota = Notas.objects.filter(id_materia_id=var,cedula_id=nivel.id)
 		calculo = Notas.objects.filter(cedula_id=nivel.id).aggregate(total=Sum('nota_persona'))
 		#print (nota)
@@ -885,7 +885,7 @@ def post_new(request,*args, **kwargs):
 			for p in calculo.items():
 				cantidad = (int(p[1]))
 			print ('Nota total', cantidad)
-			
+
 			if cantidad >= 17 and carga_total >= 18 :
 				Inscripcion.objects.filter(cedula_id=cedula).update(estatus=0)
 			elif cantidad <17 and carga_total > 17 :
@@ -899,7 +899,7 @@ def post_new(request,*args, **kwargs):
 			if form.is_valid():
 				form.save()
 				nota4 = Notas.objects.filter(id_materia_id=var,cedula_id=nivel.id)
-				
+
 				nota1 = Notas.objects.filter(id_materia_id=var,cedula_id=nivel.id).aggregate(total=Sum('nota_persona'))
 				for a in nota1.items():
 					notas = (int(a[1]))
@@ -981,7 +981,7 @@ class SolicitudCreate(CreateView):
 			inscripcion = {
 					'cedula': cedula,
 					'id_nivel': var.id_nivel,
-					
+
 				}
 			inscripciones =InscripcionForm(inscripcion)
 			inscripciones.save()
@@ -1013,10 +1013,10 @@ def UsersCreateView_profesor(request,*args, **kwargs):
 	if request.method == 'POST':
 		form = UsersModelForm(request.POST)
 		if form.is_valid():
-			with open('static/assets/img/logo.png', 'rb') as lena:
+			with open('/home/iglesiabetel/betelinternacional/static/assets/img/logo.png', 'rb') as lena:
 				image = lena.read()
 			inline_image = InlineImage(filename="logo.png", content=image)
-			with open('static/assets/img/imagen.png', 'rb') as lena1:
+			with open('/home/iglesiabetel/betelinternacional/static/assets/img/imagen.png', 'rb') as lena1:
 				image1 = lena1.read()
 			inline_image1 = InlineImage(filename="logo.png", content=image1)
 			send_templated_mail(
@@ -1058,7 +1058,7 @@ class generar_pdf(View):
 		canvas.saveState()
 		canvas.setTitle("PDF")
 		styles = getSampleStyleSheet()
-		archivo_imagen = 'static/assets/img/gif.gif'
+		archivo_imagen = '/home/iglesiabetel/betelinternacional/static/assets/img/gif.gif'
 		canvas.drawImage(archivo_imagen, 60, 700, width=75,height=75,preserveAspectRatio=True)
 		#iglesia
 		header1 = Paragraph('Iglesia Cristiana Bet-el Internacional', styles['Heading4'])
@@ -1127,7 +1127,7 @@ class nivel1_pdf(View):
 		canvas.saveState()
 		canvas.setTitle("PDF")
 		styles = getSampleStyleSheet()
-		archivo_imagen = 'static/assets/img/gif.gif'
+		archivo_imagen = '/home/iglesiabetel/betelinternacional/static/assets/img/gif.gif'
 		canvas.drawImage(archivo_imagen, 60, 700, width=75,height=75,preserveAspectRatio=True)
 		#iglesia
 		header1 = Paragraph('Iglesia Cristiana Bet-el Internacional', styles['Heading4'])
@@ -1266,7 +1266,7 @@ class nivel_pasado(View):
 		canvas.saveState()
 		canvas.setTitle("PDF")
 		styles = getSampleStyleSheet()
-		archivo_imagen = 'static/assets/img/gif.gif'
+		archivo_imagen = '/home/iglesiabetel/betelinternacional/static/assets/img/gif.gif'
 		canvas.drawImage(archivo_imagen, 60, 700, width=75,height=75,preserveAspectRatio=True)
 		#iglesia
 		header1 = Paragraph('Iglesia Cristiana Bet-el Internacional', styles['Heading4'])
@@ -1400,7 +1400,7 @@ class Estudiantes(View):
 		canvas.saveState()
 		canvas.setTitle("PDF")
 		styles = getSampleStyleSheet()
-		archivo_imagen = 'static/assets/img/gif.gif'
+		archivo_imagen = '/home/iglesiabetel/betelinternacional/static/assets/img/gif.gif'
 		canvas.drawImage(archivo_imagen, 60, 700, width=75,height=75,preserveAspectRatio=True)
 		#iglesia
 		header1 = Paragraph('Iglesia Cristiana Bet-el Internacional', styles['Heading4'])
@@ -1496,7 +1496,7 @@ class Notas_P(View):
 		canvas.saveState()
 		canvas.setTitle("PDF")
 		styles = getSampleStyleSheet()
-		archivo_imagen = 'static/assets/img/gif.gif'
+		archivo_imagen = '/home/iglesiabetel/betelinternacional/static/assets/img/gif.gif'
 		canvas.drawImage(archivo_imagen, 60, 700, width=75,height=75,preserveAspectRatio=True)
 		#iglesia
 		header1 = Paragraph('Iglesia Cristiana Bet-el Internacional', styles['Heading4'])
@@ -1629,7 +1629,7 @@ class nivel3_pdf(View):
 		canvas.saveState()
 		canvas.setTitle("PDF")
 		styles = getSampleStyleSheet()
-		archivo_imagen = 'static/assets/img/gif.gif'
+		archivo_imagen = '/home/iglesiabetel/betelinternacional/static/assets/img/gif.gif'
 		canvas.drawImage(archivo_imagen, 60, 700, width=75,height=75,preserveAspectRatio=True)
 		#iglesia
 		header1 = Paragraph('Iglesia Cristiana Bet-el Internacional', styles['Heading4'])
@@ -1771,7 +1771,7 @@ class nivel2_pdf(View):
 		canvas.saveState()
 		canvas.setTitle("PDF")
 		styles = getSampleStyleSheet()
-		archivo_imagen = 'static/assets/img/gif.gif'
+		archivo_imagen = '/home/iglesiabetel/betelinternacional/static/assets/img/gif.gif'
 		canvas.drawImage(archivo_imagen, 60, 700, width=75,height=75,preserveAspectRatio=True)
 		#iglesia
 		header1 = Paragraph('Iglesia Cristiana Bet-el Internacional', styles['Heading4'])
@@ -1911,7 +1911,7 @@ class generar_pdf_personal(View):
 		canvas.saveState()
 		canvas.setTitle("PDF")
 		styles = getSampleStyleSheet()
-		archivo_imagen = 'static/assets/img/gif.gif'
+		archivo_imagen = '/home/iglesiabetel/betelinternacional/static/assets/img/gif.gif'
 		canvas.drawImage(archivo_imagen, 60, 700, width=75,height=75,preserveAspectRatio=True)
 		#iglesia
 		header1 = Paragraph('Iglesia Cristiana Bet-el Internacional', styles['Heading4'])

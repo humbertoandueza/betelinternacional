@@ -25,8 +25,8 @@ SECRET_KEY = '+s!7-bs!e#l)gwm#2ckpbq=(%4v%4qx=am-*q+1km3hjbs8nad'
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
-#ALLOWED_HOSTS = ['iglesiabetel.pythonanywhere.com']
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['iglesiabetel.pythonanywhere.com']
+#ALLOWED_HOSTS = []
 
 
 AUTH_USER_MODEL = 'accounts.Users'
@@ -81,10 +81,10 @@ WSGI_APPLICATION = 'aplicacion.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'bd',
-        'USER': 'root',
-        'PASSWORD': '',
-        #'HOST':'iglesiabetel.mysql.pythonanywhere-services.com',
+        'NAME': 'iglesiabetel$iglesia',
+        'USER': 'iglesiabetel',
+        'PASSWORD': '01051998asd.',
+        'HOST':'iglesiabetel.mysql.pythonanywhere-services.com',
     }
 }
 
@@ -150,5 +150,5 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_COOKIE_AGE = 120 # set just 10 seconds to test
 SESSION_SAVE_EVERY_REQUEST = True
 """
-#SECURE_SSL_REDIRECT = True
+SECURE_SSL_REDIRECT = True
 
