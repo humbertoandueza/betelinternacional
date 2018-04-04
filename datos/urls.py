@@ -9,7 +9,7 @@ urlpatterns=[
     url(r'^aplicacion/nota/(?P<pk>[0-9]+)/$',login_required(post_new), name='nota'),
     url(r'^aplicacion/inscripciones/$',login_required(InscripcionCreate.as_view()), name='inscripcion'),
     url(r'^aplicacion/profesor/$',login_required(ProfesorCreate), name='profesor'),
-    url(r'^aplicacion/nivel/$',login_required(NivelCreate.as_view()), name='nivel'),
+    url(r'^aplicacion/nivel/$',login_required(NivelCreate), name='nivel'),
     url(r'^aplicacion/nivel_ver/$',login_required(nivel1_new), name='nivel1'),
 
     url(r'^aplicacion/editar/(?P<pk>\d+)/$', login_required(SolicitudUpdate.as_view()), name='aplicacion_editar'),
