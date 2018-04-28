@@ -19,7 +19,7 @@
 
 
 </style>
-{% if user.is_profesor %}
+{% if request.user.is_superuser %}
 <script>
           function abrir_modal(url)
           {
@@ -77,26 +77,13 @@
                             
 <br>
 <div class="row">
-<div class="col-sm-4">
-<p>Cantidad de Alumnos Inscritos: {{nivel1}}</p>
-</div>   
+  
 
-  <div class="col-sm-3 col-sm-offset-4 col-md-3 col-md-offset-4 col-xs-offset-5">
-      <div class="input-group">
-         <span class="input-group-addon">
-          <i class="fa fa-user" id="icon" aria-hidden="true"></i>
-        </span> 
-          <form method="get" action="">
-          <input class="form-control" autocomplete="off" type="number" name="q" placeholder="Buscar..." value="{{ request.GET.q }}">
-        </form> 
-      </div>
-  </div>
-</div>
      
 <div class="col-md-offset-2 col-sm-offset-2" style="width: 100%; margin-left: auto; padding: 15px !important; padding-top: 20px;">
   <div class="col-md-6 col-md-offset-3">
 <p style="font-size: 36px;">Bienvenido {{user.first_name}}</p>
-<p>Lista de Todos los alumnos Incritos en el nivel {{filtro2}}</p>
+<p>Lista de Todos los niveles cursados en la escuela de formacion</p>
   </div>
 <div id="popup" class="modal fade" role="dialog">
 
@@ -107,11 +94,9 @@
 	<thead>
 		<tr>
       <td><center> N°</center></td>
-			<td><center> Cedula</center></td>
-			<td><center> Nombre</center></td>
-			<td><center> Apellido</center></td>
-			<td><center> Correo</center></td>
-			<td><center> Acciones</center></td>
+			<td><center> Nivel</center></td>
+			<td><center> Fecha de Inicio</center></td>
+			<td><center> Accion</center></td>
 
 		</tr>
 		
@@ -121,23 +106,15 @@
 
 		
 		<tr>
-		{% for persona in nivel %}
+		{% for persona in terminado %}
     <td>  {{ forloop.counter }}</td>
-				<td>{{ persona.cedula.cedula }}</td>
-				<td>{{ persona.cedula.nombre }}</td>
-				<td>{{ persona.cedula.apellido }}</td>
-				<td>{{ persona.cedula.email }}</td>
+				<td>{{ persona.nivel }}</td>
+				<td>{{ persona.fecha }}</td>
+
 			<td>
 				<center>
-          {% if not persona.estatus == '1' and not persona.retirado %}
-          <a data-toggle="tooltip" data-placement="top" title="Cargar Nota" href="{% url 'dato:nota' pk=persona.cedula %}" ><span class="glyphicon glyphicon glyphicon-open"></span></a>
-          {% endif %}
-          <a data-toggle="tooltip" data-placement="top" title="Ver Notas" onclick="return abrir_modal('{% url 'dato:ver_notas_super' persona.id %}')" class="btn"><span class="glyphicon glyphicon-eye-open"></span>
+          <a data-toggle="tooltip" data-placement="top" title="Ver Notas" href="{% url 'dato:nivel_pasado' pk=persona.id_nivel %}" class="btn"><span class="glyphicon glyphicon-eye-open"></span>
           </a>
-          {% if persona.retirado %}
-          <p  style="color: red;" data-toggle="tooltip" data-placement="top" title="Retirado" class="btn"><strong>R</strong>
-          </p>
-          {% endif %}
 			</td>
 		</tr>
 		{% endfor %}
@@ -187,7 +164,7 @@
 </div>
 
 </div>
-{% if not user.is_profesor  %}
+{% if not user.is_superuser  %}
 <div class="top-content">
             <div class="container">
                 <div class="row">

@@ -33,12 +33,15 @@ urlpatterns=[
     url(r'^aplicacion/nivel2/$',login_required(nivel2_superuser), name="nivel_2"),
     url(r'^aplicacion/nivel3/$',login_required(nivel3_superuser), name="nivel_3"),
     url(r'^aplicacion/ver_notas_super/(?P<pk>\d+)/$',login_required(DetalleProveedor), name="ver_notas_super"),
-    url(r'^aplicacion/ver_notas_super_2/(?P<pk>\d+)/(?P<estatus>\d+)$',login_required(DetalleProveedor_2), name="ver_notas_super2"),
+    url(r'^aplicacion/ver_notas_super_2/(?P<pk>\d+)$',login_required(DetalleProveedor_2), name="ver_notas_super2"),
     url(r'^aplicacion/retiro/(?P<pk>\d+)/$',login_required(retiro), name="retiro"),
+    url(r'^aplicacion/nivel_pasado/(?P<pk>\d+)/$',login_required(nivel_pasado.as_view()), name="nivel_pasado"),
+    
     url(r'^aplicacion/pasar_nivel/$',login_required(pasar_nivel), name="pasar_nivel"),
     url(r'^aplicacion/pdf_nivel1/$',login_required(nivel1_pdf.as_view()), name="reporte_nivel1"),
     url(r'^aplicacion/estudiantes/$',login_required(Estudiantes.as_view()), name="estudiante"),
     url(r'^aplicacion/notas_p/$',login_required(Notas_P.as_view()), name="notas_p"),
+    url(r'^aplicacion/niveles_t/$',login_required(terminadolist), name="niveles_t"),
 
 
     url(r'^aplicacion/pdf_nivel2/$',login_required(nivel2_pdf.as_view()), name="reporte_nivel2"),

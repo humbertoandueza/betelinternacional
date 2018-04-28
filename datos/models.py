@@ -44,7 +44,26 @@ class Persona(models.Model):
 	profesion = models.CharField(max_length=60)
 	estudio_ori = models.CharField(max_length=60)
 	ing_famil = models.CharField(max_length=9)
-	iglesia = models.CharField(max_length=60)
+	iglesias = (
+			('','Iglesias'),
+			('Bet-el Mijagualito','Bet-el Mijagualito'),
+			('Bet-el Desembocadero','Bet-el Desembocadero'),
+			('Bet-el Mesa del Cacao','Bet-el Mesa del Cacao'),
+			('Bet-el Patriciera','Bet-el Patriciera'),
+			('Bet-el Marfilar','Bet-el Marfilar'),
+			('Bet-el Santa Elena','Bet-el Santa Elena'),
+			('Bet-el Barrancones','Bet-el Barrancones'),
+			('Bet-el Los Playones','Bet-el Los Playones'),
+			('Bet-el Guerrilandia','Bet-el Guerrilandia'),
+			('Bet-el Papelon','Bet-el Papelon'),
+			('Bet-el Biscucuy','Bet-el Biscucuy'),
+			('Bet-el Bucaral','Bet-el Bucaral'),
+			('Bet-el El muji','Bet-el El muji'),
+			('Bet-el Barro Negro','Bet-el Barro Negro'),
+			('Bet-el Morichal','Bet-el Morichal'),
+		)
+
+	iglesia = models.CharField(max_length=60,choices=iglesias)
 	pastor = models.CharField(max_length=25)
 	es = (
 			('','Estudio Teologia'),
@@ -94,9 +113,6 @@ class  Materia(models.Model):
 		return self.nombre_materia
 
 
-
-
-
 class Nivel(models.Model):
 	id_nivel = models.AutoField(primary_key=True)
 	est=(
@@ -117,9 +133,6 @@ class Asigna_Materia(models.Model):
 	profesor = models.ForeignKey(Profesor)
 	id_nivel = models.ForeignKey(Nivel)
 	terminado = models.BooleanField(default=False)
-	
-
-
 
 	def __str__(self): #si es python 2.7 es def __unicode__(self):
 		return '{}, {}' .format(self.materia, self.profesor)
@@ -134,6 +147,8 @@ class Inscripcion(models.Model):
 	)
 	estatus = models.CharField(max_length=20,choices=est,blank=True)
 	terminado = models.BooleanField(default=False)
+	retirado = models.BooleanField(default=False)
+
 
 
 	def __str__(self):

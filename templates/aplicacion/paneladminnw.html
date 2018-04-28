@@ -110,15 +110,13 @@ function cerrar_modal()
                               </li>
                               
                               {% endif %}
-                              {% if user.is_profesor %}
-                              {% for filtros in filtro%}
+                              {% if user.is_profesor and not user.is_superuser %}
                                     <li class="nav-item">
                                       <a class="nav-link" href="{% url 'dato:nivel1' %}">Estudiantes</a>
                                     </li>
                                     <li class="nav-item">
                                       <a class="nav-link" href="{% url 'dato:estudiante' %}">Estudiantes PDF</a>
                                     </li>
-                              {% endfor %}
                               {% endif %}
                               {% if user.is_profesor and not user.is_superuser %}               
                               {% endif %}
@@ -148,7 +146,7 @@ function cerrar_modal()
                                 </div>
                               </li>
                               {% endif %}
-                              {% if user.is_alumno or user.is_superuser %}
+                              {% if user.is_alumno or user.is_superuser or user.is_profesor %}
 
                               <li class="nav-item dropdown" style="float: right;">
                                 <a class="nav-link dropdown-toggle"  data-toggle="dropdown"
@@ -210,7 +208,14 @@ function cerrar_modal()
                                       <br>
                                         <p style="float: left; text-align: center; font-size: 14px;">El alumno <br>{{noti.user.nombre}} {{noti.user.apellido}} solicita retirarse de la escuela de formación</p>
                                         <p style="float: left; text-align: left; font-size: 10px;">{{ noti.hora }}</p>
-                                      {% else %}
+                                    {% endif %}
+                                    {% if user.is_profesor and not user.is_superuser %}
+                                      <p style="text-align: center; font-size: 14px;">Notificación</p>
+                                      <br>
+                                        <p style="float: left; text-align: center; font-size: 14px;">El alumno <br>{{noti.user.nombre}} {{noti.user.apellido}} a sido retirado de la escuela de formación</p>
+                                        <p style="float: left; text-align: left; font-size: 10px;">{{ noti.hora }}</p>
+                                    {% endif %}
+                                      {% if user.is_alumno and not user.is_superuser %}
                                     {{ noti.titulo }}<br> <br>
                                     <p style="float: left; text-align: left; font-size: 14px;">{{ noti.descripcion }}</p> <br><br>
                                     <p style="float: left; text-align: left; font-size: 10px;">{{ noti.hora }}</p>
@@ -243,11 +248,21 @@ function cerrar_modal()
                         
                         {% if user.is_alumno and user.is_inscripcion %}
                             <img class="imgr" src="{% static 'assets/img/gif.gif'%}" alt="Nosotros" width="300" class="img-fluid my-1 mb-2 " style="margin-top: 50px;">
-                            <center><div style="width: 700px; padding-bottom: 50px;">
+                            <center>
+                            {% if error %}
+                              <div style="width: 700px; padding-bottom: 50px;">
+                            <h2 style="color: #3c3c3c;">Bienvenido {{user.first_name}} <br> {{error}}
+                           </h2>
+                         </div>
+                            {% else %}
+                              <div style="width: 700px; padding-bottom: 50px;">
                              <h2 style="color: #3c3c3c;">Bienvenido <strong>{{user.first_name}}</strong>
+                              
                             Por favor actualice sus datos  <strong>Personales</strong>
-                           </h2></div >
+                           </h2>
+                         </div >
                             <p class="lead"><a class="btn btn-primary btn-xl page-scroll" href="{% url 'dato:aplicacion_crear' %}">¡Actualizar Datos!</a></p>
+                           {% endif %}
                        </center>
 
                         {% endif %}

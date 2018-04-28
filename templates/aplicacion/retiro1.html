@@ -53,9 +53,9 @@
 
                         </div>
                         
-                         {% if user.is_superuser %}
+                         {% if user.is_alumno and not user.is_inscripcion %}
                             <img class="imgr" src="{% static 'assets/img/gif.gif'%}" alt="Nosotros" width="300" class="img-fluid my-1 mb-2 " style="margin-top: 50px;">
-                             <h2 style="color: #3c3c3c;">¿Desea culminar el nivel?</h2>
+                             <h2 style="color: #3c3c3c;">¿Desea Retirar al Alumno?</h2>
                             <center><div style="width: 700px; padding-bottom: 50px;">
 
                              	<form method="post">

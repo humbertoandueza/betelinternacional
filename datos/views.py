@@ -40,9 +40,75 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import permission_required
 import datetime
 import time
+import calendar
 
 from templated_email import send_templated_mail
 from templated_email import InlineImage
+class Periodo(object):
+	def nivel1_p(self):
+		var2 = Nivel.objects.filter(nivel='I',estatus=True)
+		if var2:
+			var = Nivel.objects.get(nivel='I',estatus=True)
+			today=datetime.datetime.now()
+			fecha_bolsa= str(var.fecha)
+			fecha_b =fecha_bolsa.split('-')
+			dia_bolsa = int(fecha_b[2])
+			fecha = time.strftime("%x")
+			separado = fecha.split('/')
+			dia_actual = int(separado[1])
+			ultimo_dia= calendar.monthrange(today.year-1, today.month-1)[1]
+			if dia_actual > dia_bolsa:
+				var1 = dia_actual-dia_bolsa
+				print ('dias: si son menos ', var1)
+			if dia_actual < dia_bolsa:
+				var1 = (int(ultimo_dia)-int(dia_bolsa)+dia_actual)
+				print ('dias: si son mas ',var1)
+				print ('utlimo dia,',var1)
+			if dia_actual == dia_bolsa:
+				var1 = 0
+			return (var1)
+		return (var2)
+
+
+	def nivel2_p(self):
+		var = Nivel.objects.get(nivel='II',estatus=True)
+		today=datetime.datetime.now()
+		fecha_bolsa= str(var.fecha)
+		fecha_b =fecha_bolsa.split('-')
+		dia_bolsa = int(fecha_b[2])
+		fecha = time.strftime("%x")
+		separado = fecha.split('/')
+		dia_actual = int(separado[1])
+		ultimo_dia= calendar.monthrange(today.year-1, today.month-1)[1]
+		if dia_actual > dia_bolsa:
+			var1 = dia_actual-dia_bolsa
+			print ('dias: si son menos ', var1)
+		if dia_actual < dia_bolsa:
+			var1 = (int(ultimo_dia)-int(dia_bolsa)+dia_actual)
+			print ('dias: si son mas ',var1)
+			print ('utlimo dia,',var1)
+		return (var1)
+
+	def nivel3_p(self):
+		var = Nivel.objects.get(nivel='III',estatus=True)
+		today=datetime.datetime.now()
+		fecha_bolsa= str(var.fecha)
+		fecha_b =fecha_bolsa.split('-')
+		dia_bolsa = int(fecha_b[2])
+		fecha = time.strftime("%x")
+		separado = fecha.split('/')
+		dia_actual = int(separado[1])
+		ultimo_dia= calendar.monthrange(today.year-1, today.month-1)[1]
+		if dia_actual > dia_bolsa:
+			var1 = dia_actual-dia_bolsa
+			print ('dias: si son menos ', var1)
+		if dia_actual < dia_bolsa:
+			var1 = (int(ultimo_dia)-int(dia_bolsa)+dia_actual)
+			print ('dias: si son mas ',var1)
+			print ('utlimo dia,',var1)
+		return (var1)
+
+
 def index(request):
 	return render(request,'index.html')
 
@@ -71,7 +137,13 @@ def change_password(request):
 def app_index(request):
 	if request.user.is_active and request.user.is_superuser or request.user.is_alumno or request.user.is_profesor:
 		filtro = Asigna_Materia.objects.filter(profesor_id=request.user.ci)
-		#print (filtro)
+		error = ''
+		if Periodo().nivel1_p():
+			var3 = Periodo().nivel1_p()
+			print ('periodo de inscripcion,', var3)
+			if int(var3) >15:
+				error = "YA EL PERIODO DE INSCRIPCION EXPIRO, POR FAVOR ESPERA QUE SE INICIE UN NUEVO NIVEL."
+			#print (filtro)
 		if request.user.is_alumno and not request.user.is_inscripcion and not request.user.is_superuser:
 			notificacion = Notificacion.objects.filter(titulo='Carga de nota',user_id=request.user.ci).order_by('-hora','-id')
 			inscripcion1 =Inscripcion.objects.filter(cedula_id=request.user.ci,estatus=0,terminado=False)
@@ -94,7 +166,15 @@ def app_index(request):
 
 			return render(request,'aplicacion/paneladminnw.html', {'var':var,"filtro":filtro,'notificacion':notificacion})
 
-		return render(request,'aplicacion/paneladminnw.html', {"filtro":filtro})
+		if not request.user.is_superuser and request.user.is_profesor:
+			notificacion = Notificacion.objects.filter(titulo='Retirado').order_by('-hora','-id')
+
+			notificaciones = Notificacion.objects.filter(titulo='Retirado',estatus=False)
+			var = len(notificaciones)
+
+			return render(request,'aplicacion/paneladminnw.html', {'var':var,"filtro":filtro,'notificacion':notificacion})
+
+		return render(request,'aplicacion/paneladminnw.html', {"filtro":filtro,'error':error})
 	else:
 		return redirect('dato:change_password')
 def notificacion(request,pk):
@@ -111,9 +191,15 @@ def notas_filter(request):
 				estatus = i.estatus
 		inscripcion1 = get_object_or_404(Inscripcion,cedula_id=request.user.ci,estatus=estatus,terminado=False)
 		filtro = inscripcion1.id_nivel_id
+		niveles = Nivel.objects.get(id_nivel=filtro)
+		print ('nivel que esta', niveles.nivel)
+		variable = str(niveles.nivel)+"I"
+		niveles_1 = Nivel.objects.filter(nivel=variable,estatus=True)
+
+		print ('niveles: ',niveles_1)
 		materias = Asigna_Materia.objects.filter(id_nivel_id=filtro)
 		if len(materias) < 2:
-			print ("error")
+			return redirect('dato:app_inicio')
 		else:
 			id_materia1 = materias[0]
 			id_materia2 = materias[1]
@@ -169,17 +255,17 @@ def notas_filter(request):
 				estado = ''
 
 			print ('estado: ',estado)
-			return render(request, "aplicacion/notas_list.html", {'estado':estado,'cantidad12':cantidad12,'cantidad13':cantidad13, 'materia1':materia1,'materia2':materia2, 'estatus':estatus,'estat':estatus1,'inscripcion1':inscripcion1,"notas":notas,"notas1":notas1,})
+			return render(request, "aplicacion/notas_list.html", {'niveles':niveles_1,'estado':estado,'cantidad12':cantidad12,'cantidad13':cantidad13, 'materia1':materia1,'materia2':materia2, 'estatus':estatus,'estat':estatus1,'inscripcion1':inscripcion1,"notas":notas,"notas1":notas1,})
 
 		estatus = 'no defined'
-		return render(request, "aplicacion/notas_list.html", {'inscripcion1':inscripcion1,"notas":nota,})
+		return render(request, "aplicacion/notas_list.html", {'niveles':niveles_1,'inscripcion1':inscripcion1,"notas":nota,})
 	else :
 		return redirect('dato:app_inicio')
 
 
 def DetalleProveedor(request,pk):
 	inscripcion = get_object_or_404(Inscripcion,id=pk,terminado=False)
-	profesor =get_object_or_404(Asigna_Materia,profesor_id=request.user.ci)
+	profesor =get_object_or_404(Asigna_Materia,profesor_id=request.user.ci,terminado=False)
 	notas = Notas.objects.filter(cedula_id=pk,id_materia_id=profesor.materia_id)
 	if notas:
 		notas_sumas  = Notas.objects.filter(cedula_id=pk,id_materia_id=profesor.materia_id).aggregate(total=Sum('nota_persona'))
@@ -195,12 +281,12 @@ def DetalleProveedor(request,pk):
 		estatus = 'El alumno no posee notas cargadas'
 		return render(request,'aplicacion/ver_notas_profesor.html',{'estatus':estatus})
 
-def DetalleProveedor_2(request,pk,estatus=None):
+def DetalleProveedor_2(request,pk):
 	if request.user.is_superuser:
-		inscripcion1 = get_object_or_404(Inscripcion,cedula_id=pk,estatus=estatus,terminado=False)
+		inscripcion1 = get_object_or_404(Inscripcion,cedula_id=pk,terminado=False)
 		filtro = inscripcion1.id_nivel_id
 		print (inscripcion1)
-		materias = Asigna_Materia.objects.filter(id_nivel_id=filtro)
+		materias = Asigna_Materia.objects.filter(id_nivel_id=filtro,terminado=False)
 		if len(materias) < 2:
 			print ("error")
 		else:
@@ -212,12 +298,12 @@ def DetalleProveedor_2(request,pk,estatus=None):
 			materia1 = id_materia1.materia.nombre_materia
 			materia2 = id_materia2.materia.nombre_materia
 
-			nombre_pro = Asigna_Materia.objects.get(materia_id=obtener_id1)
+			nombre_pro = Asigna_Materia.objects.get(materia_id=obtener_id1,terminado=False)
 			nombre1 = nombre_pro.profesor.nombre_profesor
 			apellido1 = nombre_pro.profesor.apellido_profesor
 			nombre_completo = nombre1+' '+apellido1
 
-			nombre_pro1 = Asigna_Materia.objects.get(materia_id=obtener_id2)
+			nombre_pro1 = Asigna_Materia.objects.get(materia_id=obtener_id2,terminado=False)
 			nombre2 = nombre_pro1.profesor.nombre_profesor
 			apellido2 = nombre_pro1.profesor.apellido_profesor
 			nombre_completo1 = nombre2+' '+apellido2
@@ -405,7 +491,7 @@ def terminar(request,pk):
 def nivel1_new(request):
 	if request.user.is_profesor and not request.user.is_superuser:
 
-		filtro = Asigna_Materia.objects.get(profesor_id=request.user.ci)
+		filtro = Asigna_Materia.objects.get(profesor_id=request.user.ci,terminado=False)
 		filtro1 = filtro.materia_id
 		materia = Materia.objects.get(id_materia=filtro1)
 		filtro2 = filtro.id_nivel_id
@@ -478,13 +564,46 @@ def AsignarMateria(request,*args,**kwargs):
 	if request.method == 'POST':
 		form = AsignaMateriaForm(request.POST)
 		cedula = (request.POST['profesor'])
+		nivel = request.POST['materia']
 		if form.is_valid():
-			Profesor.objects.filter(cedula_profesor=cedula).update(estatus=True)
-			form.save()
+			materia = request.POST['id_nivel']
+			filtro = Asigna_Materia.objects.filter(id_nivel_id=materia,terminado=0)
+			print ('Filtro:', materia)
+			var = int(materia)-1
+			print ('filtroo, ',var)
+			filtro = Asigna_Materia.objects.filter(profesor=cedula,terminado=0)
+			filtro_m = Asigna_Materia.objects.filter(materia=nivel,terminado=0)
+			if len(filtro_m)>=1:
+				error = 'YA ASIGNO UN PROFESOR A ESTA MATERIA'
+				return render(request,'aplicacion/form_asigna_materia.html',{'form':form,'error':error})
+
+			if len(filtro)>=1:
+				error = 'YA ASIGNO UNA MATERIA A ESTE PROFESOR'
+				return render(request,'aplicacion/form_asigna_materia.html',{'form':form,'error':error})
+
+			filtro1 = Asigna_Materia.objects.filter(id_nivel_id=materia,terminado=1)
+			if len(filtro1) >=1:
+				error = 'YA ESTE NIVEL HA SIDO CERRADO'
+				return render(request,'aplicacion/form_asigna_materia.html',{'form':form,'error':error})
+				
+			if len(filtro) >1:
+				error ='YA ALCANZO EL MAXIMO DE ASIGNACIONES EN ESTE NIVEL'
+				return render(request,'aplicacion/form_asigna_materia.html',{'form':form,'error':error})
+				
+
+			else:
+				Profesor.objects.filter(cedula_profesor=cedula).update(estatus=True)
+				form.save()
 			return redirect('dato:app_inicio')
 	else:
 		form = AsignaMateriaForm()
-	return render(request,'aplicacion/form_asigna_materia.html',{'form':form})
+		error = ''
+	return render(request,'aplicacion/form_asigna_materia.html',{'form':form,'error':error})
+
+
+def terminadolist(request):
+	objects = Nivel.objects.filter(estatus=False)
+	return render(request,'aplicacion/lista_terminado.html',{'terminado':objects})
 
 class UpdateMateria(UpdateView):
 	model = Asigna_Materia
@@ -554,10 +673,10 @@ def nivel1_superuser(request):
 				nombre_completo2 = 'Profesor: '+nombre2+ ' '+apellido2+ ' Materia: '+materia2
 
 				print(nombre_completo2)
-				return render(request,'aplicacion/nivel1_superuser.html', {'nombre_completo':nombre_completo,'nombre_completo2':nombre_completo2,"nivel":nivel})
+				return render(request,'aplicacion/nivel1_superuser.html', {'niveles':vari,'nombre_completo':nombre_completo,'nombre_completo2':nombre_completo2,"nivel":nivel})
 
 			else:
-				return render(request,'aplicacion/nivel1_superuser.html', {"nivel":nivel,})
+				return render(request,'aplicacion/nivel1_superuser.html', {'niveles':vari,"nivel":nivel,})
 	else:
 		return redirect('dato:app_inicio')
 
@@ -619,10 +738,10 @@ def nivel2_superuser(request):
 				nombre_completo2 = 'Profesor: '+nombre2+ ' '+apellido2+ ' Materia: '+materia2
 
 				print(nombre_completo2)
-				return render(request,'aplicacion/nivel1_superuser.html', {'nombre_completo':nombre_completo,'nombre_completo2':nombre_completo2,"nivel":nivel})
+				return render(request,'aplicacion/nivel1_superuser.html', {'niveles':vari,'nombre_completo':nombre_completo,'nombre_completo2':nombre_completo2,"nivel":nivel})
 
 			else:
-				return render(request,'aplicacion/nivel1_superuser.html', {"nivel":nivel,})
+				return render(request,'aplicacion/nivel1_superuser.html', {'niveles':vari,"nivel":nivel,})
 	else:
 		return redirect('dato:app_inicio')
 
@@ -684,10 +803,10 @@ def nivel3_superuser(request):
 				nombre_completo2 = 'Profesor: '+nombre2+ ' '+apellido2+ ' Materia: '+materia2
 
 				print(nombre_completo2)
-				return render(request,'aplicacion/nivel1_superuser.html', {'nombre_completo':nombre_completo,'nombre_completo2':nombre_completo2,"nivel":nivel})
+				return render(request,'aplicacion/nivel1_superuser.html', {'niveles':vari,'nombre_completo':nombre_completo,'nombre_completo2':nombre_completo2,"nivel":nivel})
 
 			else:
-				return render(request,'aplicacion/nivel1_superuser.html', {"nivel":nivel,})
+				return render(request,'aplicacion/nivel1_superuser.html', {'niveles':vari,"nivel":nivel,})
 	else:
 		return redirect('dato:app_inicio')
 
@@ -718,17 +837,27 @@ class NotaCreate(CreateView):
 		return context
 def retiro(request,pk):
 	if request.method == 'POST':
-		Inscripcion.objects.filter(cedula_id=pk).update(estatus=1,terminado=True)
+		cedula = pk
+		Inscripcion.objects.filter(cedula_id=pk).update(estatus=1,retirado=True)
 		Users.objects.filter(pk=pk).update(is_active=False)
+		noto = {
+			'titulo': 'Retirado',
+			'descripcion': 'Retiro de la EDF.',
+			'estatus': False,
+			'user': cedula,
+		}
+		notificaciones =NotificacionesForm(noto)
+		print (noto)
+		notificaciones.save()
 		return redirect('dato:app_inicio')
-	return render(request,'aplicacion/retiro.html')
+	return render(request,'aplicacion/retiro1.html')
 
 
 def post_new(request,*args, **kwargs):
 	cedula = kwargs['pk']
 	print (cedula)
 	if request.user.is_profesor:
-		filtro = Asigna_Materia.objects.get(profesor_id=request.user.ci)
+		filtro = Asigna_Materia.objects.get(profesor_id=request.user.ci,terminado=False)
 		var = filtro.materia_id
 		filtro2 = Materia.objects.get(id_materia=var)
 		var2= filtro.id_nivel_id
@@ -744,6 +873,7 @@ def post_new(request,*args, **kwargs):
 		#print(nivel)
 		filtro1  = Persona.objects.filter(cedula=cedula)
 		#print (filtro1)
+		
 		nota = Notas.objects.filter(id_materia_id=var,cedula_id=nivel.id)
 		calculo = Notas.objects.filter(cedula_id=nivel.id).aggregate(total=Sum('nota_persona'))
 		#print (nota)
@@ -755,6 +885,7 @@ def post_new(request,*args, **kwargs):
 			for p in calculo.items():
 				cantidad = (int(p[1]))
 			print ('Nota total', cantidad)
+			
 			if cantidad >= 17 and carga_total >= 18 :
 				Inscripcion.objects.filter(cedula_id=cedula).update(estatus=0)
 			elif cantidad <17 and carga_total > 17 :
@@ -767,6 +898,17 @@ def post_new(request,*args, **kwargs):
 			form = NotasForm(request.POST)
 			if form.is_valid():
 				form.save()
+				nota4 = Notas.objects.filter(id_materia_id=var,cedula_id=nivel.id)
+				
+				nota1 = Notas.objects.filter(id_materia_id=var,cedula_id=nivel.id).aggregate(total=Sum('nota_persona'))
+				for a in nota1.items():
+					notas = (int(a[1]))
+				print ('nota actual:,',notas)
+				print ('notas cargadas,',nota3)
+				estado =  len(nota4)-notas
+				print ('estado:',estado)
+				if estado ==3:
+					Inscripcion.objects.filter(cedula_id=cedula).update(estatus=1)
 				noto = {
 					'titulo': 'Carga de nota',
 					'descripcion': 'Se le ha cargado una nueva nota',
@@ -827,14 +969,19 @@ class SolicitudCreate(CreateView):
 		print (cedula)
 		form = self.form_class(request.POST)
 		if form.is_valid():
+			var = Nivel.objects.get(nivel='I',estatus=True)
+			var1 = Periodo().nivel1_p()
+			print ('periodo de inscripcion,', var1)
+			if int(var1) >15:
+				print ('El periodo de inscripcion expiro, por favor espere que se inicie un nuevo nivel')
+				return redirect('dato:app_inicio')
 			Users.objects.filter(ci=cedula).update(is_inscripcion=False)
 			form.save()
-			var = Nivel.objects.get(nivel='I',estatus=True)
 
 			inscripcion = {
 					'cedula': cedula,
 					'id_nivel': var.id_nivel,
-					'estatus':1,
+					
 				}
 			inscripciones =InscripcionForm(inscripcion)
 			inscripciones.save()
@@ -842,6 +989,10 @@ class SolicitudCreate(CreateView):
 			return HttpResponseRedirect(self.get_success_url())
 		else:
 			return self.render_to_response(self.get_context_data(form=form))
+
+
+
+
 
 
 class SolicitudUpdate(UpdateView):
@@ -1110,6 +1261,140 @@ class nivel1_pdf(View):
 		return response
 
 
+class nivel_pasado(View):
+	def _header_footer(self,canvas,doc):
+		canvas.saveState()
+		canvas.setTitle("PDF")
+		styles = getSampleStyleSheet()
+		archivo_imagen = 'static/assets/img/gif.gif'
+		canvas.drawImage(archivo_imagen, 60, 700, width=75,height=75,preserveAspectRatio=True)
+		#iglesia
+		header1 = Paragraph('Iglesia Cristiana Bet-el Internacional', styles['Heading4'])
+		w, h = header1.wrap(doc.width-120, doc.topMargin)
+		header1.drawOn(canvas, 210, doc.height + doc.topMargin - 6)
+		#ministerio
+		header = Paragraph('Ministerio de Educacion Cristiana', styles['Heading4'])
+		w, h = header.wrap(doc.width-120, doc.topMargin)
+		header.drawOn(canvas, 220, doc.height + doc.topMargin - 30)
+		#escuela
+		header = Paragraph('Escuela de Formación y Discipulado', styles['Heading4'])
+		w, h = header.wrap(doc.width-120, doc.topMargin)
+		header.drawOn(canvas, 210, doc.height + doc.topMargin - 18)
+		#guananare
+		header = Paragraph('Guanare-Portuguesa', styles['Heading4'])
+		w, h = header.wrap(doc.width-120, doc.topMargin)
+		header20 = Paragraph('Fecha: '+ time.strftime("%x"), styles['Normal'])
+		w, h = header20.wrap(doc.width-320, doc.topMargin)
+		header20.drawOn(canvas, 520, doc.height + doc.topMargin+15 )
+
+		header.drawOn(canvas, 250, doc.height + doc.topMargin - 41)
+		footer = Paragraph('Iglesia Cristiana Bet-el Internacional', styles['Normal'])
+		w, h = footer.wrap(doc.width, doc.bottomMargin)
+		footer.drawOn(canvas, doc.leftMargin, h)
+		canvas.restoreState()
+
+	def get(self,request,pk):
+		print ("Genero el PDF")
+		response = HttpResponse(content_type='application/pdf')
+		pdf_name = "clientes.pdf"  # llamado clientes
+		buff = BytesIO()
+		doc = SimpleDocTemplate(buff,
+			pagesize=letter,
+			rightMargin=40,
+			leftMargin=40,
+			topMargin=95,
+			bottomMargin=40,
+		)
+		if request.user.is_superuser:
+			clientes = []
+			styles = getSampleStyleSheet()
+			materias = Asigna_Materia.objects.filter(id_nivel_id=pk)
+			id_materia1 = materias[0]
+			id_materia2 = materias[1]
+			obtener_id1 = id_materia1.materia_id
+			obtener_id2 = id_materia2.materia_id
+			asignadas = Asigna_Materia.objects.filter(materia_id=obtener_id1)
+			asignadas1 = Asigna_Materia.objects.filter(materia_id=obtener_id2)
+			print ('id: ',len(asignadas),len(asignadas1))
+
+			print('materias asignadas',len(asignadas),len(asignadas1))
+			if len(asignadas) >=1 and len(asignadas1) >=1  :
+				nombre_pro = Asigna_Materia.objects.get(materia_id=obtener_id1,terminado=True)
+				nombre_pro1 = Asigna_Materia.objects.get(materia_id=obtener_id2,terminado=True)
+				nombre1 = nombre_pro.profesor.nombre_profesor
+				apellido1 = nombre_pro.profesor.apellido_profesor
+				materia1 = id_materia1.materia.nombre_materia
+				nombre_completo = 'Profesor: '+nombre1+ ' '+apellido1+ ', Materia: '+materia1
+				nombre_completo = 'Profesor: '+nombre1+ ' '+apellido1+ ' Materia: '+materia1
+				print(nombre_completo)
+
+				nombre2 = nombre_pro1.profesor.nombre_profesor
+				apellido2 = nombre_pro1.profesor.apellido_profesor
+				materia2 = id_materia2.materia.nombre_materia
+				nombre_completo2 = 'Profesor: '+nombre2+ ' '+apellido2+ ', Materia: '+materia2
+				nombre_completo2 = 'Profesor: '+nombre2+ ' '+apellido2+ ' Materia: '+materia2
+			else:
+				nombre_completo = 'No hay profesores asignados'
+				nombre_completo2 = 'No hay profesores asignados'
+
+			header4=Paragraph('',styles['Heading3'])
+			clientes.append(header4)
+			header5=Paragraph('Lista de alumnos inscritos en el nivel 1',styles['Heading1'])
+			clientes.append(header4)
+			clientes.append(header4)
+			clientes.append(header5)
+
+
+
+			nombre_profesor1=Paragraph(nombre_completo,styles['Heading4'])
+			clientes.append(nombre_profesor1)
+			nombre_profesor=Paragraph(nombre_completo2,styles['Heading4'])
+			clientes.append(nombre_profesor)
+
+			header4=Paragraph('',styles['Heading3'])
+			clientes.append(header4)
+			clientes.append(header4)
+			clientes.append(header4)
+
+			print(nombre_completo2)
+			headings = ('N°','Cedula','Nombre', 'Apellido','Correo', 'Estatus')
+			acum = 0
+			lista = []
+			for p in Inscripcion.objects.filter(id_nivel_id=pk,terminado=True).order_by('cedula_id'):
+				acum = acum+1
+				if p.estatus=='1':
+					estatus='Aprobado'
+				else:
+					estatus='Reprobado'
+				print ('estatus ',estatus)
+				var12 = (acum,p.cedula_id,p.cedula.nombre, p.cedula.apellido,p.cedula.email,estatus)
+				lista.append(var12)
+			t = Table([headings] + lista)
+			t.setStyle(TableStyle(
+		    	[	('GRID', (0, 0), (7, -1), 1, colors.black),
+		    	('LINEBELOW', (0, 0), (-1, 0), 2, colors.black),
+		    	('BACKGROUND', (0, 0), (-1, 0), colors.dodgerblue)
+		    	]))
+			clientes.append(t)
+			header4=Paragraph('',styles['Heading3'])
+			clientes.append(header4)
+			cantidad = 'Cantidad de alumnos inscritos: '+str((len(lista)))
+
+			header4=Paragraph(cantidad,styles['Normal'])
+			clientes.append(header4)
+
+			doc.build(clientes,onFirstPage=self._header_footer,onLaterPages=self._header_footer,canvasmaker=NumberedCanvas)
+		else:
+			clientes = []
+			styles = getSampleStyleSheet()
+			header=Paragraph('Lista de usuarios registrados',styles['Heading1'])
+			clientes.append(header)
+			doc.build(clientes,onFirstPage=self._header_footer,onLaterPages=self._header_footer,canvasmaker=NumberedCanvas)
+		response.write(buff.getvalue())
+		buff.close()
+		return response
+
+
 class Estudiantes(View):
 	def _header_footer(self,canvas,doc):
 		canvas.saveState()
@@ -1171,7 +1456,7 @@ class Estudiantes(View):
 
 			headings = ('N°','Cedula','          Nombre        ', '         Apellido         ','              Correo                 ')
 			acum = 0
-			filtro = Asigna_Materia.objects.get(profesor_id=request.user.ci)
+			filtro = Asigna_Materia.objects.get(profesor_id=request.user.ci,terminado=False)
 			filtro2 = filtro.id_nivel
 			print ('arreglar:',filtro2)
 			lista = []
@@ -1272,7 +1557,7 @@ class Notas_P(View):
 			inscripcion1 = get_object_or_404(Inscripcion,cedula_id=request.user.ci,terminado=False)
 			filtro = inscripcion1.id_nivel_id
 			print ('imprimir',inscripcion1)
-			materias = Asigna_Materia.objects.filter(id_nivel_id=filtro)
+			materias = Asigna_Materia.objects.filter(id_nivel_id=filtro,terminado=False)
 			if len(materias) < 2:
 				print ("error")
 			else:
